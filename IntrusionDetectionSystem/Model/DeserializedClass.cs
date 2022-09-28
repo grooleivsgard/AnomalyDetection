@@ -1,30 +1,44 @@
+using System.Text.Json.Serialization;
 namespace Model
 {
     public class Metric
     {
-        public string __name__ { get; set; }
-        public string a_srcAddr { get; set; }
-        public string b_dstAddr { get; set; }
-        public string c_dstPort { get; set; }
-        public string d_firstSeen { get; set;}
-        public string instance {get; set;}
-        public string job {get; set;}
+        [JsonPropertyName("__name__")]
+        public string Name{ get; set; }
+        [JsonPropertyName("a_srcAddr")]
+        public string SourceAddress { get; set; }
+        [JsonPropertyName("b_dstAddr")]
+        public string DestinationAddress { get; set; }
+        [JsonPropertyName("c_dstPort")]
+        public string DestinationPort { get; set; }
+        [JsonPropertyName("d_firstSeen")]
+        public string FirstTimeSeenDate { get; set;}
+        [JsonPropertyName("instance")]
+        public string Instance {get; set;}
+        [JsonPropertyName("job")]
+        public string Job {get; set;}
 
 
     }
     public class Result
     {
-        public Metric metric { get; set; }
-        public List<object> value;
+        [JsonPropertyName("metric")]
+        public Metric Metric { get; set; }
+        [JsonPropertyName("value")]
+        public List<object> Value;
     }
     public class Data
     {
-        public string resultType { get; set; }
-        public List<Result> result { get; set; }
+        [JsonPropertyName("resultType")]
+        public string ResultType { get; set; }        
+        [JsonPropertyName("result")]
+        public List<Result> Result { get; set; }
     }
     public class Root
     {
-        public string status { get; set; }
-        public Data data { get; set; }
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+        [JsonPropertyName("data")]
+        public Data Data { get; set; }
     }
 }

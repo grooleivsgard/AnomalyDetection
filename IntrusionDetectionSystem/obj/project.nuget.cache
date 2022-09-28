@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "3HFj5RApxh783AxfY8Ahao8hiQiPBxwzg0B7gg+IgsdqhMVNmfWHM0N7snCo9iVUNp57cfcmHwR4tye9xWuafA==",
+  "dgSpecHash": "1udX5SNZqsZriW8sw2ZXH2UG+63hIfQNDvqhjSanQDbFLWaVQCr+DWXHjqBLRVLcIQdp3DqSEQctwn/672VikQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0-rc.1.22426.10\\microsoft.extensions.dependencyinjection.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.dependencyinjection.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.options\\7.0.0-rc.1.22426.10\\microsoft.extensions.options.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0-rc.1.22426.10\\microsoft.extensions.primitives.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
