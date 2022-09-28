@@ -1,0 +1,37 @@
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\bin\Debug\net6.0\Intrusion Detection System.exe
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\bin\Debug\net6.0\Intrusion Detection System.deps.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\bin\Debug\net6.0\Intrusion Detection System.runtimeconfig.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\bin\Debug\net6.0\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\bin\Debug\net6.0\Intrusion Detection System.pdb
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.csproj.AssemblyReference.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.AssemblyInfoInputs.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.AssemblyInfo.cs
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.csproj.CoreCompileInputs.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\refint\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.pdb
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\Intrusion Detection System.genruntimeconfig.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\Intrusion-Detection-System\obj\Debug\net6.0\ref\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Intrusion Detection System.exe
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Intrusion Detection System.deps.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Intrusion Detection System.runtimeconfig.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Intrusion Detection System.pdb
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.csproj.AssemblyReference.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.AssemblyInfoInputs.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.AssemblyInfo.cs
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.csproj.CoreCompileInputs.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\refint\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.pdb
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.genruntimeconfig.cache
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\ref\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.csproj.CopyComplete
