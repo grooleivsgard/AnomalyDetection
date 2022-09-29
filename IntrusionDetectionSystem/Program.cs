@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Microsoft.Extensions.Http;
 using Model;
 
 //Di, serilog, Settings 
@@ -11,21 +12,8 @@ namespace IntrusionDetectionSystem
 {
     class Program
     {
-        /*  async static Task Main(String[] args)
-        {
-
-            var host = Host.CreateDefaultBuilder()
-                .ConfigureServices(services => { services.AddTransient<Startup>(); })
-                .Build();
-
-            var s = host.Services.GetRequiredService<Startup>();
-
-            await s.ProcessRepositories();
-        }
-*/
-
-
-        static void Main(string[] args)
+    
+        async static Task Main(string[] args)
         {
             var builder = new ConfigurationBuilder(); 
             BuildConfig(builder); 
@@ -40,13 +28,14 @@ namespace IntrusionDetectionSystem
 
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
-                            services.AddTransient<IGreetingService,GreetingService>(); 
+                            services.AddTransient<IStartup,Startup>();
+                            services.AddHttpClient<IStartup,Startup>(); 
                         })
                         .UseSerilog()
                         .Build(); 
             
-            var svc = ActivatorUtilities.CreateInstance<GreetingService>(host.Services); 
-            svc.Run(); 
+            var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
+            await svc.ProcessRepositories(); 
         }
 
         static void BuildConfig(IConfigurationBuilder builder)
