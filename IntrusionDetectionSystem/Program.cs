@@ -1,57 +1,61 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net.Http;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 using Model;
+
+//Di, serilog, Settings 
 namespace IntrusionDetectionSystem
 {
     class Program
     {
-        private static readonly HttpClient client = new HttpClient();
-        private readonly ILogger<Program> _log;
-
-        public Program(ILogger<Program> log)
+        /*  async static Task Main(String[] args)
         {
-            _log = log;
+
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureServices(services => { services.AddTransient<Startup>(); })
+                .Build();
+
+            var s = host.Services.GetRequiredService<Startup>();
+
+            await s.ProcessRepositories();
         }
-        private static async Task ProcessRepositories()
+*/
+
+
+        static void Main(string[] args)
         {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
-            string promQuery = "hosts_src_dst";
-            string url = "http://10.9.10.14:9090/api/v1/query?query=" + promQuery;
+            var builder = new ConfigurationBuilder(); 
+            BuildConfig(builder); 
 
-            //var stringTask = client.GetStringAsync("http://10.9.10.14:9090/api/v1/query?query=" + promQuery);
-            // var stringTask = client.GetStringAsync(url);
-            var streamTask = client.GetStreamAsync(url);
-            if (streamTask.IsCompletedSuccessfully)
-            {
-                Console.WriteLine("Http Get request to prometheus server was OK!");
-                Root myDeserializedClass = await JsonSerializer.DeserializeAsync<Root>(await streamTask);
-                foreach (var result in myDeserializedClass.Data.Result)
-                {
-                    Console.WriteLine("Connection going from: " + result.Metric.SourceAddress
-                                      + " to: " + result.Metric.DestinationAddress + " at "
-                                      + result.Metric.DestinationPort.Split('/')[0]
-                                      + " port number: " + result.Metric.DestinationPort
-                                         .Split('/')[1]);
+            Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Build())
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateLogger(); 
 
-                }
-            }
-            else
-            {
-                Console.WriteLine("Http Get request to prometheus server was NOT OK!");
-            }
+            Log.Logger.Information("Application Starting"); 
 
-
-        }
-        static async Task Main(String[] args)
-        {
-            await ProcessRepositories();
+            var host = Host.CreateDefaultBuilder()
+                        .ConfigureServices((context, services) =>{
+                            services.AddTransient<IGreetingService,GreetingService>(); 
+                        })
+                        .UseSerilog()
+                        .Build(); 
+            
+            var svc = ActivatorUtilities.CreateInstance<GreetingService>(host.Services); 
+            svc.Run(); 
         }
 
+        static void BuildConfig(IConfigurationBuilder builder)
+        {
+            builder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")  ?? "Production"}.json", optional: true)
+            .AddEnvironmentVariables();
+        }
     }
-
 }
 
 
