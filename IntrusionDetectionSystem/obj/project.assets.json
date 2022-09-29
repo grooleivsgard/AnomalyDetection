@@ -272,6 +272,21 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "Microsoft.Extensions.Http/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Extensions.Http.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Http.dll": {}
+        }
+      },
       "Microsoft.Extensions.Logging/7.0.0-rc.1.22426.10": {
         "type": "package",
         "dependencies": {
@@ -1030,6 +1045,25 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Microsoft.Extensions.Http/6.0.0": {
+      "sha512": "15+pa2G0bAMHbHewaQIdr/y6ag2H3yh4rd9hTXavtWDzQBkvpe2RMqFg8BxDpcQWssmjmBApGPcw93QRz6YcMg==",
+      "type": "package",
+      "path": "microsoft.extensions.http/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/Microsoft.Extensions.Http.dll",
+        "lib/net461/Microsoft.Extensions.Http.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.Http.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Http.xml",
+        "microsoft.extensions.http.6.0.0.nupkg.sha512",
+        "microsoft.extensions.http.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "Microsoft.Extensions.Logging/7.0.0-rc.1.22426.10": {
       "sha512": "8RkgzXx5vTJGFd60GBlk5vybpEBUXTxfgcRgQw1uaM2kAjovc/Q5xezT+u58xDsy4rLDfd0pGZ6EisV5GOcy4w==",
       "type": "package",
@@ -1577,6 +1611,7 @@
       "Microsoft.Extensions.Configuration >= 7.0.0-rc.1.22426.10",
       "Microsoft.Extensions.DependencyInjection >= 7.0.0-rc.1.22426.10",
       "Microsoft.Extensions.Hosting >= 7.0.0-rc.1.22426.10",
+      "Microsoft.Extensions.Http >= 6.0.0",
       "Microsoft.Extensions.Logging >= 7.0.0-rc.1.22426.10",
       "Serilog.Extensions.Hosting >= 5.0.1",
       "Serilog.Settings.Configuration >= 3.5.0-dev-00355",
@@ -1589,11 +1624,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
+      "projectUniqueName": "c:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
       "projectName": "Intrusion Detection System",
-      "projectPath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
+      "projectPath": "c:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
       "packagesPath": "C:\\Users\\bilal\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\obj\\",
+      "outputPath": "c:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\bilal\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1603,8 +1638,8 @@
         "net6.0"
       ],
       "sources": {
-        "C:\\tmp\\Nuget": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.org": {}
       },
       "frameworks": {
         "net6.0": {
@@ -1633,6 +1668,10 @@
           "Microsoft.Extensions.Hosting": {
             "target": "Package",
             "version": "[7.0.0-rc.1.22426.10, )"
+          },
+          "Microsoft.Extensions.Http": {
+            "target": "Package",
+            "version": "[6.0.0, )"
           },
           "Microsoft.Extensions.Logging": {
             "target": "Package",

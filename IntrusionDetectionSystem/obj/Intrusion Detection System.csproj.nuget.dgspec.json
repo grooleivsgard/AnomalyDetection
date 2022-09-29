@@ -21,8 +21,8 @@
           "net6.0"
         ],
         "sources": {
-          "C:\\tmp\\Nuget": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.org": {}
         },
         "frameworks": {
           "net6.0": {
@@ -51,6 +51,10 @@
             "Microsoft.Extensions.Hosting": {
               "target": "Package",
               "version": "[7.0.0-rc.1.22426.10, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             },
             "Microsoft.Extensions.Logging": {
               "target": "Package",

@@ -11,6 +11,7 @@
           "Microsoft.Extensions.Configuration": "7.0.0-rc.1.22426.10",
           "Microsoft.Extensions.DependencyInjection": "7.0.0-rc.1.22426.10",
           "Microsoft.Extensions.Hosting": "7.0.0-rc.1.22426.10",
+          "Microsoft.Extensions.Http": "6.0.0",
           "Microsoft.Extensions.Logging": "7.0.0-rc.1.22426.10",
           "Serilog.Extensions.Hosting": "5.0.1",
           "Serilog.Settings.Configuration": "3.5.0-dev-00355",
@@ -225,6 +226,20 @@
           "lib/net6.0/Microsoft.Extensions.Hosting.Abstractions.dll": {
             "assemblyVersion": "7.0.0.0",
             "fileVersion": "7.0.22.42610"
+          }
+        }
+      },
+      "Microsoft.Extensions.Http/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0-rc.1.22426.10",
+          "Microsoft.Extensions.Logging": "7.0.0-rc.1.22426.10",
+          "Microsoft.Extensions.Logging.Abstractions": "7.0.0-rc.1.22426.10",
+          "Microsoft.Extensions.Options": "7.0.0-rc.1.22426.10"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Http.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
           }
         }
       },
@@ -600,6 +615,13 @@
       "sha512": "sha512-qbq6X0MkCMZjMCpODB4tYLQaHKVlihBdVczAej4zT4L8GI7tqkAcabfaK5ju1dcFvIxbbF5Po6XsP3teMP02Jg==",
       "path": "microsoft.extensions.hosting.abstractions/7.0.0-rc.1.22426.10",
       "hashPath": "microsoft.extensions.hosting.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Http/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-15+pa2G0bAMHbHewaQIdr/y6ag2H3yh4rd9hTXavtWDzQBkvpe2RMqFg8BxDpcQWssmjmBApGPcw93QRz6YcMg==",
+      "path": "microsoft.extensions.http/6.0.0",
+      "hashPath": "microsoft.extensions.http.6.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging/7.0.0-rc.1.22426.10": {
       "type": "package",
