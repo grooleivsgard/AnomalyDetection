@@ -1,6 +1,8 @@
-using AutoMapper; 
+using AutoMapper;
+using DTO.IntrusionDetectionSystem;
+using Models;
 
-namespace IntrusionDetectionSystem.AutoMapperProfiles 
+namespace AutoMapperProfiles.IntrusionDetectionSystem
 
 {
     public class AutoMapperProfile: Profile
@@ -8,7 +10,10 @@ namespace IntrusionDetectionSystem.AutoMapperProfiles
         public AutoMapperProfile()
         {
             // source -> Target 
-            //CreateMap<>(); 
+            //Root ReadJsonDto = new Root(); 
+            //IEnumerable<Result> result = ReadJsonDto.Data.Result;
+            //IEnumerable<Result> Results =  ReadJsonDto.Data.Result; 
+            CreateMap<Metric,Connection>(); 
             
         }
 

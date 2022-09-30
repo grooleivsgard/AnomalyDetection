@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Net.Http;
 using AutoMapper;
 using DTO.IntrusionDetectionSystem;
+using Models;
 
 namespace IntrusionDetectionSystem
 {
@@ -35,15 +36,29 @@ namespace IntrusionDetectionSystem
                 Stream streamTask = await response.Content.ReadAsStreamAsync();
                 _log.LogInformation("Http Get request to prometheus server was OK!");
                 Root myDeserializedClass = await JsonSerializer.DeserializeAsync<Root>(streamTask);
+                IEnumerable<Result> ResultCollection = myDeserializedClass.Data.Result; 
+               // IEnumerable<Connection> ConnectionCollection = _mapper.Map<IEnumerable<Connection>>(ResultCollection);
+                //Console.WriteLine(ConnectionCollection.First<Connection>())
+                IEnumerable<Connection> ConnectionCollection = ResultCollection.Select(result => _mapper.Map<Connection>(result.Metric)); 
+                Console.WriteLine(ConnectionCollection.Count());
+                foreach (Connection connection in ConnectionCollection){
+                    Console.WriteLine(connection.toString()); 
+                    //Add connection to database 
+                }
+                
+                 /*
                 foreach (var result in myDeserializedClass.Data.Result)
                 {
-                    Console.WriteLine("Connection going from: " + result.Metric.SourceAddress
+                   Console.WriteLine("Connection going from: " + result.Metric.SourceAddress
                                       + " to: " + result.Metric.DestinationAddress + " at "
                                       + result.Metric.DestinationPort.Split('/')[0]
                                       + " port number: " + result.Metric.DestinationPort
                                          .Split('/')[1]);
 
+                
                 }
+                */
+                
             }
             else
             {
