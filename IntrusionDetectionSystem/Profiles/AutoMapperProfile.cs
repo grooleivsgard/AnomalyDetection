@@ -8,7 +8,7 @@ namespace IntrusionDetectionSystem.AutoMapperProfiles
         public AutoMapperProfile()
         {
             // source -> Target 
-            CreateMap<>(); 
+            //CreateMap<>(); 
             
         }
 

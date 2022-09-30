@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Net.Http;
 using AutoMapper;
+using DTO.IntrusionDetectionSystem;
 
 namespace IntrusionDetectionSystem
 {
