@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-namespace Model
+namespace Model.IntrusionDetectionSystem
 {
     public class Metric
     {
