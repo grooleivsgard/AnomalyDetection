@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.Extensions.Http;
-using Model;
+using DTO;
 
 //Di, serilog, Settings 
 namespace IntrusionDetectionSystem
