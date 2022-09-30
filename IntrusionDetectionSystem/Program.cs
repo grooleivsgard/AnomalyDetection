@@ -30,6 +30,7 @@ namespace IntrusionDetectionSystem
                         .ConfigureServices((context, services) =>{
                             services.AddTransient<IStartup,Startup>();
                             services.AddHttpClient<IStartup,Startup>(); 
+                            services.AddAutoMapper(typeof(Program).Assembly);
                         })
                         .UseSerilog()
                         .Build(); 
