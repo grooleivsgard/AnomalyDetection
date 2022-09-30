@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Net.Http;
+using AutoMapper;
+
 namespace IntrusionDetectionSystem
 {
     public class Startup : IStartup
@@ -10,12 +12,14 @@ namespace IntrusionDetectionSystem
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly ILogger<Startup> _log;
+        private readonly IMapper _mapper;
 
-        public Startup(HttpClient client, ILogger<Startup> log, IConfiguration configuration)
+        public Startup(HttpClient client, ILogger<Startup> log, IConfiguration configuration, IMapper mapper)
         {
             _log = log;
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _configuration = configuration;
+            _mapper = mapper; 
         }
         public async Task ProcessRepositories()
         {
