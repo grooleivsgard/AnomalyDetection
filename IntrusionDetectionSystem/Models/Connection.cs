@@ -1,7 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Models
 {
     public class Connection
     {
+        [Key]
+        public int Id {get; set;}
         public string Name { get; set; }
         public string SourceAddress { get; set; }
         public string DestinationAddress { get; set; }

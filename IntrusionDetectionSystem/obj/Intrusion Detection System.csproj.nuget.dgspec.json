@@ -72,6 +72,10 @@
               "target": "Package",
               "version": "[7.0.0-rc.1.22426.10, )"
             },
+            "OpenTelemetry.Exporter.Prometheus": {
+              "target": "Package",
+              "version": "[1.2.0-beta1, )"
+            },
             "Serilog.Extensions.Hosting": {
               "target": "Package",
               "version": "[5.0.1, )"
