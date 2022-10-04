@@ -54,7 +54,7 @@ namespace IntrusionDetectionSystem
                 
                 resultCollection.ForEach(result => _connectionDataStrructure.Add(_mapper.Map<Connection>(result.Metric)));
       
-                awaitinspectConnection();
+                await inspectConnection();
                 
                  
             }
