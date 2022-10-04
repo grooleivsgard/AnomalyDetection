@@ -6,7 +6,9 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.Extensions.Http;
 using DTO;
-using Models; 
+using Models;
+using IntrusionDetectionSystem.Data;
+using Microsoft.EntityFrameworkCore;
 
 //Di, serilog, Settings 
 namespace IntrusionDetectionSystem
@@ -29,6 +31,8 @@ namespace IntrusionDetectionSystem
 
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
+                            services.AddDbContext<AppDbContext>(opt => 
+                            opt.UseInMemoryDatabase("InMem"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddHttpClient<IStartup,Startup>(); 
                             services.AddAutoMapper(typeof(Program).Assembly);

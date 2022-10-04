@@ -91,3 +91,7 @@ C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\Int
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Http.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\AutoMapper.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
