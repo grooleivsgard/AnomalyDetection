@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.Extensions.Http;
 using DTO;
+using Models; 
 
 //Di, serilog, Settings 
 namespace IntrusionDetectionSystem
@@ -31,6 +32,8 @@ namespace IntrusionDetectionSystem
                             services.AddTransient<IStartup,Startup>();
                             services.AddHttpClient<IStartup,Startup>(); 
                             services.AddAutoMapper(typeof(Program).Assembly);
+                            services.AddScoped<IList<Connection>,List<Connection>>();
+
                         })
                         .UseSerilog()
                         .Build(); 

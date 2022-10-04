@@ -6,6 +6,7 @@ using System.Net.Http;
 using AutoMapper;
 using DTO.IntrusionDetectionSystem;
 using Models;
+using System.Net;
 
 namespace IntrusionDetectionSystem
 {
@@ -16,12 +17,23 @@ namespace IntrusionDetectionSystem
         private readonly ILogger<Startup> _log;
         private readonly IMapper _mapper;
 
-        public Startup(HttpClient client, ILogger<Startup> log, IConfiguration configuration, IMapper mapper)
+        private readonly IList<Connection> _connectionDataStrructure;
+        private readonly IEnumerable<IPAddress> _whiteListe;
+
+        public Startup( HttpClient client,
+                        ILogger<Startup> log, 
+                        IConfiguration configuration,
+                        IMapper mapper,
+                        IList<Connection> connectionDataStrructure,
+                        IEnumerable<IPAddress> whiteListe
+                       )
         {
             _log = log;
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _configuration = configuration;
-            _mapper = mapper; 
+            _mapper = mapper;
+            _connectionDataStrructure = connectionDataStrructure;
+            _whiteListe = whiteListe;
         }
         public async Task ProcessRepositories()
         {
@@ -35,31 +47,18 @@ namespace IntrusionDetectionSystem
             {
                 Stream streamTask = await response.Content.ReadAsStreamAsync();
                 _log.LogInformation("Http Get request to prometheus server was OK!");
-                Root myDeserializedClass = await JsonSerializer.DeserializeAsync<Root>(streamTask);
-                IEnumerable<Result> ResultCollection = myDeserializedClass.Data.Result; 
-               // IEnumerable<Connection> ConnectionCollection = _mapper.Map<IEnumerable<Connection>>(ResultCollection);
-                //Console.WriteLine(ConnectionCollection.First<Connection>())
-                IEnumerable<Connection> ConnectionCollection = ResultCollection.Select(result => _mapper.Map<Connection>(result.Metric)); 
-                Console.WriteLine(ConnectionCollection.Count());
-                foreach (Connection connection in ConnectionCollection){
-                    Console.WriteLine(connection.toString()); 
-                    //Add connection to database 
-                }
+                Root myDeserializedClass = await JsonSerializer
+                                           .DeserializeAsync<Root>(streamTask);
                 
-                 /*
-                foreach (var result in myDeserializedClass.Data.Result)
-                {
-                   Console.WriteLine("Connection going from: " + result.Metric.SourceAddress
-                                      + " to: " + result.Metric.DestinationAddress + " at "
-                                      + result.Metric.DestinationPort.Split('/')[0]
-                                      + " port number: " + result.Metric.DestinationPort
-                                         .Split('/')[1]);
-
+                List<Result> resultCollection = myDeserializedClass.Data.Result;
                 
-                }
-                */
+                resultCollection.ForEach(result => _connectionDataStrructure.Add(_mapper.Map<Connection>(result.Metric)));
+      
+                awaitinspectConnection();
                 
+                 
             }
+           
             else
             {
                 _log.LogError("Http Get request to prometheus server was NOT OK!");
@@ -68,8 +67,30 @@ namespace IntrusionDetectionSystem
         }
 
         // inspectConnection(model of mydeserialised class)
-        public void inspectConnection(string myDeserializedClass)
+        public async Task inspectConnection() 
         {
+           
+            IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp"));
+            Console.WriteLine(_connectionDataStrructure.Count());
+            foreach (Connection connectionPacket in _connectionDataStrructure)
+            {
+                 
+                if (IPAddress.Parse(connectionPacket.SourceAddress).Equals(edgeIp))
+                {
+
+                    //Is the dest_ip stored in whiteList ??
+                    if(! _whiteListe.Contains(IPAddress.Parse(connectionPacket.DestinationAddress))) {
+                        //Add the dst ip addr to the whiteListe 
+                        _whiteListe.Append(IPAddress.Parse(connectionPacket.DestinationAddress)); 
+                        _log.LogInformation($"Destination ipaddr: {connectionPacket.DestinationAddress} stored to the whiteListe"); 
+                    }
+                }
+
+                else
+                {
+
+                }
+            }
 
         }
 
