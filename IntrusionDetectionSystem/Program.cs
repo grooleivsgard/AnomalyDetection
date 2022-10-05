@@ -9,6 +9,7 @@ using DTO;
 using Models;
 using IntrusionDetectionSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 //Di, serilog, Settings 
 namespace IntrusionDetectionSystem
@@ -47,8 +48,8 @@ namespace IntrusionDetectionSystem
         }
 
         static void BuildConfig(IConfigurationBuilder builder)
-        {
-            builder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
+        {//Directory.GetCurrentDirectory()
+            builder.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")  ?? "Production"}.json", optional: true)
             .AddEnvironmentVariables();
         }

@@ -10,6 +10,7 @@ using System.Net;
 using System.Diagnostics.Metrics;
 using OpenTelemetry.Metrics;
 using OpenTelemetry;
+using System.Diagnostics;
 
 namespace IntrusionDetectionSystem
 {
@@ -31,6 +32,8 @@ namespace IntrusionDetectionSystem
                                                                      unit: "IpAdrresses",
                                                                      description: "The number of unknown IP addresses trying to connecto to the edge hub ");
         private int key = 0; 
+
+        private Stopwatch sw = new Stopwatch(); 
 
         public Startup(HttpClient client,
                         ILogger<Startup> log,
@@ -84,7 +87,8 @@ namespace IntrusionDetectionSystem
             // Call prometheusexporter function to expose uknown_ips Metric 
             PrometheusExporter(); 
             Console.WriteLine("Press any key to exit");
-            while (!Console.KeyAvailable)
+            sw.Start(); 
+            while (true && sw.ElapsedMilliseconds< 120000) // run in 2 minutes 
             {
                 IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp"));
                 Console.WriteLine(_connectionDataStrructure.Count());
@@ -129,7 +133,7 @@ namespace IntrusionDetectionSystem
                 .AddPrometheusExporter(opt =>
                 {
                     opt.StartHttpListener = true;
-                    opt.HttpListenerPrefixes = new string[] { $"http://localhost:9184/" };
+                    opt.HttpListenerPrefixes = new string[] { $"http://10.9.10.14:9184/" };
                 })
                 .Build();
         }
