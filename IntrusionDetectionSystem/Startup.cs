@@ -51,7 +51,7 @@ namespace IntrusionDetectionSystem
             _whiteListe = whiteListe;
         }
         public async Task ProcessRepositories()
-        {
+        { /*
             _client.DefaultRequestHeaders.Accept.Clear();
             string promQuery = "hosts_src_dst";
             string url = _configuration.GetValue<String>("url") + promQuery;
@@ -77,7 +77,8 @@ namespace IntrusionDetectionSystem
             else
             {
                 _log.LogError("Http Get request to prometheus server was NOT OK!");
-            }
+            } */
+            PrometheusExporter(); 
 
         }
 
@@ -88,9 +89,10 @@ namespace IntrusionDetectionSystem
             PrometheusExporter(); 
             Console.WriteLine("Press any key to exit");
             sw.Start(); 
-            while (true && sw.ElapsedMilliseconds< 120000) // run in 2 minutes 
+            while (true && sw.ElapsedMilliseconds< 1200000) // run in 20 minutes 
             {
-                IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp"));
+                IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp")!);
+
                 Console.WriteLine(_connectionDataStrructure.Count());
 
                 foreach (Connection connectionPacket in _connectionDataStrructure)
@@ -128,14 +130,23 @@ namespace IntrusionDetectionSystem
 
         public void PrometheusExporter() 
         {
+           _log.LogInformation("Prometheus exoprter starting"); 
+
             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
                 .AddMeter("Raalabs.UnknowIps")
                 .AddPrometheusExporter(opt =>
                 {
                     opt.StartHttpListener = true;
-                    opt.HttpListenerPrefixes = new string[] { $"http://10.9.10.14:9184/" };
+                    opt.HttpListenerPrefixes = new string[] { $"http://127.0.0.1:9184/" };
                 })
                 .Build();
+             Console.WriteLine("Press any key to exit");
+        while(!Console.KeyAvailable)
+        {
+            // Pretend our store has a transaction each second that sells 4 hats
+            Thread.Sleep(1000);
+            s_unknowIps.Add(4);
+        }
         }
 
     }

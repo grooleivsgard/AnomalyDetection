@@ -48,8 +48,9 @@ namespace IntrusionDetectionSystem
         }
 
         static void BuildConfig(IConfigurationBuilder builder)
-        {//Directory.GetCurrentDirectory()
-            builder.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
+        {//Assembly.GetExecutingAssembly().Location
+        //Path.GetDirectoryName(Directory.GetCurrentDirectory())
+            builder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")  ?? "Production"}.json", optional: true)
             .AddEnvironmentVariables();
         }
