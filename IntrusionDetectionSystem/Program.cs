@@ -5,7 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Microsoft.Extensions.Http;
-using Model;
+using DTO;
+using Models;
+using IntrusionDetectionSystem.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 //Di, serilog, Settings 
 namespace IntrusionDetectionSystem
@@ -28,8 +32,13 @@ namespace IntrusionDetectionSystem
 
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
+                            services.AddDbContext<AppDbContext>(opt => 
+                            opt.UseInMemoryDatabase("InMem"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddHttpClient<IStartup,Startup>(); 
+                            services.AddAutoMapper(typeof(Program).Assembly);
+                            services.AddScoped<IList<Connection>,List<Connection>>();
+
                         })
                         .UseSerilog()
                         .Build(); 
@@ -39,7 +48,8 @@ namespace IntrusionDetectionSystem
         }
 
         static void BuildConfig(IConfigurationBuilder builder)
-        {
+        {//Assembly.GetExecutingAssembly().Location
+        //Path.GetDirectoryName(Directory.GetCurrentDirectory())
             builder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional:false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")  ?? "Production"}.json", optional: true)
             .AddEnvironmentVariables();

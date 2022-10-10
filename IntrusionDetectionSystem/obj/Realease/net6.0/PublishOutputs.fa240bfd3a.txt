@@ -1,0 +1,52 @@
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Intrusion Detection System.exe
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Intrusion Detection System.deps.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Intrusion Detection System.runtimeconfig.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Intrusion Detection System.pdb
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\AutoMapper.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.EntityFrameworkCore.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.DependencyModel.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Hosting.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.Console.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.EventLog.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Logging.EventSource.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Options.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Microsoft.Extensions.Primitives.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\OpenTelemetry.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\OpenTelemetry.Api.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\OpenTelemetry.Exporter.Prometheus.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Serilog.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Serilog.Extensions.Hosting.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Serilog.Extensions.Logging.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Serilog.Settings.Configuration.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\Serilog.Sinks.Console.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\System.Diagnostics.EventLog.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\System.Text.Encodings.Web.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\System.Text.Json.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Realease\net6.0\publish\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
