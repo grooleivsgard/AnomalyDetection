@@ -4,14 +4,11 @@ namespace IntrusionDetectionSystem;
 
 public class StatesHandler
 {
-
-    class Endpoint
-    {
-
+    
         public static void Main(string[] args)
         {
-            int from_state = 2;
-            int to_state = 0;
+            int from_state = 0;
+            int to_state = 1;
 
             bool isAllowed = HandleState(from_state, to_state);
 
@@ -34,7 +31,17 @@ public class StatesHandler
                 { true, false, false, true },
                 { true, false, false, false }
             };
+            
+            if ((from_state > 3 || from_state < 0) || (to_state < 0 || to_state > 3))
+            {
+                throw new ArgumentOutOfRangeException("States not allowed!");
+            }
+            
+            return states[from_state, to_state];
 
+            /*
+        
+            
             for (int i = 0; i <= states.Length;)
             {
                 if (i == from_state)
@@ -43,6 +50,7 @@ public class StatesHandler
                     {
                         if (j == to_state)
                         {
+                            
                             if (states[i, j])
                             {
                                 return true;
@@ -58,11 +66,12 @@ public class StatesHandler
                 }
 
                 i++;
+            
             }
             return false;
+            */
         }
-        
-    }
+       
     
 }
 
