@@ -83,7 +83,7 @@ namespace IntrusionDetectionSystem
                 {
                     Console.WriteLine("Jeg er inn!!!");
                     opt.StartHttpListener = true;
-                    opt.HttpListenerPrefixes = new string[] { $"http://0.0.0.0:9184/" };
+                    opt.HttpListenerPrefixes = new string[] { $"http://*:9184/" };
                 })
                 .Build();
             s_unknowIps.Add(5);

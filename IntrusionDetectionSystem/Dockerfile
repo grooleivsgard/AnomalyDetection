@@ -14,4 +14,5 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 COPY ./appsettings* /app/
 
-ENTRYPOINT [ "dotnet", "Intrusion Detection System.dll", "--server.urls", "https://+:9184" ]
+EXPOSE 9184
+ENTRYPOINT [ "dotnet", "Intrusion Detection System.dll"]
