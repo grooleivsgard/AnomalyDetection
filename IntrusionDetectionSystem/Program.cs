@@ -11,6 +11,7 @@ using IntrusionDetectionSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
+
 //Di, serilog, Settings 
 namespace IntrusionDetectionSystem
 {
@@ -43,8 +44,10 @@ namespace IntrusionDetectionSystem
                         .UseSerilog()
                         .Build(); 
             
-            var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
-            await svc.ProcessRepositories(); 
+             var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
+            await svc.ProcessRepositories();
+          /* var svc = ActivatorUtilities.CreateInstance<StartupPrometheusTest>(host.Services); 
+            await svc.ProcessRepositories(); */
         }
 
         static void BuildConfig(IConfigurationBuilder builder)

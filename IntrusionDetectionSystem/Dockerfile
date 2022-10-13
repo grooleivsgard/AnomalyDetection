@@ -13,4 +13,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 COPY ./appsettings* /app/
-ENTRYPOINT [ "dotnet", "Intrusion Detection System.dll" ]
+
+ENTRYPOINT [ "dotnet", "Intrusion Detection System.dll", "--server.urls", "https://+:9184" ]

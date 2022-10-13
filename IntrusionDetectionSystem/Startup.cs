@@ -12,6 +12,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry;
 using System.Diagnostics;
 
+
 namespace IntrusionDetectionSystem
 {
     public class Startup : IStartup
@@ -20,6 +21,7 @@ namespace IntrusionDetectionSystem
         private readonly IConfiguration _configuration;
         private readonly ILogger<Startup> _log;
         private readonly IMapper _mapper;
+        private MeterProvider _meterProvider;
 
         private readonly IList<Connection> _connectionDataStrructure;
         private readonly IEnumerable<IPAddress> _whiteListe;
@@ -31,9 +33,9 @@ namespace IntrusionDetectionSystem
         static Counter<int> s_unknowIps = s_meter.CreateCounter<int>(name: "unknown-ips",
                                                                      unit: "IpAdrresses",
                                                                      description: "The number of unknown IP addresses trying to connecto to the edge hub ");
-        private int key = 0; 
+        private int key = 0;
 
-        private Stopwatch sw = new Stopwatch(); 
+        private Stopwatch sw = new Stopwatch();
 
         public Startup(HttpClient client,
                         ILogger<Startup> log,
@@ -43,15 +45,50 @@ namespace IntrusionDetectionSystem
                         IEnumerable<IPAddress> whiteListe
                        )
         {
+            // PrometheusExporter();
+            //s_unknowIps.Add(1);
+
             _log = log;
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _configuration = configuration;
             _mapper = mapper;
             _connectionDataStrructure = connectionDataStrructure;
             _whiteListe = whiteListe;
+
         }
         public async Task ProcessRepositories()
-        { /*
+        {
+            // Call prometheusexporter function to expose uknown_ips Metric 
+            //PrometheusExporter();
+            s_unknowIps.Add(1);
+            
+            /*using var meterProvider = Sdk.CreateMeterProviderBuilder()
+            .AddMeter("Raalabs.UnknowIps")
+            .AddPrometheusHttpListener()
+            .Build();
+            ;*/
+            /*
+             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+            .AddMeter("Raalabs.UnknowIps")
+            .AddPrometheusExporter(opt =>
+            {
+                Console.WriteLine("Jeg er inn 1!!!");
+                opt.StartHttpListener = true;
+                opt.HttpListenerPrefixes = new string[] { $"http://localhost:9184/" };
+            })
+            .Build();*/
+             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+                .AddMeter("Raalabs.UnknowIps")
+                .AddPrometheusExporter(opt =>
+                {
+                    Console.WriteLine("Jeg er inn!!!");
+                    opt.StartHttpListener = true;
+                    opt.HttpListenerPrefixes = new string[] { $"http://0.0.0.0:9184/" };
+                })
+                .Build();
+            s_unknowIps.Add(5);
+            _log.LogInformation("2 -> Prometheus exoprter starting");
+
             _client.DefaultRequestHeaders.Accept.Clear();
             string promQuery = "hosts_src_dst";
             string url = _configuration.GetValue<String>("url") + promQuery;
@@ -77,8 +114,8 @@ namespace IntrusionDetectionSystem
             else
             {
                 _log.LogError("Http Get request to prometheus server was NOT OK!");
-            } */
-            PrometheusExporter(); 
+            }
+            //PrometheusExporter(); 
 
         }
 
@@ -86,10 +123,14 @@ namespace IntrusionDetectionSystem
         public async Task inspectConnection()
         {
             // Call prometheusexporter function to expose uknown_ips Metric 
-            PrometheusExporter(); 
-            Console.WriteLine("Press any key to exit");
-            sw.Start(); 
-            while (true && sw.ElapsedMilliseconds< 1200000) // run in 20 minutes 
+
+
+            // sigbjorn endra her
+
+            //PrometheusExporter(); 
+
+            sw.Start();
+            while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
             {
                 IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp")!);
 
@@ -122,32 +163,35 @@ namespace IntrusionDetectionSystem
                         }
                     }
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(10000);
 
             }
 
         }
 
-        public void PrometheusExporter() 
+       /* public void PrometheusExporter()
         {
-           _log.LogInformation("Prometheus exoprter starting"); 
+            _log.LogInformation("Prometheus exoprter starting");
 
-            using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+
+            MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
                 .AddMeter("Raalabs.UnknowIps")
                 .AddPrometheusExporter(opt =>
                 {
+                    Console.WriteLine("Jeg er inn!!!");
                     opt.StartHttpListener = true;
                     opt.HttpListenerPrefixes = new string[] { $"http://127.0.0.1:9184/" };
                 })
                 .Build();
-             Console.WriteLine("Press any key to exit");
-        while(!Console.KeyAvailable)
-        {
-            // Pretend our store has a transaction each second that sells 4 hats
-            Thread.Sleep(1000);
-            s_unknowIps.Add(4);
-        }
-        }
+
+            _meterProvider = meterProvider;
+
+            s_unknowIps.Add(5);
+            _log.LogInformation("2 -> Prometheus exoprter starting");
+
+            meterProvider.Dispose();
+        }*/
+
 
     }
 }
