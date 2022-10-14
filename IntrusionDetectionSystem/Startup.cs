@@ -33,7 +33,7 @@ namespace IntrusionDetectionSystem
         static Counter<int> s_unknowIps = s_meter.CreateCounter<int>(name: "unknown-ips",
                                                                      unit: "IpAdrresses",
                                                                      description: "The number of unknown IP addresses trying to connecto to the edge hub ");
-        private int key = 0;
+        private int key = 0; 
 
         private Stopwatch sw = new Stopwatch();
 
@@ -150,6 +150,12 @@ namespace IntrusionDetectionSystem
                             _log.LogInformation($"Destination ipaddr: {connectionPacket.DestinationAddress} stored to the whiteListe");
                             s_unknowIps.Add(1);
                         }
+
+                        // to_state = 1;
+                        /* checkState(IP) //returns int curr_state;
+                            StatesHandles(curr_state, to_state)  //returns true
+                            setState (IP, to_state)
+                        */
                     }
 
                     else // src_ip != edge_ip 
@@ -161,6 +167,8 @@ namespace IntrusionDetectionSystem
                             key++;
                             s_unknowIps.Add(1);
                         }
+
+                        // to_state = 2;
                     }
                 }
                 Thread.Sleep(10000);
