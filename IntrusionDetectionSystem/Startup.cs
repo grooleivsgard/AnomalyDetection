@@ -192,6 +192,17 @@ namespace IntrusionDetectionSystem
             meterProvider.Dispose();
         }*/
 
+    public bool checkState(int state)
+    {
+       // boo
+        return false;
+    }
+    public void updateState()
+    {
+        this._
+    }
 
     }
+
+
 }
