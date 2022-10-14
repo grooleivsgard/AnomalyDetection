@@ -199,7 +199,7 @@ namespace IntrusionDetectionSystem
     }
     public void updateState()
     {
-        this._
+       //this._
     }
 
     }
