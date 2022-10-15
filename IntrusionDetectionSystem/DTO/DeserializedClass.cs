@@ -24,13 +24,16 @@ namespace DTO.IntrusionDetectionSystem
     {
         [JsonPropertyName("metric")]
         public Metric Metric { get; set; }
+
         [JsonPropertyName("value")]
-        public List<object> Value;
+        public List<Object> Value { get; set; }
     }
+    
     public class Data
     {
         [JsonPropertyName("resultType")]
-        public string ResultType { get; set; }        
+        public string ResultType { get; set; }  
+              
         [JsonPropertyName("result")]
         public List<Result> Result { get; set; }
     }
@@ -40,5 +43,12 @@ namespace DTO.IntrusionDetectionSystem
         public string Status { get; set; }
         [JsonPropertyName("data")]
         public Data Data { get; set; }
+
+        public string toString()
+        {
+           // return "Hello " + Convert.ToSingle(this.Data.Result[0].Value[0]); 
+            if (this.Data.Result[1].Value is null) return "it is null";
+            else return "it is not null decerialised class "
+;        }
     }
-}
+} 

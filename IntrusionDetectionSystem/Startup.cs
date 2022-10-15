@@ -33,7 +33,7 @@ namespace IntrusionDetectionSystem
         static Counter<int> s_unknowIps = s_meter.CreateCounter<int>(name: "unknown-ips",
                                                                      unit: "IpAdrresses",
                                                                      description: "The number of unknown IP addresses trying to connecto to the edge hub ");
-        private int key = 0; 
+        private int key = 0;
 
         private Stopwatch sw = new Stopwatch();
 
@@ -45,8 +45,6 @@ namespace IntrusionDetectionSystem
                         IEnumerable<IPAddress> whiteListe
                        )
         {
-            // PrometheusExporter();
-            //s_unknowIps.Add(1);
 
             _log = log;
             _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -58,36 +56,29 @@ namespace IntrusionDetectionSystem
         }
         public async Task ProcessRepositories()
         {
-            // Call prometheusexporter function to expose uknown_ips Metric 
-            //PrometheusExporter();
+            // Call prometheusexporter function to expose uknown_ips Metric
             s_unknowIps.Add(1);
-            
-            /*using var meterProvider = Sdk.CreateMeterProviderBuilder()
-            .AddMeter("Raalabs.UnknowIps")
-            .AddPrometheusHttpListener()
-            .Build();
-            ;*/
-            /*
-             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
-            .AddMeter("Raalabs.UnknowIps")
-            .AddPrometheusExporter(opt =>
-            {
-                Console.WriteLine("Jeg er inn 1!!!");
-                opt.StartHttpListener = true;
-                opt.HttpListenerPrefixes = new string[] { $"http://localhost:9184/" };
-            })
-            .Build();*/
-             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
-                .AddMeter("Raalabs.UnknowIps")
-                .AddPrometheusExporter(opt =>
-                {
-                    Console.WriteLine("Jeg er inn!!!");
-                    opt.StartHttpListener = true;
-                    opt.HttpListenerPrefixes = new string[] { $"http://*:9184/" };
-                })
-                .Build();
+
+            _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
+            using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+               .AddMeter("Raalabs.UnknowIps")
+               .AddPrometheusExporter(opt =>
+               {
+                   opt.StartHttpListener = true;
+                   opt.HttpListenerPrefixes = new string[] { $"http://*:9184/" };
+               })
+               .Build();
+
+            using MeterProvider meterProvider_1 = Sdk.CreateMeterProviderBuilder()
+               .AddMeter("Raalabs.UnknowIps")
+               .AddPrometheusExporter(opt =>
+               {
+                   opt.StartHttpListener = true;
+                   opt.HttpListenerPrefixes = new string[] { $"http://localhost:9184/" };
+               })
+               .Build();
             s_unknowIps.Add(5);
-            _log.LogInformation("2 -> Prometheus exoprter starting");
+
 
             _client.DefaultRequestHeaders.Accept.Clear();
             string promQuery = "hosts_src_dst";
@@ -101,10 +92,60 @@ namespace IntrusionDetectionSystem
                 _log.LogInformation("Http Get request to prometheus server was OK!");
                 Root myDeserializedClass = await JsonSerializer
                                            .DeserializeAsync<Root>(streamTask);
-
+                
                 List<Result> resultCollection = myDeserializedClass.Data.Result;
 
-                resultCollection.ForEach(result => _connectionDataStrructure.Add(_mapper.Map<Connection>(result.Metric)));
+                /*if (resultCollection is not null ) Console.WriteLine("resultcollection is not null"); 
+                    else  Console.WriteLine("resultcollection is  null");
+
+                if (resultCollection[0]==null) Console.WriteLine("_c is not null"); 
+                    else  Console.WriteLine("_c is  null");*/
+                /*resultCollection.ForEach(
+
+                    Connection c = new Connection(); 
+                    //result => _connectionDataStrructure.Add(Connection c = _mapper.Map<Connection>(result.Metric)), result => 
+                    _connectionDataStrructure.Add(c); 
+                    
+                    );
+*/
+                foreach (Result result in resultCollection)
+                {
+                    Connection _c = _mapper.Map<Connection>(result.Metric); 
+                    // The connection (Our Model) will get all its properties from the result object (Data Transfer Object)
+                    //_c = ; 
+                    //For debugging 
+                    if (_c is not null ) Console.WriteLine("_c is not null"); 
+                    else  Console.WriteLine("_c is  null"); 
+
+                    if (result.Value is not null )  Console.WriteLine("result value is not null"); 
+                    else  Console.WriteLine("result value is  null");
+                    
+                    // The connection gets its btyes size  from the result its list of value
+                    if (result.Value != null) 
+                    {
+                      _c.Bytes_value =  Double.Parse(result.Value[1].ToString());  
+                      Console.WriteLine(" _c.Bytes_value is: "+  _c.Bytes_value);
+                    }
+                    else 
+                    {
+                        _c.Bytes_value = -1; 
+                        _log.LogError("ProcessRepositories(): result.Value[0] is null"); 
+                    }
+                    Console.WriteLine(" 111 : "+_c.toString()); 
+                    Console.WriteLine(myDeserializedClass.toString());
+                    
+                }
+                
+/*
+                foreach (var item in _connectionDataStrructure) 
+                
+                {
+                    foreach (var res in resultCollection)
+                    {
+                        item.Bytes_value = res.Value[0]; 
+                    }
+
+                }*/
 
                 await inspectConnection();
 
@@ -115,30 +156,24 @@ namespace IntrusionDetectionSystem
             {
                 _log.LogError("Http Get request to prometheus server was NOT OK!");
             }
-            //PrometheusExporter(); 
 
         }
 
         // inspectConnection(model of mydeserialised class)
         public async Task inspectConnection()
         {
-            // Call prometheusexporter function to expose uknown_ips Metric 
-
-
-            // sigbjorn endra her
-
-            //PrometheusExporter(); 
 
             sw.Start();
             while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
             {
                 IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp")!);
-
+                
                 Console.WriteLine(_connectionDataStrructure.Count());
 
                 foreach (Connection connectionPacket in _connectionDataStrructure)
                 {
-
+                     _log.LogInformation(connectionPacket.toString());
+/*
                     if (IPAddress.Parse(connectionPacket.SourceAddress).Equals(edgeIp)) // src_ip == edge_ip ??
                     {
 
@@ -156,6 +191,7 @@ namespace IntrusionDetectionSystem
                             StatesHandles(curr_state, to_state)  //returns true
                             setState (IP, to_state)
                         */
+                        /*
                     }
 
                     else // src_ip != edge_ip 
@@ -169,48 +205,27 @@ namespace IntrusionDetectionSystem
                         }
 
                         // to_state = 2;
-                    }
+                    }*/
                 }
-                Thread.Sleep(10000);
+                Thread.Sleep(1000);
+               
 
             }
 
         }
 
-       /* public void PrometheusExporter()
+        public bool checkState(int state)
         {
-            _log.LogInformation("Prometheus exoprter starting");
-
-
-            MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
-                .AddMeter("Raalabs.UnknowIps")
-                .AddPrometheusExporter(opt =>
-                {
-                    Console.WriteLine("Jeg er inn!!!");
-                    opt.StartHttpListener = true;
-                    opt.HttpListenerPrefixes = new string[] { $"http://127.0.0.1:9184/" };
-                })
-                .Build();
-
-            _meterProvider = meterProvider;
-
-            s_unknowIps.Add(5);
-            _log.LogInformation("2 -> Prometheus exoprter starting");
-
-            meterProvider.Dispose();
-        }*/
-
-    public bool checkState(int state)
-    {
-       // boo
-        return false;
-    }
-    public void updateState()
-    {
-       //this._
-    }
+            // vi har den stateshandler
+            return false;
+        }
+        public void updateState()
+        {
+            //this._
+        }
 
     }
 
 
 }
+
