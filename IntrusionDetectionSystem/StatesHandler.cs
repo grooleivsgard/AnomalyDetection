@@ -39,9 +39,7 @@ public class StatesHandler
             
             return states[from_state, to_state];
 
-            /*
-        
-            
+            /*     
             for (int i = 0; i <= states.Length;)
             {
                 if (i == from_state)

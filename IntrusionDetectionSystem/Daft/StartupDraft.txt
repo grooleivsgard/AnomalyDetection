@@ -1,0 +1,24 @@
+
+                        //Is the dest_ip stored in whiteList ??
+                        //if (!_whiteListe.Contains(IPAddress.Parse(connectionPacket.DestinationAddress)))
+                        if (! _whiteListe.Any(p => p.ToString() == (connectionPacket.DestinationAddress)))
+                        {
+                            //Vi trenger ikke det lenger 
+                            /*
+                            //Add the dst ip addr to the whiteListe 
+                            _whiteListe.Append(IPAddress.Parse(connectionPacket.DestinationAddress));
+                            _log.LogInformation($"Destination ipaddr: {connectionPacket.DestinationAddress} stored to the whiteListe");
+                            s_unknowIps.Add(1);
+                            Thread.Sleep(100);
+                            */
+                            //Skriv ut anomali log "edge forsøker å prate med ukjent destination address"
+                        }
+
+                        // to_state = 1;
+                        /* checkState(IP) //returns int curr_state;
+                            StatesHandles(curr_state, to_state)  //returns true
+                            setState (IP, to_state)
+                        */
+
+
+                        

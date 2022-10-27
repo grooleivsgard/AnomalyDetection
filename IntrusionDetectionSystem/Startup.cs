@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
-using System.Net.Http;
 using AutoMapper;
 using DTO.IntrusionDetectionSystem;
 using Models;
@@ -11,7 +10,7 @@ using System.Diagnostics.Metrics;
 using OpenTelemetry.Metrics;
 using OpenTelemetry;
 using System.Diagnostics;
-
+using static Models.Endpoint;
 
 namespace IntrusionDetectionSystem
 {
@@ -33,16 +32,24 @@ namespace IntrusionDetectionSystem
         static Counter<int> s_unknowIps = s_meter.CreateCounter<int>(name: "unknown-ips",
                                                                      unit: "IpAdrresses",
                                                                      description: "The number of unknown IP addresses trying to connecto to the edge hub ");
-        private int key = 0;
 
         private Stopwatch sw = new Stopwatch();
+
+        //Make an instance of the non static class Endpoint 
+        Endpoint endpoint = new Endpoint();
+
+        IList<EndpointItem> _AllEndpointsFromWhiteList; // A general list that will contain all the ips from the whiteList 
+
+        IList<Endpoint> _EndpointToTabell;  // Endpoint Table 
 
         public Startup(HttpClient client,
                         ILogger<Startup> log,
                         IConfiguration configuration,
                         IMapper mapper,
                         IList<Connection> connectionDataStrructure,
-                        IEnumerable<IPAddress> whiteListe
+                        IEnumerable<IPAddress> whiteListe,
+                        IList<EndpointItem> AllEndpointsFromWhiteList,
+                        IList<Endpoint> EndpointToTabell
                        )
         {
 
@@ -52,6 +59,9 @@ namespace IntrusionDetectionSystem
             _mapper = mapper;
             _connectionDataStrructure = connectionDataStrructure;
             _whiteListe = whiteListe;
+            // Call Run method in Endpoint.cs class that gets the whiteList and creates a new Table of all ips in The whiteList
+            _AllEndpointsFromWhiteList = AllEndpointsFromWhiteList = endpoint.LoadJson();
+            _EndpointToTabell = EndpointToTabell = endpoint.EndpointToTabell();
 
         }
         public async Task ProcessRepositories()
@@ -60,6 +70,8 @@ namespace IntrusionDetectionSystem
             s_unknowIps.Add(1);
 
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
+
+            //Docker config: Set a http listener and expose the metrics at port 9184 
             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
                .AddMeter("Raalabs.UnknowIps")
                .AddPrometheusExporter(opt =>
@@ -69,6 +81,7 @@ namespace IntrusionDetectionSystem
                })
                .Build();
 
+            //Local config: Set a http listener and expose the metrics at port 9184 at localhost
             using MeterProvider meterProvider_1 = Sdk.CreateMeterProviderBuilder()
                .AddMeter("Raalabs.UnknowIps")
                .AddPrometheusExporter(opt =>
@@ -79,6 +92,8 @@ namespace IntrusionDetectionSystem
                .Build();
             s_unknowIps.Add(5);
 
+
+            // Get the metrics data from the prometheus server api 
 
             _client.DefaultRequestHeaders.Accept.Clear();
             string promQuery = "hosts_src_dst";
@@ -91,65 +106,38 @@ namespace IntrusionDetectionSystem
                 Stream streamTask = await response.Content.ReadAsStreamAsync();
                 _log.LogInformation("Http Get request to prometheus server was OK!");
                 Root myDeserializedClass = await JsonSerializer
-                                           .DeserializeAsync<Root>(streamTask);
-                
-                List<Result> resultCollection = myDeserializedClass.Data.Result;
+                                           .DeserializeAsync<Root>(streamTask) ?? throw new ArgumentNullException("streamTask is null. Cannot convert a null object to a non-nullable object(Root)");
 
-                /*if (resultCollection is not null ) Console.WriteLine("resultcollection is not null"); 
-                    else  Console.WriteLine("resultcollection is  null");
-
-                if (resultCollection[0]==null) Console.WriteLine("_c is not null"); 
-                    else  Console.WriteLine("_c is  null");*/
-                /*resultCollection.ForEach(
-
-                    Connection c = new Connection(); 
-                    //result => _connectionDataStrructure.Add(Connection c = _mapper.Map<Connection>(result.Metric)), result => 
-                    _connectionDataStrructure.Add(c); 
-                    
-                    );
-*/
-                foreach (Result result in resultCollection)
+                if (myDeserializedClass is not null)
                 {
-                    Connection _c = _mapper.Map<Connection>(result.Metric); 
-                    // The connection (Our Model) will get all its properties from the result object (Data Transfer Object)
-                    //_c = ; 
-                    //For debugging 
-                    if (_c is not null ) Console.WriteLine("_c is not null"); 
-                    else  Console.WriteLine("_c is  null"); 
+                    List<Result> resultCollection = myDeserializedClass.Data.Result;
+                    foreach (Result result in resultCollection)
+                    {
+                        // The connection (Our Model) will get all its properties from the result object (Data Transfer Object) EXEPT the bytes_value
 
-                    if (result.Value is not null )  Console.WriteLine("result value is not null"); 
-                    else  Console.WriteLine("result value is  null");
-                    
-                    // The connection gets its btyes size  from the result its list of value
-                    if (result.Value != null) 
-                    {
-                      _c.Bytes_value =  Double.Parse(result.Value[1].ToString());  
-                      Console.WriteLine(" _c.Bytes_value is: "+  _c.Bytes_value);
+                        Connection _c = _mapper.Map<Connection>(result.Metric);
+
+                        // The connection gets its btyes size  from the result its list of value
+                        if (result.Value[0] is not null)
+                        {
+                            _c.Bytes_value = Double.Parse(result.Value[0].ToString()!);
+                            //Add the new connection instance to the collection of connections
+                            _connectionDataStrructure.Add(_c);
+                        }
+                        else
+                        {
+                            _c.Bytes_value = -1;
+                            _log.LogError("ProcessRepositories(): result.Value[0] is null");
+                        }
                     }
-                    else 
-                    {
-                        _c.Bytes_value = -1; 
-                        _log.LogError("ProcessRepositories(): result.Value[0] is null"); 
-                    }
-                    Console.WriteLine(" 111 : "+_c.toString()); 
-                    Console.WriteLine(myDeserializedClass.toString());
-                    
                 }
-                
-/*
-                foreach (var item in _connectionDataStrructure) 
-                
-                {
-                    foreach (var res in resultCollection)
-                    {
-                        item.Bytes_value = res.Value[0]; 
-                    }
 
-                }*/
+                else if (myDeserializedClass is null)
+                {
+                    _log.LogError("My decerialised class is null. Error deserialising json object to a DecerialisedClass object");
+                }
 
                 await inspectConnection();
-
-
             }
 
             else
@@ -159,39 +147,59 @@ namespace IntrusionDetectionSystem
 
         }
 
-        // inspectConnection(model of mydeserialised class)
+
         public async Task inspectConnection()
         {
 
+            //Start the stopwatch 
             sw.Start();
             while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
             {
                 IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp")!);
-                
-                Console.WriteLine(_connectionDataStrructure.Count());
+
+                //For debugging: 
+                Console.WriteLine("At line: " + _connectionDataStrructure.Count());
 
                 foreach (Connection connectionPacket in _connectionDataStrructure)
                 {
-                     _log.LogInformation(connectionPacket.toString());
-/*
-                    if (IPAddress.Parse(connectionPacket.SourceAddress).Equals(edgeIp)) // src_ip == edge_ip ??
-                    {
+                    //_log.LogInformation(connectionPacket.toString());
 
-                        //Is the dest_ip stored in whiteList ??
-                        if (!_whiteListe.Contains(IPAddress.Parse(connectionPacket.DestinationAddress)))
+                    if (IPAddress.Parse(connectionPacket.SourceAddress) == edgeIp) // if  src_ip == edge_ip { the edge is talking to another ip (destination ip) }
+                    {
+                        // Check if this ip that the edge is talking to is stored in the whiteList 
+                        bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress);
+
+                        if (found)
                         {
-                            //Add the dst ip addr to the whiteListe 
-                            _whiteListe.Append(IPAddress.Parse(connectionPacket.DestinationAddress));
-                            _log.LogInformation($"Destination ipaddr: {connectionPacket.DestinationAddress} stored to the whiteListe");
-                            s_unknowIps.Add(1);
+
+                            // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
+
+                            Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+                            //if (checkstate (1. endpoint.status) == true )
+
+
+                            if (endpoint is not null)
+                            {
+                                bool b = StatesHandler.HandleState(endpoint!.Status, 1);
+
+                                if (b)
+                                {
+                                    endpoint.Status = 1;
+                                    endpoint.Bytes_out = connectionPacket.Bytes_value;
+                                    sw.Start();
+                                    //Save bytes_out to database 
+                                }
+                                else _log.LogWarning("State not Allowed");
+                            }
+
                         }
 
-                        // to_state = 1;
-                        /* checkState(IP) //returns int curr_state;
-                            StatesHandles(curr_state, to_state)  //returns true
-                            setState (IP, to_state)
-                        */
-                        /*
+                        // if (dest is in whitelist ) 
+
+                        else if (!found)
+                        {
+                            _log.LogCritical("IP not in whitelist");
+                        }
                     }
 
                     else // src_ip != edge_ip 
@@ -199,30 +207,33 @@ namespace IntrusionDetectionSystem
                         if (!_whiteListe.Contains(IPAddress.Parse(connectionPacket.SourceAddress))) // ip_adr not stored in the whitelist  
                         {
                             unkown++;
-                            uknownConnectionsOverTime.Add(key, new DateTimeOffset(DateTime.UtcNow));
-                            key++;
                             s_unknowIps.Add(1);
                         }
 
                         // to_state = 2;
-                    }*/
+                    }
                 }
                 Thread.Sleep(1000);
-               
-
             }
-
         }
-
-        public bool checkState(int state)
+        bool checkState(int a, int b)
         {
             // vi har den stateshandler
             return false;
         }
-        public void updateState()
+        void updateState()
         {
             //this._
         }
+
+        private bool FindIPAddressInWhiteList(string _ipAddress)
+        {
+
+            // Check if the The ipAddress we are looking for, is registred in the whiteList 
+            bool IpFoundInWhiteList = _AllEndpointsFromWhiteList.Any(end => end.IP == _ipAddress);
+
+            return IpFoundInWhiteList;
+        } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
     }
 

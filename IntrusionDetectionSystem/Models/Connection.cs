@@ -13,8 +13,8 @@ namespace Models
         public string FirstTimeSeenDate { get; set; }
         public string Instance {get; set;}
         public string Job {get; set;}
-
-        public double Bytes_value {get; set; }
+        
+        public float Bytes_value {get; set;}
 
         public string toString()
         {

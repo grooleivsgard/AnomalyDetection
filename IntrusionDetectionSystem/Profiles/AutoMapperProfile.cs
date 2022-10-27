@@ -1,6 +1,8 @@
 using AutoMapper;
 using DTO.IntrusionDetectionSystem;
+
 using Models;
+using static Models.Endpoint;
 
 namespace AutoMapperProfiles.IntrusionDetectionSystem
 
@@ -14,6 +16,7 @@ namespace AutoMapperProfiles.IntrusionDetectionSystem
             //IEnumerable<Result> result = ReadJsonDto.Data.Result;
             //IEnumerable<Result> Results =  ReadJsonDto.Data.Result; 
             CreateMap<Metric,Connection>(); 
+            CreateMap<EndpointItem, Endpoint>(); 
             
         }
 

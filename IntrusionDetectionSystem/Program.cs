@@ -36,6 +36,7 @@ namespace IntrusionDetectionSystem
                             services.AddDbContext<AppDbContext>(opt => 
                             opt.UseInMemoryDatabase("InMem"));
                             services.AddTransient<IStartup,Startup>();
+                            services.AddTransient<IEndpoint,Endpoint>(); 
                             services.AddHttpClient<IStartup,Startup>(); 
                             services.AddAutoMapper(typeof(Program).Assembly);
                             services.AddScoped<IList<Connection>,List<Connection>>();
@@ -44,10 +45,12 @@ namespace IntrusionDetectionSystem
                         .UseSerilog()
                         .Build(); 
             
-             var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
+           /*  var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
             await svc.ProcessRepositories();
-          /* var svc = ActivatorUtilities.CreateInstance<StartupPrometheusTest>(host.Services); 
-            await svc.ProcessRepositories(); */
+           var svc = ActivatorUtilities.CreateInstance<StartupPrometheusTest>(host.Services); 
+            await svc.ProcessRepositories();*/
+            var svc = ActivatorUtilities.CreateInstance<Endpoint>(host.Services); 
+            await svc.Run(); 
         }
 
         static void BuildConfig(IConfigurationBuilder builder)
