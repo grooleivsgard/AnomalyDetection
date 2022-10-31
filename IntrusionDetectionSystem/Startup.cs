@@ -22,6 +22,8 @@ namespace IntrusionDetectionSystem
         private readonly IMapper _mapper;
         private MeterProvider _meterProvider;
 
+        private readonly EndpointDb _EndpointDB; 
+
         private readonly IList<Connection> _connectionDataStrructure;
         private readonly IEnumerable<IPAddress> _whiteListe;
         private int unkown = 0;
@@ -34,6 +36,7 @@ namespace IntrusionDetectionSystem
                                                                      description: "The number of unknown IP addresses trying to connecto to the edge hub ");
 
         private Stopwatch sw = new Stopwatch();
+        private Stopwatch timer = new Stopwatch();
 
         //Make an instance of the non static class Endpoint 
         Endpoint endpoint = new Endpoint();
@@ -49,7 +52,8 @@ namespace IntrusionDetectionSystem
                         IList<Connection> connectionDataStrructure,
                         IEnumerable<IPAddress> whiteListe,
                         IList<EndpointItem> AllEndpointsFromWhiteList,
-                        IList<Endpoint> EndpointToTabell
+                        IList<Endpoint> EndpointToTabell,
+                        EndpointDb EndpointDB
                        )
         {
 
@@ -62,6 +66,7 @@ namespace IntrusionDetectionSystem
             // Call Run method in Endpoint.cs class that gets the whiteList and creates a new Table of all ips in The whiteList
             _AllEndpointsFromWhiteList = AllEndpointsFromWhiteList = endpoint.LoadJson();
             _EndpointToTabell = EndpointToTabell = endpoint.EndpointToTabell();
+            _EndpointDB = EndpointDB; 
 
         }
         public async Task ProcessRepositories()
@@ -171,7 +176,6 @@ namespace IntrusionDetectionSystem
 
                         if (found)
                         {
-
                             // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
 
                             Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
@@ -180,16 +184,21 @@ namespace IntrusionDetectionSystem
 
                             if (endpoint is not null)
                             {
-                                bool b = StatesHandler.HandleState(endpoint!.Status, 1);
+                                bool stateOk = StatesHandler.HandleState(endpoint!.Status, 1);
 
-                                if (b)
+                                if (stateOk)
                                 {
                                     endpoint.Status = 1;
                                     endpoint.Bytes_out = connectionPacket.Bytes_value;
-                                    sw.Start();
+                                    timer.Start();
                                     //Save bytes_out to database 
                                 }
                                 else _log.LogWarning("State not Allowed");
+                            }
+
+                             else 
+                            {
+                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object"); 
                             }
 
                         }
@@ -199,44 +208,90 @@ namespace IntrusionDetectionSystem
                         else if (!found)
                         {
                             _log.LogCritical("IP not in whitelist");
+                             //legg inn i unknown db
                         }
                     }
 
-                    else // src_ip != edge_ip 
+                    else // src_ip != edge_ip {In this case it is not the edge that is talking but another ip }
                     {
-                        if (!_whiteListe.Contains(IPAddress.Parse(connectionPacket.SourceAddress))) // ip_adr not stored in the whitelist  
+                        // Check if that ip is stored in the white list 
+                        bool found = FindIPAddressInWhiteList(connectionPacket.SourceAddress);
+
+                        if (found)
                         {
+                            Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
+
+                            /*Nullstill endpoint */
+                            if (endpoint is not null)
+                            {
+                                bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
+                                if (stateOk)
+                                {
+                                    endpoint.Status = 2; 
+                                    endpoint.Bytes_in = connectionPacket.Bytes_value;
+                                    timer.Stop();
+                                    endpoint.RTT = timer.Elapsed;
+                                    // Statisktiik 
+                                    // KjørStatistikk (endpoint)
+                                    // Nullstill endpoint objekt  
+                                    ResetEndpoint(endpoint);
+                                }
+                                else _log.LogWarning("State not Allowed");
+                            }
+
+                            else 
+                            {
+                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object"); 
+                            }
+
+                        }
+  
+                        else
+                        {
+                            _log.LogWarning("Src not in whiteListe");
                             unkown++;
                             s_unknowIps.Add(1);
+                            //legg inn i unknown db
                         }
 
-                        // to_state = 2;
+
                     }
                 }
                 Thread.Sleep(1000);
             }
         }
-        bool checkState(int a, int b)
+
+
+        void checkStatistics()
         {
-            // vi har den stateshandler
-            return false;
-        }
-        void updateState()
-        {
-            //this._
+            
         }
 
         private bool FindIPAddressInWhiteList(string _ipAddress)
         {
-
             // Check if the The ipAddress we are looking for, is registred in the whiteList 
             bool IpFoundInWhiteList = _AllEndpointsFromWhiteList.Any(end => end.IP == _ipAddress);
 
             return IpFoundInWhiteList;
         } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
+
+        public List<Endpoint> RetrieveAll() 
+        {
+            List<Endpoint> allEndpoints = _EndpointDB.EndPoints.ToList(); 
+            return allEndpoints; 
+        }
+
+        public void ResetEndpoint( Endpoint endpoint)
+        {
+            endpoint.Bytes_in = 0; 
+            endpoint.Bytes_out = 0; 
+            endpoint.RTT = 0; 
+            endpoint.Status = 0;
+        }
+
+
     }
 
 
 }
-

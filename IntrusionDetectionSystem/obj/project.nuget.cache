@@ -1,20 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "H53qz8NXh+osUumbZJ1B3hk1V4bdHS61JciOQi4nKEVTOQm2By6uGBZ7PrLkaWYAEzhGK+RGSpALmunWofudRw==",
-  "success": true,
+  "dgSpecHash": "K1wwqog6j0KJSTLJDJ6MVbUYthMbP1O8lvmOJX9Cx5G21WxmAIA53px2ublp0rGxUR6oNuH2DYhO8/iC4eDu6Q==",
+  "success": false,
   "projectFilePath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bilal\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.0-rc.1.22426.7\\microsoft.entityframeworkcore.7.0.0-rc.1.22426.7.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.0-rc.1.22426.7\\microsoft.entityframeworkcore.abstractions.7.0.0-rc.1.22426.7.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.0-rc.1.22426.7\\microsoft.entityframeworkcore.analyzers.7.0.0-rc.1.22426.7.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.7.0.0-rc.2.22472.11.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.abstractions.7.0.0-rc.2.22472.11.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.analyzers.7.0.0-rc.2.22472.11.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\7.0.0-rc.1.22426.7\\microsoft.entityframeworkcore.inmemory.7.0.0-rc.1.22426.7.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.caching.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0-rc.1.22426.10\\microsoft.extensions.caching.memory.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.relational.7.0.0-rc.2.22472.11.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0-rc.2.22472.3\\microsoft.extensions.caching.abstractions.7.0.0-rc.2.22472.3.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0-rc.2.22472.3\\microsoft.extensions.caching.memory.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.7.0.0-rc.1.22426.10.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0-rc.2.22472.3\\microsoft.extensions.configuration.abstractions.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.binder\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.binder.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.commandline\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.commandline.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.environmentvariables\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.environmentvariables.7.0.0-rc.1.22426.10.nupkg.sha512",
@@ -22,7 +23,7 @@
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.json\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.json.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.configuration.usersecrets\\7.0.0-rc.1.22426.10\\microsoft.extensions.configuration.usersecrets.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0-rc.1.22426.10\\microsoft.extensions.dependencyinjection.7.0.0-rc.1.22426.10.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.dependencyinjection.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0-rc.2.22472.3\\microsoft.extensions.dependencyinjection.abstractions.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.dependencymodel\\3.0.0\\microsoft.extensions.dependencymodel.3.0.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.fileproviders.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\7.0.0-rc.1.22426.10\\microsoft.extensions.fileproviders.physical.7.0.0-rc.1.22426.10.nupkg.sha512",
@@ -31,15 +32,17 @@
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.hosting.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.http\\6.0.0\\microsoft.extensions.http.6.0.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.7.0.0-rc.1.22426.10.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.abstractions.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0-rc.2.22472.3\\microsoft.extensions.logging.abstractions.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.configuration\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.configuration.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.console\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.console.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.debug\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.debug.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.eventlog\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.eventlog.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.logging.eventsource\\7.0.0-rc.1.22426.10\\microsoft.extensions.logging.eventsource.7.0.0-rc.1.22426.10.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.options\\7.0.0-rc.1.22426.10\\microsoft.extensions.options.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.options\\7.0.0-rc.2.22472.3\\microsoft.extensions.options.7.0.0-rc.2.22472.3.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\7.0.0-rc.1.22426.10\\microsoft.extensions.options.configurationextensions.7.0.0-rc.1.22426.10.nupkg.sha512",
-    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0-rc.1.22426.10\\microsoft.extensions.primitives.7.0.0-rc.1.22426.10.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0-rc.2.22472.3\\microsoft.extensions.primitives.7.0.0-rc.2.22472.3.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\npgsql\\7.0.0-rc.2\\npgsql.7.0.0-rc.2.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.0-rc.2\\npgsql.entityframeworkcore.postgresql.7.0.0-rc.2.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\opentelemetry\\1.2.0-beta1\\opentelemetry.1.2.0-beta1.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\opentelemetry.api\\1.2.0-beta1\\opentelemetry.api.1.2.0-beta1.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\opentelemetry.exporter.prometheus\\1.2.0-beta1\\opentelemetry.exporter.prometheus.1.2.0-beta1.nupkg.sha512",
@@ -56,5 +59,24 @@
     "C:\\Users\\bilal\\.nuget\\packages\\system.text.encodings.web\\7.0.0-rc.1.22426.10\\system.text.encodings.web.7.0.0-rc.1.22426.10.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\system.text.json\\7.0.0-rc.1.22426.10\\system.text.json.7.0.0-rc.1.22426.10.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Microsoft.Extensions.DependencyInjection from 7.0.0-rc.2.22472.3 to 7.0.0-rc.1.22426.10. Reference the package directly from the project to select a different version. \r\n Intrusion Detection System -> Microsoft.EntityFrameworkCore 7.0.0-rc.2.22472.11 -> Microsoft.Extensions.DependencyInjection (>= 7.0.0-rc.2.22472.3) \r\n Intrusion Detection System -> Microsoft.Extensions.DependencyInjection (>= 7.0.0-rc.1.22426.10)",
+      "libraryId": "Microsoft.Extensions.DependencyInjection",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Microsoft.Extensions.Logging from 7.0.0-rc.2.22472.3 to 7.0.0-rc.1.22426.10. Reference the package directly from the project to select a different version. \r\n Intrusion Detection System -> Microsoft.EntityFrameworkCore 7.0.0-rc.2.22472.11 -> Microsoft.Extensions.Logging (>= 7.0.0-rc.2.22472.3) \r\n Intrusion Detection System -> Microsoft.Extensions.Logging (>= 7.0.0-rc.1.22426.10)",
+      "libraryId": "Microsoft.Extensions.Logging",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

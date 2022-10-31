@@ -10,6 +10,7 @@ using Models;
 using IntrusionDetectionSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using IntrusionDetectionSystem.Models;
 
 
 //Di, serilog, Settings 
@@ -33,8 +34,8 @@ namespace IntrusionDetectionSystem
 
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
-                            services.AddDbContext<AppDbContext>(opt => 
-                            opt.UseInMemoryDatabase("InMem"));
+                            services.AddDbContext<EndpointDB>(opt => 
+                            opt.UseNpgsql(@"Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddTransient<IEndpoint,Endpoint>(); 
                             services.AddHttpClient<IStartup,Startup>(); 
