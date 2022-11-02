@@ -10,6 +10,7 @@ using System.Diagnostics.Metrics;
 using OpenTelemetry.Metrics;
 using OpenTelemetry;
 using System.Diagnostics;
+using IntrusionDetectionSystem.Models;
 using static Models.Endpoint;
 
 namespace IntrusionDetectionSystem
@@ -22,7 +23,7 @@ namespace IntrusionDetectionSystem
         private readonly IMapper _mapper;
         private MeterProvider _meterProvider;
 
-        private readonly EndpointDb _EndpointDB; 
+        private readonly EndpointDB _EndpointDb; 
 
         private readonly IList<Connection> _connectionDataStrructure;
         private readonly IEnumerable<IPAddress> _whiteListe;
@@ -53,7 +54,7 @@ namespace IntrusionDetectionSystem
                         IEnumerable<IPAddress> whiteListe,
                         IList<EndpointItem> AllEndpointsFromWhiteList,
                         IList<Endpoint> EndpointToTabell,
-                        EndpointDb EndpointDB
+                        EndpointDB EndpointDB
                        )
         {
 
@@ -66,7 +67,7 @@ namespace IntrusionDetectionSystem
             // Call Run method in Endpoint.cs class that gets the whiteList and creates a new Table of all ips in The whiteList
             _AllEndpointsFromWhiteList = AllEndpointsFromWhiteList = endpoint.LoadJson();
             _EndpointToTabell = EndpointToTabell = endpoint.EndpointToTabell();
-            _EndpointDB = EndpointDB; 
+            _EndpointDb = EndpointDB; 
 
         }
         public async Task ProcessRepositories()
@@ -278,7 +279,7 @@ namespace IntrusionDetectionSystem
 
         public List<Endpoint> RetrieveAll() 
         {
-            List<Endpoint> allEndpoints = _EndpointDB.EndPoints.ToList(); 
+            List<Endpoint> allEndpoints = _EndpointDb.Endpoints.ToList(); 
             return allEndpoints; 
         }
 
