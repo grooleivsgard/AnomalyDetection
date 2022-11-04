@@ -8,7 +8,7 @@ public interface IEndpoint
     int Status { get; set; }
     float Bytes_out { get; set; }
     float Bytes_in { get; set; }
-    DateTime RTT { get; set; }
+    TimeSpan? RTT { get; set; }
 
     List<Endpoint> EndpointToTabell();
      List <EndpointItem> LoadJson(); 

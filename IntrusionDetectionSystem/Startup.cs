@@ -11,6 +11,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry;
 using System.Diagnostics;
 using static Models.Endpoint;
+using IntrusionDetectionSystem.Models;
 
 namespace IntrusionDetectionSystem
 {
@@ -22,7 +23,7 @@ namespace IntrusionDetectionSystem
         private readonly IMapper _mapper;
         private MeterProvider _meterProvider;
 
-        private readonly EndpointDb _EndpointDB; 
+        private readonly EndpointDB _EndpointDB; 
 
         private readonly IList<Connection> _connectionDataStrructure;
         private readonly IEnumerable<IPAddress> _whiteListe;
@@ -53,7 +54,7 @@ namespace IntrusionDetectionSystem
                         IEnumerable<IPAddress> whiteListe,
                         IList<EndpointItem> AllEndpointsFromWhiteList,
                         IList<Endpoint> EndpointToTabell,
-                        EndpointDb EndpointDB
+                        EndpointDB endpointDB
                        )
         {
 
@@ -66,7 +67,7 @@ namespace IntrusionDetectionSystem
             // Call Run method in Endpoint.cs class that gets the whiteList and creates a new Table of all ips in The whiteList
             _AllEndpointsFromWhiteList = AllEndpointsFromWhiteList = endpoint.LoadJson();
             _EndpointToTabell = EndpointToTabell = endpoint.EndpointToTabell();
-            _EndpointDB = EndpointDB; 
+            _EndpointDB = endpointDB; 
 
         }
         public async Task ProcessRepositories()
@@ -125,7 +126,8 @@ namespace IntrusionDetectionSystem
                         // The connection gets its btyes size  from the result its list of value
                         if (result.Value[0] is not null)
                         {
-                            _c.Bytes_value = Double.Parse(result.Value[0].ToString()!);
+                            string str = result.Value[0].ToString()!;
+                            _c.Bytes_value = float.Parse(str);
                             //Add the new connection instance to the collection of connections
                             _connectionDataStrructure.Add(_c);
                         }
@@ -278,7 +280,7 @@ namespace IntrusionDetectionSystem
 
         public List<Endpoint> RetrieveAll() 
         {
-            List<Endpoint> allEndpoints = _EndpointDB.EndPoints.ToList(); 
+            List<Endpoint> allEndpoints = _EndpointDB.Endpoints.ToList(); 
             return allEndpoints; 
         }
 
@@ -286,10 +288,9 @@ namespace IntrusionDetectionSystem
         {
             endpoint.Bytes_in = 0; 
             endpoint.Bytes_out = 0; 
-            endpoint.RTT = 0; 
+            endpoint.RTT = null; 
             endpoint.Status = 0;
         }
-
 
     }
 

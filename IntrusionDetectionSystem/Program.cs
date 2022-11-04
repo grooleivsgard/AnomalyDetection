@@ -51,7 +51,7 @@ namespace IntrusionDetectionSystem
            var svc = ActivatorUtilities.CreateInstance<StartupPrometheusTest>(host.Services); 
             await svc.ProcessRepositories();*/
             var svc = ActivatorUtilities.CreateInstance<Endpoint>(host.Services); 
-            await svc.Run(); 
+            svc.Run(); 
         }
 
         static void BuildConfig(IConfigurationBuilder builder)

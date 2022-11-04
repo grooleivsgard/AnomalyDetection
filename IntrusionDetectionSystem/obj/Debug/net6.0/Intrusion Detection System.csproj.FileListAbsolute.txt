@@ -98,3 +98,10 @@ C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\Int
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.pdb
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\obj\Debug\net6.0\Intrusion Detection System.genruntimeconfig.cache
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\obj\Debug\net6.0\ref\Intrusion Detection System.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Humanizer.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Mono.TextTemplating.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Npgsql.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\System.CodeDom.dll

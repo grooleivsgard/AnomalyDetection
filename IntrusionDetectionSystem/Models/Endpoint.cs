@@ -36,7 +36,7 @@ public  class Endpoint : IEndpoint
     public float Bytes_in { get; set; }
 
     // RTT : Round-trip-time
-    public DateTime RTT { get; set; }
+    public TimeSpan? RTT { get; set; }
 
 
     public class Data
