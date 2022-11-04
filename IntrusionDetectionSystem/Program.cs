@@ -35,7 +35,7 @@ namespace IntrusionDetectionSystem
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
                             services.AddDbContext<EndpointDB>(opt => 
-                            opt.UseNpgsql(@"Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase"));
+                            opt.UseNpgsql(@"Server=localhost;Username=testDb;Password=1234;Port=5432;Database=mydatabase"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddTransient<IEndpoint,Endpoint>(); 
                             services.AddHttpClient<IStartup,Startup>(); 

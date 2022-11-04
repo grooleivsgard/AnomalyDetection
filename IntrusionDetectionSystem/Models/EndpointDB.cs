@@ -14,7 +14,13 @@ namespace IntrusionDetectionSystem.Models
             Database.EnsureCreated();
         }
 
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies(); 
+        }
+
         public DbSet<Endpoint> Endpoints { get; set; }
-        public DbSet<UnknownIp> UnknownIps {get; set;}
+        //public DbSet<UnknownIp> UnknownIps {get; set;}
     }
 }

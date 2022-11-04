@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "2E6oDy8zUJ4xImeKkGCm8R0EHUF+LKrYPVdz+vpX3peXF/CzAAvnRrZ3UL+SugHi7rdBtZQPxCaImZs8KkNVnA==",
+  "dgSpecHash": "lUdB95fZ5Z8E2ec+uO5z616I8TIj4D17EvPMp0bYb23/VmP9hx73wLfXhPphIWikIOY1XGlgU1otoC3FIy+/tQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\Intrusion Detection System.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bilal\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\castle.core\\5.1.0\\castle.core.5.1.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.7.0.0-rc.2.22472.11.nupkg.sha512",
@@ -13,6 +14,7 @@
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.analyzers.7.0.0-rc.2.22472.11.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.design\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.design.7.0.0-rc.2.22472.11.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\7.0.0-rc.1.22426.7\\microsoft.entityframeworkcore.inmemory.7.0.0-rc.1.22426.7.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.proxies\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.proxies.7.0.0-rc.2.22472.11.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.relational.7.0.0-rc.2.22472.11.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\7.0.0-rc.2.22472.11\\microsoft.entityframeworkcore.tools.7.0.0-rc.2.22472.11.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0-rc.2.22472.3\\microsoft.extensions.caching.abstractions.7.0.0-rc.2.22472.3.nupkg.sha512",
