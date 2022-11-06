@@ -1,14 +1,14 @@
 using Intrusion_Detection_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Models;
-/*
-namespace IntrusionDetectionSystem.Models
+
+namespace IntrusionDetectionSystem.DAL
 {
 
 
-    public class EndpointDB : DbContext, IEndpointDB
+    public class AppDbContext : DbContext
     {
-        public EndpointDB(DbContextOptions<EndpointDB> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 
         {
             Database.EnsureCreated();
@@ -23,4 +23,4 @@ namespace IntrusionDetectionSystem.Models
         public DbSet<Endpoint> Endpoints { get; set; }
         //public DbSet<UnknownIp> UnknownIps {get; set;}
     }
-}*/
+}

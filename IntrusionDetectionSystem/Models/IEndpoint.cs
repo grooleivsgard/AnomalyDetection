@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.Extensions.Logging;
 using Models;
 using static Models.Endpoint;
 
@@ -10,8 +11,8 @@ public interface IEndpoint
     float Bytes_in { get; set; }
     TimeSpan? RTT { get; set; }
 
-    List<Endpoint> EndpointToTabell();
-     List <EndpointItem> LoadJson(); 
+    IList<IEndpoint> EndpointToTabell();
+    IList <IEndpointItem> LoadJson(); 
     
     void Run();
 }

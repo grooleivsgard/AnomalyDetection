@@ -1,16 +1,13 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Microsoft.Extensions.Http;
-using DTO;
 using Models;
-using IntrusionDetectionSystem.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using IntrusionDetectionSystem.Models;
+using static Models.Endpoint;
+using Intrusion_Detection_System.Models;
+using Microsoft.Extensions.Logging;
+using IntrusionDetectionSystem.DAL;
 
 
 //Di, serilog, Settings 
@@ -34,24 +31,28 @@ namespace IntrusionDetectionSystem
 
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
-                            services.AddDbContext<EndpointDB>(opt => 
-                            opt.UseNpgsql(@"Server=localhost;Username=testDb;Password=1234;Port=5432;Database=mydatabase"));
+                            services.AddDbContext<AppDbContext>(opt => 
+                            opt.UseNpgsql(@"Server=localhost;Username=postgres;Password=1234;Port=5432;Database=mydatabase"));
                             services.AddTransient<IStartup,Startup>();
-                            services.AddTransient<IEndpoint,Endpoint>(); 
+                            services.AddTransient<IEndpoint,Endpoint>();  
+                            services.AddScoped<IEndpointItem,EndpointItem>();  
                             services.AddHttpClient<IStartup,Startup>(); 
                             services.AddAutoMapper(typeof(Program).Assembly);
+                            services.AddScoped<IList<IEndpointItem>,List<IEndpointItem>>();
+                            services.AddScoped<IList<IEndpoint>,List<IEndpoint>>();
                             services.AddScoped<IList<Connection>,List<Connection>>();
-
+                            services.AddScoped<IIntrusionRepository, IntrusionRepository>();
+                            services.AddScoped<ILogger<Endpoint>, Logger<Endpoint>>();
                         })
                         .UseSerilog()
                         .Build(); 
             
-           /*  var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
+            var svc = ActivatorUtilities.CreateInstance<Startup>(host.Services); 
             await svc.ProcessRepositories();
-           var svc = ActivatorUtilities.CreateInstance<StartupPrometheusTest>(host.Services); 
-            await svc.ProcessRepositories();*/
+           /*var svc = ActivatorUtilities.CreateInstance<StartupPrometheusTest>(host.Services); 
+            await svc.ProcessRepositories();
             var svc = ActivatorUtilities.CreateInstance<Endpoint>(host.Services); 
-            svc.Run(); 
+            svc.Run(); */
         }
 
         static void BuildConfig(IConfigurationBuilder builder)

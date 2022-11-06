@@ -10,8 +10,7 @@ using System.Diagnostics.Metrics;
 using OpenTelemetry.Metrics;
 using OpenTelemetry;
 using System.Diagnostics;
-using static Models.Endpoint;
-using IntrusionDetectionSystem.Models;
+using IntrusionDetectionSystem.DAL;
 
 namespace IntrusionDetectionSystem
 {
@@ -23,7 +22,7 @@ namespace IntrusionDetectionSystem
         private readonly IMapper _mapper;
         private MeterProvider _meterProvider;
 
-        private readonly EndpointDB _EndpointDB; 
+        private readonly IIntrusionRepository _db; 
 
         private readonly IList<Connection> _connectionDataStrructure;
         private readonly IEnumerable<IPAddress> _whiteListe;
@@ -40,11 +39,11 @@ namespace IntrusionDetectionSystem
         private Stopwatch timer = new Stopwatch();
 
         //Make an instance of the non static class Endpoint 
-        Endpoint endpoint = new Endpoint();
+        IEndpoint endpoint = new Endpoint();
 
-        IList<EndpointItem> _AllEndpointsFromWhiteList; // A general list that will contain all the ips from the whiteList 
-
-        IList<Endpoint> _EndpointToTabell;  // Endpoint Table 
+        IList<IEndpointItem> _AllEndpointsFromWhiteList; // A general list that will contain all the ips from the whiteList 
+    
+        IList<IEndpoint> _EndpointToTabell;  // Endpoint Table 
 
         public Startup(HttpClient client,
                         ILogger<Startup> log,
@@ -52,9 +51,10 @@ namespace IntrusionDetectionSystem
                         IMapper mapper,
                         IList<Connection> connectionDataStrructure,
                         IEnumerable<IPAddress> whiteListe,
-                        IList<EndpointItem> AllEndpointsFromWhiteList,
-                        IList<Endpoint> EndpointToTabell,
-                        EndpointDB endpointDB
+                        //Problem is here 
+                        IList<IEndpointItem> AllEndpointsFromWhiteList,
+                        IList<IEndpoint> EndpointToTabell,
+                        IIntrusionRepository db
                        )
         {
 
@@ -67,14 +67,19 @@ namespace IntrusionDetectionSystem
             // Call Run method in Endpoint.cs class that gets the whiteList and creates a new Table of all ips in The whiteList
             _AllEndpointsFromWhiteList = AllEndpointsFromWhiteList = endpoint.LoadJson();
             _EndpointToTabell = EndpointToTabell = endpoint.EndpointToTabell();
-            _EndpointDB = endpointDB; 
+            _db = db; 
 
         }
         public async Task ProcessRepositories()
         {
             // Call prometheusexporter function to expose uknown_ips Metric
             s_unknowIps.Add(1);
+            await _db.CreateNewEndpoint("10.10.1.0",5 ,1246512, 24658, new TimeSpan(2, 14, 18));
+            await _db.CreateNewEndpoint("10.10.1.0",2 ,1246512, 24658, new TimeSpan(2, 14, 18));
+            await _db.CreateNewEndpoint("10.10.1.0",3 ,1246512, 24658, new TimeSpan(2, 14, 18));
+            await _db.CreateNewEndpoint("10.10.1.0",4 ,1246512, 24658, new TimeSpan(2, 14, 18));
 
+    
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
 
             //Docker config: Set a http listener and expose the metrics at port 9184 
@@ -180,7 +185,7 @@ namespace IntrusionDetectionSystem
                         {
                             // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
 
-                            Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+                            Endpoint endpoint = (Endpoint) _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
                             //if (checkstate (1. endpoint.status) == true )
 
 
@@ -221,7 +226,7 @@ namespace IntrusionDetectionSystem
 
                         if (found)
                         {
-                            Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
+                            Endpoint endpoint = (Endpoint) _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
 
                             /*Nullstill endpoint */
                             if (endpoint is not null)
@@ -278,9 +283,9 @@ namespace IntrusionDetectionSystem
         } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
 
-        public List<Endpoint> RetrieveAll() 
+        public async Task<List<Endpoint>> RetrieveAll() 
         {
-            List<Endpoint> allEndpoints = _EndpointDB.Endpoints.ToList(); 
+            List<Endpoint> allEndpoints = await _db.GetAllEndpoints();  
             return allEndpoints; 
         }
 

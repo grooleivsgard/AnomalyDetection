@@ -3,6 +3,7 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using IntrusionDetectionSystem;
 using Microsoft.Extensions.Logging;
 
 namespace Models;
@@ -12,16 +13,16 @@ namespace Models;
 public  class Endpoint : IEndpoint
 
 {
-    private readonly ILogger<Endpoint> _log;
-    List<EndpointItem> list;
+    private readonly ILogger<Startup> _log;
+    IList<IEndpointItem> list;
 
     // Tabell av endpoints 
-    List<Endpoint> EndPoints = new List<Endpoint>();
-    private readonly IMapper _mapper;
-    public Endpoint(ILogger<Endpoint> log)
+    IList<IEndpoint> EndPoints = new List<IEndpoint>();
+
+    public Endpoint(ILogger<Startup> log)
     {
         _log = log; 
-    }
+}
     
     public Endpoint( )
     {
@@ -41,26 +42,22 @@ public  class Endpoint : IEndpoint
 
     public class Data
     {   [JsonPropertyName("Data")]
-        public List <EndpointItem> listOfIps {get; set; }
+        public List <IEndpointItem> listOfIps {get; set; }
     
     }
 
-    public class EndpointItem
+    
+    public IList <IEndpointItem> LoadJson()
     {
-        public string IP { get; set; }
-        public string Id { get; set; }
-    }
-
-
-    public List <EndpointItem> LoadJson()
-    {
-        using (FileStream f = new FileStream("../IntrusionDetectionSystem/Data/WhiteList.json", FileMode.Open, FileAccess.Read))
+        using (FileStream f = new FileStream("../IntrusionDetectionSystem/DAL/WhiteList.json", FileMode.Open, FileAccess.Read))
         {
             try
             {
                 Data data = JsonSerializer.Deserialize<Data>(f)!;
-                if (data is null ) _log.LogWarning("Error inside LoadJson Function: data is null");      
+                //if (data is null ) _log.LogWarning("Error inside LoadJson Function: data is null");      
+                if (data is null ) Console.WriteLine("Error inside LoadJson Function: data is null");      
                 if (data!.listOfIps is null) _log.LogWarning("Error inside LoadJson Function: data.listOfIps is null"); 
+                if (data!.listOfIps is null) Console.WriteLine("Error inside LoadJson Function: data.listOfIps is null"); 
                 else this.list = data.listOfIps; 
                 return list; 
 
@@ -68,12 +65,13 @@ public  class Endpoint : IEndpoint
 
             catch (Exception e)
             {
-                _log.LogError("Error Reading/Deserializing  WhiteList: " + e.Message);
+                Console.WriteLine("Error Reading/Deserializing  WhiteList: " + e.Message);
+                //_log.LogError("Error Reading/Deserializing  WhiteList: " + e.Message);
                 // In case of an Exception return 
                 EndpointItem item = new EndpointItem();
                 item.Id = "-1";
                 item.IP = "0.0.0.0";
-                list = new List<EndpointItem> { item };
+                list = new List<IEndpointItem> { item };
                 return list; 
             }
 
@@ -83,7 +81,7 @@ public  class Endpoint : IEndpoint
     }
 
 
-    public  List<Endpoint> EndpointToTabell()
+    public  IList<IEndpoint> EndpointToTabell()
     {
         
         foreach (EndpointItem item in list)
@@ -108,4 +106,17 @@ public  class Endpoint : IEndpoint
 
 
 }
+
+public class EndpointItem: IEndpointItem
+    {
+        public string IP { get; set; }
+        public string Id { get; set; }
+    }
+
+    public interface IEndpointItem 
+    {
+        string IP { get; set; }
+        string Id { get; set; }
+    }
+
 
