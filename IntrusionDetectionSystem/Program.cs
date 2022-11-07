@@ -5,7 +5,6 @@ using Serilog;
 using Models;
 using Microsoft.EntityFrameworkCore;
 using static Models.Endpoint;
-using Intrusion_Detection_System.Models;
 using Microsoft.Extensions.Logging;
 using IntrusionDetectionSystem.DAL;
 

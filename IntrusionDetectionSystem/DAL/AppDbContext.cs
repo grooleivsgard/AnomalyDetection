@@ -1,9 +1,14 @@
-using Intrusion_Detection_System.Models;
+using IntrusionDetectionSystem.DAL;
 using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace IntrusionDetectionSystem.DAL
 {
+
+
+
+    public class Endpoints 
+     
 
 
     public class AppDbContext : DbContext

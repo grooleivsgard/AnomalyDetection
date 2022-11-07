@@ -87,7 +87,6 @@ public  class Endpoint : IEndpoint
         foreach (EndpointItem item in list)
         {
             Endpoint e = new Endpoint();
-            e.Id = Int16.Parse(item.Id); 
             e.Ip = item.IP;
             EndPoints.Add(e);
             Console.WriteLine(e.Ip);
