@@ -52,6 +52,6 @@ namespace IntrusionDetectionSystem.DAL
         }
 
         public DbSet<Endpoints> Endpoints { get; set; }
-        public DbSet<Connections> UnknownIps {get; set;}
+        public DbSet<Connections> Connections {get; set;}
     }
 }
