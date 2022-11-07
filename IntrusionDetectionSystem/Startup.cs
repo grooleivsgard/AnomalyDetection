@@ -281,9 +281,9 @@ namespace IntrusionDetectionSystem
         } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
 
-        public async Task<List<Endpoint>> RetrieveAll() 
+        public async Task<List<Endpoints>> RetrieveAll() 
         {
-            List<Endpoint> allEndpoints = await _db.GetAllEndpoints();  
+            List<Endpoints> allEndpoints = await _db.GetAllEndpoints();  
             return allEndpoints; 
         }
 
