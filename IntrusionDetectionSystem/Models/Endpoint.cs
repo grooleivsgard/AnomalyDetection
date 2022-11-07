@@ -33,11 +33,13 @@ public  class Endpoint : IEndpoint
     public int conn_Id {get; set; }
     public string Ip { get; set; }
     public int Status { get; set; }
-    public float Bytes_out { get; set; }
-    public float Bytes_in { get; set; }
+    public long Bytes_out { get; set; }
+    public long Bytes_in { get; set; }
+
 
     // RTT : Round-trip-time
-    public TimeSpan? RTT { get; set; }
+    public long RTT { get; set; }
+
 
 
     public class Data

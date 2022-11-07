@@ -7,9 +7,9 @@ public interface IEndpoint
 {
     string Ip { get; set; }
     int Status { get; set; }
-    float Bytes_out { get; set; }
-    float Bytes_in { get; set; }
-    TimeSpan? RTT { get; set; }
+    long Bytes_out { get; set; }
+    long Bytes_in { get; set; }
+    long RTT { get; set; }
 
     IList<IEndpoint> EndpointToTabell();
     IList <IEndpointItem> LoadJson(); 

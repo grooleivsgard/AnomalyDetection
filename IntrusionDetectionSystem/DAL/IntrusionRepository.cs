@@ -1,9 +1,8 @@
 
-using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
 using Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace IntrusionDetectionSystem.DAL
 {
@@ -18,8 +17,7 @@ namespace IntrusionDetectionSystem.DAL
             _db = db;
             _log = log;
         }
-
-        public async Task<bool> CreateNewEndpoint(string ip, bool isWhitelist, string mac_address, int conn_id)
+        public async Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address, int conn_id)
         {
             try
             {
@@ -28,7 +26,7 @@ namespace IntrusionDetectionSystem.DAL
                 new_endpoint_toDb.mac_address = mac_address;
                 new_endpoint_toDb.whitelist = isWhitelist;
 
-                _db.endpoints.Add(new_endpoint_toDb);
+                _db.Endpoints.Add(new_endpoint_toDb);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -45,7 +43,7 @@ namespace IntrusionDetectionSystem.DAL
         {
             try
             {
-                List<Endpoints> allEndpoints = await _db.endpoints.ToListAsync();
+                List<Endpoints> allEndpoints = await _db.Endpoints.ToListAsync();
                 return allEndpoints;
             }
             catch
@@ -56,35 +54,39 @@ namespace IntrusionDetectionSystem.DAL
 
         public async Task<Endpoints> GetEndpointById(int id)
         {
-            Endpoints endpoint = await _db.endpoints.FindAsync(id);
+            Endpoints endpoint = await _db.Endpoints.FindAsync(id);
             return endpoint;
         }
 
-        /*
-        public async Task<List<long>> GetAvgBytesOut(string ip)
+
+        public async Task<Endpoints> GetEndpointByIP(string ip)
         {
-            // var query = "SELECT date_trunc('hour', current_time - 1) from connections WHERE ip_address = ip";
+            try
+            {
+                Endpoints endpoint = await _db.Endpoints.FirstOrDefaultAsync(endp => endp.ip_address == ip);
+                return endpoint;
+            }
+            catch
+            {
+                return null; 
+            }
 
-         
-             //select avg(bytes_in) from connections where ip_address = ip, group by hour
-             
-            Connections conn = await _db.connections.FindAsync();
-
-            //Using Method Syntax
-            var AverageBytesOut = Connection.connections()
-                .Where(conn => conn.Ip == ip)
-                .Average(bytes_out => conn.bytes_out);
-            
-            
-            return _db.connections.Any(ip => ip == ip)
-                .Where(window => )
-            
-            
-          
-            return conn;
         }
-  */
 
+        public async Task<Endpoints> GetConnection_ByEndpointIP(string ip)
+        {
+            Endpoints endpoint_byIP = await GetEndpointByIP(ip); 
+            return endpoint_byIP; 
+        }
+
+        public async Task<int> AddNewConnectionToEndpoint(Connections con, Endpoints end) 
+        {
+            Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
+            endpoint.connections.Add(con);
+            await _db.SaveChangesAsync();  
+            int id = con.conn_id; 
+            return id; 
+        }
 
     }
 }

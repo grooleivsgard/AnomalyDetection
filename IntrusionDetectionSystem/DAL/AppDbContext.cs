@@ -28,7 +28,7 @@ namespace IntrusionDetectionSystem.DAL
         public bool whitelist {get; set;}
         public string mac_address {get; set;}
         [ForeignKey("Connections")]
-        public int conn_id {get; set;}
+        public int conn_id {get; set;} 
         public virtual List<Connections> connections {get; set;}
 
     }
@@ -51,7 +51,7 @@ namespace IntrusionDetectionSystem.DAL
             optionsBuilder.UseLazyLoadingProxies(); 
         }
 
-        public DbSet<Endpoints> endpoints { get; set; }
-        public DbSet<Connections> connections {get; set;}
+        public DbSet<Endpoints> Endpoints { get; set; }
+        public DbSet<Connections> Connections {get; set;}
     }
 }
