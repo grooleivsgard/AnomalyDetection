@@ -74,7 +74,7 @@ namespace IntrusionDetectionSystem
         {
             // Call prometheusexporter function to expose uknown_ips Metric
             s_unknowIps.Add(1);
-            await _db.CreateNewEndpoint("10.10.1.0", false, "mac Address 1", 9999);
+            // await _db.CreateNewEndpoint("10.10.1.0", false, "mac Address 1", 9999);
 
 
 
@@ -160,6 +160,8 @@ namespace IntrusionDetectionSystem
 
         public async Task inspectConnection()
         {
+
+            AvgBytes("10.01.01.10");
 
             //Start the stopwatch 
             sw.Start();
@@ -256,7 +258,7 @@ namespace IntrusionDetectionSystem
                                     endpoint.Status = 2;
                                     endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                     timer.Stop();
-                                    endpoint.RTT = timer.Elapsed;
+                                    // endpoint.RTT = timer.Elapsed;
                                     // Statisktiik 
                                     // KjørStatistikk (endpoint)
                                     // Nullstill endpoint objekt  
@@ -287,12 +289,6 @@ namespace IntrusionDetectionSystem
             }
         }
 
-
-        void checkStatistics()
-        {
-
-        }
-
         private bool FindIPAddressInWhiteList(string _ipAddress)
         {
             // Check if the The ipAddress we are looking for, is registred in the whiteList 
@@ -307,12 +303,53 @@ namespace IntrusionDetectionSystem
             List<Endpoints> allEndpoints = await _db.GetAllEndpoints();
             return allEndpoints;
         }
+        
+        //Method to request averages from DB with given time windows
+        public async Task<Array> CheckStatistics(string ip)
+        {
+            // Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
+            
+            //  double avg = _db.Connections.FromSqlRaw("SELECT AVG(bytes_out) From Connections Where Endpointsip_address = {ip}");
+             
+             // DateTime.Now()
+             
+             //calc hour
+             double[] hourly;
+             // Compute time windows
+             await _db.GetAverageByIP(ip, 32423, 45646);
+             
+             //calc day
+             double[] daily;
+             // compute time windows
+             await _db.GetAverageByIP(ip, 32423, 45646);
+             
+             //calc week
+             double[] weekly;
+             // compute time windows
+             await _db.GetAverageByIP(ip, 32423, 45646);
+
+
+             if (isAnomolous()
+             {
+                 
+             }
+             return Array.Empty<double>();
+        }
+        /**
+         * Method compares statistical values with values of Connection object
+         * If values are OK, return false
+         * else, return true, and log error for the given time window
+         */
+        bool isAnomolous ()
+        {
+            
+        }
 
         public void ResetEndpoint(Endpoint endpoint)
         {
             endpoint.Bytes_in = 0;
             endpoint.Bytes_out = 0;
-            endpoint.RTT = null;
+            // endpoint.RTT = null;
             endpoint.Status = 0;
         }
 

@@ -1,4 +1,6 @@
 
+using System.Numerics;
+using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using Models;
 using Microsoft.EntityFrameworkCore;
@@ -82,11 +84,62 @@ namespace IntrusionDetectionSystem.DAL
         public async Task<int> AddNewConnectionToEndpoint(Connections con, Endpoints end) 
         {
             Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
-            endpoint.connections.Add(con);
+            //endpoint.connections.Add(con);
             await _db.SaveChangesAsync();  
             int id = con.conn_id; 
             return id; 
         }
+    
+        /**
+         * Method to query and compute average values from DB
+         * Returns an array, [avgBytesOut, avgBytesIn, avgRTT] for the given timewindow
+         */
+        public async Task <Array> GetAverageByIP(string ip, long startTime, long endTime)
+        {
+            var BytesOut = 
+                from con in _db.Connections
+                        where (con.ip_address == ip && con.timestamp > startTime && con.timestamp < endTime)
+                                select con.bytes_out;
+            
+            var BytesIn = 
+                from con in _db.Connections
+                where (con.ip_address == ip && con.timestamp > startTime && con.timestamp < endTime)
+                select con.bytes_in;
+            
+            
+            var Rtt = 
+                from con in _db.Connections
+                where (con.ip_address == ip && con.timestamp > startTime && con.timestamp < endTime)
+                select con.rtt;
+
+            //Compute averages
+            double avgBytesOut = BytesOut.Average();
+            double avgBytesIn = BytesIn.Average();
+            double avgRtt = Rtt.Average();
+            
+            double[] AvgByTime =
+            {
+                avgBytesOut,
+                avgBytesIn,
+                avgRtt
+            };
+           
+            return AvgByTime;
+
+             
+            /* // retrieve all values simultaneously - doesnt work to compute average
+            var hour = 
+                from con in _db.Connections
+                where con.ip_address == ip && con.timestamp == 1203213
+                select new
+                {
+                    BytesOut = con.bytes_out, 
+                    BytesIn = con.bytes_in, 
+                    Rtt = con.rtt
+                };
+            */
+        }
+        
 
     }
 }
