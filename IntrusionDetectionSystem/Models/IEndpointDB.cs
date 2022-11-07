@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+/*using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace Intrusion_Detection_System.Models
@@ -8,3 +8,4 @@ namespace Intrusion_Detection_System.Models
         DbSet<Endpoint> Endpoints { get; set; }
     }
 }
+*/

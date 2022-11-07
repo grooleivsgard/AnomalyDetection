@@ -30,7 +30,7 @@ public  class Endpoint : IEndpoint
     }
 
     [Key]
-    public int Id {get; set; }
+    public int conn_Id {get; set; }
     public string Ip { get; set; }
     public int Status { get; set; }
     public float Bytes_out { get; set; }
