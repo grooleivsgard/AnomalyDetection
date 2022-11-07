@@ -78,6 +78,7 @@ namespace IntrusionDetectionSystem
             await _db.CreateNewEndpoint("10.10.1.0",2 ,1246512, 24658, new TimeSpan(2, 14, 18));
             await _db.CreateNewEndpoint("10.10.1.0",3 ,1246512, 24658, new TimeSpan(2, 14, 18));
             await _db.CreateNewEndpoint("10.10.1.0",4 ,1246512, 24658, new TimeSpan(2, 14, 18));
+            await _db.CreateNewEndpoint("55.99.66.55",4 ,00000, 24655658, new TimeSpan(2, 14, 22));
 
     
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
