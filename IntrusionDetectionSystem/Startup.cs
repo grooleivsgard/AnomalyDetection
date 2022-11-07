@@ -22,7 +22,7 @@ namespace IntrusionDetectionSystem
         private readonly IMapper _mapper;
         private MeterProvider _meterProvider;
 
-        private readonly IIntrusionRepository _db; 
+        private readonly IIntrusionRepository _db;
 
         private readonly IList<Connection> _connectionDataStrructure;
         private readonly IEnumerable<IPAddress> _whiteListe;
@@ -42,7 +42,7 @@ namespace IntrusionDetectionSystem
         IEndpoint endpoint = new Endpoint();
 
         IList<IEndpointItem> _AllEndpointsFromWhiteList; // A general list that will contain all the ips from the whiteList 
-    
+
         IList<IEndpoint> _EndpointToTabell;  // Endpoint Table 
 
         public Startup(HttpClient client,
@@ -67,17 +67,17 @@ namespace IntrusionDetectionSystem
             // Call Run method in Endpoint.cs class that gets the whiteList and creates a new Table of all ips in The whiteList
             _AllEndpointsFromWhiteList = AllEndpointsFromWhiteList = endpoint.LoadJson();
             _EndpointToTabell = EndpointToTabell = endpoint.EndpointToTabell();
-            _db = db; 
+            _db = db;
 
         }
         public async Task ProcessRepositories()
         {
             // Call prometheusexporter function to expose uknown_ips Metric
             s_unknowIps.Add(1);
-            await _db.CreateNewEndpoint("10.10.1.0", false ,"mac Address 1", 9999);
-         
+            await _db.CreateNewEndpoint("10.10.1.0", false, "mac Address 1", 9999);
 
-    
+
+
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
 
             //Docker config: Set a http listener and expose the metrics at port 9184 
@@ -181,11 +181,14 @@ namespace IntrusionDetectionSystem
 
                         if (found)
                         {
-                            // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
+                            // Get the endpoint object that have the same ip address as the destination ip 
 
-                            Endpoint endpoint = (Endpoint) _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
-                            //if (checkstate (1. endpoint.status) == true )
-
+                            // In Memory: 
+                            Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+                            // In database: 
+                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);
+                            // Create a new Connection row and add it to the list of connections that this endpoint has in database 
+                            Connections cnxDB = new Connections();
 
                             if (endpoint is not null)
                             {
@@ -194,16 +197,18 @@ namespace IntrusionDetectionSystem
                                 if (stateOk)
                                 {
                                     endpoint.Status = 1;
-                                    endpoint.Bytes_out = connectionPacket.Bytes_value;
+                                    //endpoint.Bytes_out = connectionPacket.Bytes_value;
+                                    cnxDB.bytes_out = (long)connectionPacket.Bytes_value;
                                     timer.Start();
-                                    //Save bytes_out to database 
+                                    //Save bytes_out to database
+
                                 }
                                 else _log.LogWarning("State not Allowed");
                             }
 
-                             else 
+                            else
                             {
-                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object"); 
+                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
                             }
 
                         }
@@ -213,7 +218,7 @@ namespace IntrusionDetectionSystem
                         else if (!found)
                         {
                             _log.LogCritical("IP not in whitelist");
-                             //legg inn i unknown db
+                            //legg inn i unknown db
                         }
                     }
 
@@ -224,16 +229,32 @@ namespace IntrusionDetectionSystem
 
                         if (found)
                         {
-                            Endpoint endpoint = (Endpoint) _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
+                            // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
 
-                            /*Nullstill endpoint */
+                            // In Memory: 
+                            Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
+
+                            // In database: 
+                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
+                            Connections cnxDB; 
+
+                            if (endpointDB.connections.Count() == 0 )
+                            {
+                                // If endpoint has no connections yet 
+                                // Create a new Connection row and add it to the list of connections that this endpoint has in database 
+                                 cnxDB = new Connections();
+                            }
+
+                            else cnxDB = endpointDB.connections.LastOrDefault()!; 
+
+                            
                             if (endpoint is not null)
                             {
                                 bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
                                 if (stateOk)
                                 {
-                                    endpoint.Status = 2; 
-                                    endpoint.Bytes_in = connectionPacket.Bytes_value;
+                                    endpoint.Status = 2;
+                                    endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                     timer.Stop();
                                     endpoint.RTT = timer.Elapsed;
                                     // Statisktiik 
@@ -244,13 +265,13 @@ namespace IntrusionDetectionSystem
                                 else _log.LogWarning("State not Allowed");
                             }
 
-                            else 
+                            else
                             {
-                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object"); 
+                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
                             }
 
                         }
-  
+
                         else
                         {
                             _log.LogWarning("Src not in whiteListe");
@@ -269,7 +290,7 @@ namespace IntrusionDetectionSystem
 
         void checkStatistics()
         {
-            
+
         }
 
         private bool FindIPAddressInWhiteList(string _ipAddress)
@@ -281,17 +302,17 @@ namespace IntrusionDetectionSystem
         } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
 
-        public async Task<List<Endpoints>> RetrieveAll() 
+        public async Task<List<Endpoints>> RetrieveAll()
         {
-            List<Endpoints> allEndpoints = await _db.GetAllEndpoints();  
-            return allEndpoints; 
+            List<Endpoints> allEndpoints = await _db.GetAllEndpoints();
+            return allEndpoints;
         }
 
-        public void ResetEndpoint( Endpoint endpoint)
+        public void ResetEndpoint(Endpoint endpoint)
         {
-            endpoint.Bytes_in = 0; 
-            endpoint.Bytes_out = 0; 
-            endpoint.RTT = null; 
+            endpoint.Bytes_in = 0;
+            endpoint.Bytes_out = 0;
+            endpoint.RTT = null;
             endpoint.Status = 0;
         }
 
