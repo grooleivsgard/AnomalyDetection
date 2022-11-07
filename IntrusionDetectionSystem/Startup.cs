@@ -74,11 +74,8 @@ namespace IntrusionDetectionSystem
         {
             // Call prometheusexporter function to expose uknown_ips Metric
             s_unknowIps.Add(1);
-            await _db.CreateNewEndpoint("10.10.1.0",5 ,1246512, 24658, new TimeSpan(2, 14, 18));
-            await _db.CreateNewEndpoint("10.10.1.0",2 ,1246512, 24658, new TimeSpan(2, 14, 18));
-            await _db.CreateNewEndpoint("10.10.1.0",3 ,1246512, 24658, new TimeSpan(2, 14, 18));
-            await _db.CreateNewEndpoint("10.10.1.0",4 ,1246512, 24658, new TimeSpan(2, 14, 18));
-            await _db.CreateNewEndpoint("55.99.66.55",4 ,00000, 24655658, new TimeSpan(2, 14, 22));
+            await _db.CreateNewEndpoint("10.10.1.0", false ,"mac Address 1", 9999);
+         
 
     
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");

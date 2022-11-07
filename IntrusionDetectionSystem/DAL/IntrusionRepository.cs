@@ -17,18 +17,16 @@ namespace IntrusionDetectionSystem.DAL
             _db = db;
             _log = log;
         }
-        public async Task<bool> CreateNewEndpoint(string ip, int status, float bytes_in, float bytes_out, TimeSpan rtt)
+        public async Task<bool> CreateNewEndpoint(string ip, bool isWhitelist, string mac_address, int conn_id)
         {
             try
             {
-                Endpoint endpoint = new Endpoint();
-                endpoint.Ip = ip;
-                endpoint.Status = status;
-                endpoint.Bytes_in = bytes_in;
-                endpoint.Bytes_out = bytes_out;
-                endpoint.RTT = rtt;
+                Endpoints new_endpoint_toDb = new Endpoints();
+                new_endpoint_toDb.ip_address= ip;
+                new_endpoint_toDb.mac_address = mac_address;
+                new_endpoint_toDb.whitelist = isWhitelist;
 
-                _db.Endpoints.Add(endpoint);
+                _db.Endpoints.Add(new_endpoint_toDb);
                 await _db.SaveChangesAsync();
                 return true; 
             }
@@ -39,14 +37,13 @@ namespace IntrusionDetectionSystem.DAL
             }
 
 
-
         }
 
-        public async Task<List<Endpoint>> GetAllEndpoints()
+        public async Task<List<Endpoints>> GetAllEndpoints()
         {
             try
             {
-                List<Endpoint> allEndpoints = await _db.Endpoints.ToListAsync();
+                List<Endpoints> allEndpoints = await _db.Endpoints.ToListAsync();
                 return allEndpoints;
             }
             catch
@@ -55,9 +52,9 @@ namespace IntrusionDetectionSystem.DAL
             }
         }
 
-        public async Task<Endpoint> GetEndpointById(int id)
+        public async Task<Endpoints> GetEndpointById(int id)
         {
-            Endpoint endpoint = await _db.Endpoints.FindAsync(id);
+            Endpoints endpoint = await _db.Endpoints.FindAsync(id);
             return endpoint;
         }
 

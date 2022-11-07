@@ -4,8 +4,8 @@ namespace IntrusionDetectionSystem.DAL
 {
     public interface IIntrusionRepository
     {
-        Task<List<Endpoint>> GetAllEndpoints();
-        Task<Endpoint> GetEndpointById(int id); 
-         Task<bool> CreateNewEndpoint(string ip, int status, float bytes_in, float bytes_out, TimeSpan rtt); 
+        Task<List<Endpoints>> GetAllEndpoints();
+        Task<Endpoints> GetEndpointById(int id); 
+         Task<bool> CreateNewEndpoint(string ip, bool isWhitelist, string mac_address, int conn_id); 
     }
 }
