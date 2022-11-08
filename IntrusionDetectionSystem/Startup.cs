@@ -302,49 +302,45 @@ namespace IntrusionDetectionSystem
             return allEndpoints;
         }
         
-        //Method to request averages from DB with given time windows
-        public async Task<bool> isAnomolous(string ip)
+        /**
+         * Method calls DB-methods from IntrusionRepository to retrieve
+         * values (standard deviation) for hour, day and week.
+         * The SD values are compared with object Endpoint values (current)
+         * in Statistics and is marked as anomalous = true or anomalous = false.
+         */
+        public async Task<bool> isAnomolous(Endpoint endpoint) //Hente inn objekt endpoint som er ferdig utfylt
         {
-            bool anomalous = false;
-            // Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
-            
-            //  double avg = _db.Connections.FromSqlRaw("SELECT AVG(bytes_out) From Connections Where Endpointsip_address = {ip}");
-             
-             // DateTime.Now()
-             
-             //calc hour
-             
-             // Compute time windows
-             List<long> SumBytesOut = await _db.GetBytesOutByIp(ip);
-             
-             List<long> SumBytesIn = await _db.GetBytesInByIp(ip);
-             
-             List<long> SumRtt = await _db.GetRttByIp(ip);
-             
-             List<int> count = await _db.GetCountByIp(ip);
+            string ip = endpoint.Ip; // get IP address of endpoint
+            long currBytesOut = endpoint.Bytes_out; // how 
+            long currBytesIn = endpoint.Bytes_in ; // how
+            long currRtt = endpoint.RTT ;  // how
 
-             if (Statistics.isDeviating(SumBytesIn, count))
+            bool anomalous = false;
+            
+            // List of standard deviation values for hour, day and week
+             List<double> SdBytesOut = await _db.GetBytesOutByIp(ip);
+             
+             List<double> SdBytesIn = await _db.GetBytesInByIp(ip);
+             
+             List<double> SdRtt = await _db.GetRttByIp(ip);
+
+             // Compare DB data with current values
+             if (Statistics.isDeviating(SdBytesOut, currBytesOut))
              {
                  anomalous = true;   
              }
-             
-             if (Statistics.isDeviating(SumBytesOut, count))
+             if (Statistics.isDeviating(SdBytesIn, currBytesIn))
              {
                  anomalous = true;   
              }
-             
-             if (Statistics.isDeviating(SumRtt, count))
+
+             if (Statistics.isDeviating(SdRtt, currRtt))
              {
                  anomalous = true;   
              }
 
              return anomalous;
         }
-        /**
-         * Method compares statistical values with values of Connection object
-         * If values are OK, return false
-         * else, return true, and log error for the given time window
-         */
 
 
         public void ResetEndpoint(Endpoint endpoint)
