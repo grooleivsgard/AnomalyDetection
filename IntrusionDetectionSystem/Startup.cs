@@ -161,7 +161,7 @@ namespace IntrusionDetectionSystem
         public async Task inspectConnection()
         {
 
-            AvgBytes("10.01.01.10");
+            // AvgBytes("10.01.01.10"); To Gro: Commented this to avoid error 
 
             //Start the stopwatch 
             sw.Start();
@@ -220,7 +220,7 @@ namespace IntrusionDetectionSystem
                             }
 
                             else
-                            {
+                            { 
                                 _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
                             }
 
@@ -229,7 +229,7 @@ namespace IntrusionDetectionSystem
                         // if (dest is in whitelist ) 
 
                         else if (!found)
-                        {
+                        {// add to db, with whitelist = false, including IP, MAC and bytes
                             _log.LogCritical("IP not in whitelist");
                             //legg inn i unknown db
                         }
@@ -268,12 +268,12 @@ namespace IntrusionDetectionSystem
                                 {
                                     endpoint.Status = 2;
                                     endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
-                                    timer.Stop();
-                                    endpoint.RTT =(long) DateTime.Now() - endpoint.RTT;
+                                    endpoint.RTT = DateTime.Now.Ticks - endpoint.RTT;
                                     // Statisktiik 
                                     // KjørStatistikk (endpoint)
                                     // Nullstill endpoint objekt  
                                     ResetEndpoint(endpoint);
+                                    //Lage på database 
                                 }
                                 else _log.LogWarning("State not Allowed");
                             }
@@ -286,7 +286,7 @@ namespace IntrusionDetectionSystem
                         }
 
                         else
-                        {
+                        {   // add to db, with whitelist = false, including IP, MAC and bytes
                             _log.LogWarning("Src not in whiteListe");
                             unkown++;
                             s_unknowIps.Add(1);
@@ -340,10 +340,13 @@ namespace IntrusionDetectionSystem
              await _db.GetAverageByIP(ip, 32423, 45646);
 
 
-             if (isAnomolous()
+             if (isAnomolous())
              {
-                 
+                 //add to database, anomo,ous = true
+             } else {
+                //add to db
              }
+
              return Array.Empty<double>();
         }
         /**
@@ -351,9 +354,10 @@ namespace IntrusionDetectionSystem
          * If values are OK, return false
          * else, return true, and log error for the given time window
          */
-        bool isAnomolous ()
+        bool isAnomolous()
         {
-            
+          // Not implemented function 
+         return false;   
         }
 
         public void ResetEndpoint(Endpoint endpoint)
@@ -363,6 +367,36 @@ namespace IntrusionDetectionSystem
             // endpoint.RTT = null;
             endpoint.Status = 0;
         }
+
+        public async Task<int> SaveConnectionToDatabase(Endpoint endpoint) 
+        {
+            string ip = endpoint.Ip; 
+            Endpoints endpointDB = await _db.GetEndpointByIP(ip);     
+
+            if (endpointDB is null )   //If endpointDB was not stored to the database before        
+            {
+                    //Check if the ip string is stored in the whitelist 
+                    bool whiteList = FindIPAddressInWhiteList(ip);
+                    await _db.CreateNewEndpointInDb(ip,whiteList,"Mock Mac_address");
+                    /* 
+                     ** Save new endpoint to Endpoints Table in Database
+                     ** Retrieve it again 
+                    */
+                    endpointDB = await _db.GetEndpointByIP(ip);  
+            }  
+
+            Connections newConnection = new Connections(); 
+            newConnection.bytes_in = endpoint.Bytes_in; 
+            newConnection.bytes_out = endpoint.Bytes_out; 
+            newConnection.ip_address = ip; 
+            newConnection.rtt = endpoint.RTT; 
+            newConnection.timestamp = DateTime.Now.Ticks; 
+
+            // Return the Id of the new Connection and save it to Connections Table 
+            int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB); 
+            return connectionID; 
+
+        }//SaveConnectionToDatabase() 
 
     }
 
