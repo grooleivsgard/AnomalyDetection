@@ -161,8 +161,6 @@ namespace IntrusionDetectionSystem
         public async Task inspectConnection()
         {
 
-            AvgBytes("10.01.01.10");
-
             //Start the stopwatch 
             sw.Start();
             while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
@@ -305,8 +303,9 @@ namespace IntrusionDetectionSystem
         }
         
         //Method to request averages from DB with given time windows
-        public async Task<Array> CheckStatistics(string ip)
+        public async Task<bool> isAnomolous(string ip)
         {
+            bool anomalous = false;
             // Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
             
             //  double avg = _db.Connections.FromSqlRaw("SELECT AVG(bytes_out) From Connections Where Endpointsip_address = {ip}");
@@ -314,36 +313,39 @@ namespace IntrusionDetectionSystem
              // DateTime.Now()
              
              //calc hour
-             double[] hourly;
+             
              // Compute time windows
-             await _db.GetAverageByIP(ip, 32423, 45646);
+             List<long> SumBytesOut = await _db.GetBytesOutByIp(ip);
              
-             //calc day
-             double[] daily;
-             // compute time windows
-             await _db.GetAverageByIP(ip, 32423, 45646);
+             List<long> SumBytesIn = await _db.GetBytesInByIp(ip);
              
-             //calc week
-             double[] weekly;
-             // compute time windows
-             await _db.GetAverageByIP(ip, 32423, 45646);
+             List<long> SumRtt = await _db.GetRttByIp(ip);
+             
+             List<int> count = await _db.GetCountByIp(ip);
 
-
-             if (isAnomolous()
+             if (Statistics.isDeviating(SumBytesIn, count))
              {
-                 
+                 anomalous = true;   
              }
-             return Array.Empty<double>();
+             
+             if (Statistics.isDeviating(SumBytesOut, count))
+             {
+                 anomalous = true;   
+             }
+             
+             if (Statistics.isDeviating(SumRtt, count))
+             {
+                 anomalous = true;   
+             }
+
+             return anomalous;
         }
         /**
          * Method compares statistical values with values of Connection object
          * If values are OK, return false
          * else, return true, and log error for the given time window
          */
-        bool isAnomolous ()
-        {
-            
-        }
+
 
         public void ResetEndpoint(Endpoint endpoint)
         {
