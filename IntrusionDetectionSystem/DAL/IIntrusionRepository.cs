@@ -8,6 +8,7 @@ namespace IntrusionDetectionSystem.DAL
         Task<Endpoints> GetEndpointById(int id); 
         Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address, int conn_id); 
         Task <Endpoints> GetEndpointByIP(string ip);
-        Task AddNewConnectionToEndpoint(Connections con, Endpoints end);
+        Task <Array> GetAverageByIP(string ip, long startTime, long endTime);
+        Task <int> AddNewConnectionToEndpoint(Connections con, Endpoints end);
     }   
 }

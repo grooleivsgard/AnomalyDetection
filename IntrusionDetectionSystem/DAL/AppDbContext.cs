@@ -19,6 +19,11 @@ namespace IntrusionDetectionSystem.DAL
         public long rtt {get; set; }
 
         public long timestamp {get; set;}
+        
+        [ForeignKey("Endpoints")]
+        public string ip_address {get; set;}
+        
+       
     }
 
     public class Endpoints 
@@ -31,7 +36,7 @@ namespace IntrusionDetectionSystem.DAL
         public int latest_conn_id {get; set;} 
         public Array ConnectionIDs {get; set;}
         public virtual List<Connections> connections {get; set;}
-
+        
     }
 
      

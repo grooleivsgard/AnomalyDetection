@@ -36,8 +36,10 @@ public  class Endpoint : IEndpoint
     public long Bytes_out { get; set; }
     public long Bytes_in { get; set; }
 
+
     // RTT : Round-trip-time
     public long RTT { get; set; }
+
 
 
     public class Data
