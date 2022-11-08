@@ -32,9 +32,8 @@ namespace IntrusionDetectionSystem.DAL
         public string ip_address {get; set;}
         public bool whitelist {get; set;}
         public string mac_address {get; set;}
-        [Key]
         public int latest_conn_id {get; set;} 
-        public Array ConnectionIDs {get; set;}
+        public virtual Array ConnectionIDs {get; set;}
         public virtual List<Connections> connections {get; set;}
         
     }
