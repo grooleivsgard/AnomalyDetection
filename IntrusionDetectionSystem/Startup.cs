@@ -182,13 +182,25 @@ namespace IntrusionDetectionSystem
                         if (found)
                         {
                             // Get the endpoint object that have the same ip address as the destination ip 
-
+                            
                             // In Memory: 
-                            Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+                            Endpoint endpoint = (Endpoint) _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
                             // In database: 
-                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);
-                            // Create a new Connection row and add it to the list of connections that this endpoint has in database 
-                            Connections cnxDB = new Connections();
+                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);                            
+                            
+                            Connections cnxDB; 
+                            
+                            
+
+                            if (endpointDB.connections.Count() == 0 )
+                            {
+                                // If endpoint has no connections yet 
+
+                                // Create a new Connection row and add it to the list of connections that this endpoint has in database 
+                                 cnxDB = new Connections();
+                            }
+
+                            else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
 
                             if (endpoint is not null)
                             {
@@ -198,10 +210,9 @@ namespace IntrusionDetectionSystem
                                 {
                                     endpoint.Status = 1;
                                     //endpoint.Bytes_out = connectionPacket.Bytes_value;
-                                    cnxDB.bytes_out = (long)connectionPacket.Bytes_value;
+                                    cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
                                     timer.Start();
                                     //Save bytes_out to database
-
                                 }
                                 else _log.LogWarning("State not Allowed");
                             }
@@ -256,7 +267,7 @@ namespace IntrusionDetectionSystem
                                     endpoint.Status = 2;
                                     endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                     timer.Stop();
-                                    endpoint.RTT = timer.Elapsed;
+                                    endpoint.RTT =(long) DateTime.Now() - endpoint.RTT;
                                     // Statisktiik 
                                     // KjørStatistikk (endpoint)
                                     // Nullstill endpoint objekt  
