@@ -19,7 +19,7 @@ namespace IntrusionDetectionSystem.DAL
             _db = db;
             _log = log;
         }
-        public async Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address, int conn_id)
+        public async Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address)
         {
             try
             {
@@ -57,6 +57,10 @@ namespace IntrusionDetectionSystem.DAL
         public async Task<Endpoints> GetEndpointById(int id)
         {
             Endpoints endpoint = await _db.Endpoints.FindAsync(id);
+            if (endpoint is null )
+            {
+                return null!;
+            } 
             return endpoint;
         }
 
@@ -84,7 +88,7 @@ namespace IntrusionDetectionSystem.DAL
         public async Task<int> AddNewConnectionToEndpoint(Connections con, Endpoints end) 
         {
             Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
-            //endpoint.connections.Add(con);
+            endpoint.connections.Add(con);
             await _db.SaveChangesAsync();  
             int id = con.conn_id; 
             return id; 
