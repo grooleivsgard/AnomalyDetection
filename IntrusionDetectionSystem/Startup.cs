@@ -178,13 +178,43 @@ namespace IntrusionDetectionSystem
                     {
                         // Check if this ip that the edge is talking to is stored in the whiteList 
                         bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress);
-
+                        
                         if (found)
                         {
                             // Get the endpoint object that have the same ip address as the destination ip 
 
                             // In Memory: 
                             Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+
+                            
+
+                            if (endpoint is not null) 
+                            { 
+                                bool match = MatchIPtoMac(connectionPacket.DestinationMac, endpoint.Mac);
+                                
+                                if (match)
+                                {
+                                    bool stateOk = StatesHandler.HandleState(endpoint!.Status, 1);
+
+                                    if (stateOk)
+                                    {
+                                        endpoint.Status = 1;
+                                        //endpoint.Bytes_out = connectionPacket.Bytes_value;
+                                        //cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
+                                        timer.Start();
+                                        //Save bytes_out to database
+
+                                    }
+                                    else _log.LogWarning("State not Allowed");
+                                }
+
+                                else
+                                {
+                                    _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
+                                }
+                            }
+
+                            /*
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);                            
                             
@@ -201,28 +231,7 @@ namespace IntrusionDetectionSystem
                             }
 
                             else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
-
-                            if (endpoint is not null)
-                            {
-                                bool stateOk = StatesHandler.HandleState(endpoint!.Status, 1);
-
-                                if (stateOk)
-                                {
-                                    endpoint.Status = 1;
-                                    //endpoint.Bytes_out = connectionPacket.Bytes_value;
-                                    cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
-                                    timer.Start();
-                                    //Save bytes_out to database
-
-                                }
-                                else _log.LogWarning("State not Allowed");
-                            }
-
-                            else
-                            {
-                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
-                            }
-
+*/
                         }
 
                         // if (dest is in whitelist ) 
@@ -242,12 +251,13 @@ namespace IntrusionDetectionSystem
                         if (found)
                         {
                             // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
-
+                            
                             // In Memory: 
                             Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
                             
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
+                            
                             if (endpointDB is null) 
                             {
                                
@@ -259,34 +269,38 @@ namespace IntrusionDetectionSystem
                                 if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
                             }
 
-
-                            
                             if (endpoint is not null)
                             {
-                                bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
-                                bool anomalous = false;
-                                if (stateOk)
+                                bool match = MatchIPtoMac(connectionPacket.SourceMac, endpoint.Mac);
+
+                                if (match)
                                 {
-                                    endpoint.Status = 2;
-                                    endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
-                                    timer.Stop();
-                                    // endpoint.RTT = timer.Elapsed;
-                                    anomalous = isAnomolous(endpoint);
+                                    bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
+                                    bool anomalous = false;
+                                    if (stateOk)
                                     {
+                                        endpoint.Status = 2;
+                                        endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
+                                        timer.Stop();
+                                        // endpoint.RTT = timer.Elapsed;
+                                        anomalous = isAnomolous(endpoint);
+                                        {
                                         
+                                        }
+                                        // KjørStatistikk (endpoint)
+                                        // Nullstill endpoint objekt  
+                                        ResetEndpoint(endpoint);
                                     }
-                                    // KjørStatistikk (endpoint)
-                                    // Nullstill endpoint objekt  
-                                    ResetEndpoint(endpoint);
+                                    else _log.LogWarning("State not Allowed");
+                                    
                                 }
-                                else _log.LogWarning("State not Allowed");
+                                else
+                                {
+                                    _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
+                                }
+                                
                             }
-
-                            else
-                            {
-                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
-                            }
-
+                            
                         }
 
                         else
@@ -315,11 +329,18 @@ namespace IntrusionDetectionSystem
         {
             // Check if the The ipAddress we are looking for, is registred in the whiteList 
             bool IpFoundInWhiteList = _AllEndpointsFromWhiteList.Any(end => end.IP == _ipAddress);
-
+            
             return IpFoundInWhiteList;
         } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
 
+        private bool MatchIPtoMac(string connectionMac, string endpointMac)
+        {
+            bool match = connectionMac == endpointMac;
+            return match;
+            
+        }
+        
         public async Task<List<Endpoints>> RetrieveAll()
         {
             List<Endpoints> allEndpoints = await _db.GetAllEndpoints();
