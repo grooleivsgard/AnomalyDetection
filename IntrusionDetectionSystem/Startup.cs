@@ -39,11 +39,11 @@ namespace IntrusionDetectionSystem
         private Stopwatch timer = new Stopwatch();
 
         //Make an instance of the non static class Endpoint 
-        IEndpoint endpoint = new Endpoint();
+        Endpoint endpoint = new Endpoint();
 
-        IList<IEndpointItem> _AllEndpointsFromWhiteList; // A general list that will contain all the ips from the whiteList 
+        IList<EndpointItem> _AllEndpointsFromWhiteList; // A general list that will contain all the ips from the whiteList 
 
-        IList<IEndpoint> _EndpointToTabell;  // Endpoint Table 
+        IList<Endpoint> _EndpointToTabell;  // Endpoint Table 
 
         public Startup(HttpClient client,
                         ILogger<Startup> log,
@@ -52,8 +52,8 @@ namespace IntrusionDetectionSystem
                         IList<Connection> connectionDataStrructure,
                         IEnumerable<IPAddress> whiteListe,
                         //Problem is here 
-                        IList<IEndpointItem> AllEndpointsFromWhiteList,
-                        IList<IEndpoint> EndpointToTabell,
+                        IList<EndpointItem> AllEndpointsFromWhiteList,
+                        IList<Endpoint> EndpointToTabell,
                         IIntrusionRepository db
                        )
         {
@@ -165,7 +165,7 @@ namespace IntrusionDetectionSystem
             sw.Start();
             while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
             {
-                IPAddress edgeIp = IPAddress.Parse(_configuration.GetValue<String>("edgePrivateInternalIp")!);
+                string edgeIp = _configuration.GetValue<String>("edgePrivateInternalIp")!;
 
                 //For debugging: 
                 Console.WriteLine("At line: " + _connectionDataStrructure.Count());
@@ -174,7 +174,7 @@ namespace IntrusionDetectionSystem
                 {
                     //_log.LogInformation(connectionPacket.toString());
 
-                    if (IPAddress.Parse(connectionPacket.SourceAddress) == edgeIp) // if  src_ip == edge_ip { the edge is talking to another ip (destination ip) }
+                    if (connectionPacket.SourceAddress == edgeIp) // if  src_ip == edge_ip { the edge is talking to another ip (destination ip) }
                     {
                         // Check if this ip that the edge is talking to is stored in the whiteList 
                         bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress);
@@ -186,9 +186,21 @@ namespace IntrusionDetectionSystem
                             // In Memory: 
                             Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
                             // In database: 
-                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);
-                            // Create a new Connection row and add it to the list of connections that this endpoint has in database 
-                            Connections cnxDB = new Connections();
+                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);                            
+                            
+                            Connections cnxDB; 
+                            
+                            
+
+                            if (endpointDB.connections.Count() == 0 )
+                            {
+                                // If endpoint has no connections yet 
+
+                                // Create a new Connection row and add it to the list of connections that this endpoint has in database 
+                                 cnxDB = new Connections();
+                            }
+
+                            else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
 
                             if (endpoint is not null)
                             {
@@ -198,7 +210,7 @@ namespace IntrusionDetectionSystem
                                 {
                                     endpoint.Status = 1;
                                     //endpoint.Bytes_out = connectionPacket.Bytes_value;
-                                    cnxDB.bytes_out = (long)connectionPacket.Bytes_value;
+                                    cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
                                     timer.Start();
                                     //Save bytes_out to database
 
@@ -236,16 +248,17 @@ namespace IntrusionDetectionSystem
 
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
-                            Connections cnxDB; 
-
-                            if (endpointDB.connections.Count() == 0 )
+                            if (endpointDB is null) 
                             {
-                                // If endpoint has no connections yet 
-                                // Create a new Connection row and add it to the list of connections that this endpoint has in database 
-                                 cnxDB = new Connections();
+                               
+                                  /* ** Ip address is in memory whiteList but not saved to Database yet 
+                                     ** Save it to Database  */ 
+                                
+                                 // Change Mac address Afterwars 
+                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "Mock mac Address"); 
+                                if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
                             }
 
-                            else cnxDB = endpointDB.connections.LastOrDefault()!; 
 
                             
                             if (endpoint is not null)
@@ -278,6 +291,13 @@ namespace IntrusionDetectionSystem
                             unkown++;
                             s_unknowIps.Add(1);
                             //legg inn i unknown db
+                          /*  Endpoint MalisciousEndpoint = new Endpoint(); 
+                            MalisciousEndpoint.Ip = connectionPacket.SourceAddress; 
+                            MalisciousEndpoint.Bytes_in = (long) connectionPacket.Bytes_value; 
+
+                            //Add more Values etterhvert 
+                            await SaveConnectionToDatabase(MalisciousEndpoint); */
+
                         }
 
 
@@ -377,6 +397,36 @@ namespace IntrusionDetectionSystem
             endpoint.Status = 0;
             
         }
+
+        public async Task<int> SaveConnectionToDatabase(Endpoint endpoint) 
+        {
+            string ip = endpoint.Ip; 
+            Endpoints endpointDB = await _db.GetEndpointByIP(ip);     
+
+            if (endpointDB is null )   //If endpointDB was not stored to the database before        
+            {
+                    //Check if the ip string is stored in the whitelist 
+                    bool whiteList = FindIPAddressInWhiteList(ip);
+                    await _db.CreateNewEndpointInDb(ip,whiteList,"Mock Mac_address");
+                    /* 
+                     ** Save new endpoint to Endpoints Table in Database
+                     ** Retrieve it again 
+                    */
+                    endpointDB = await _db.GetEndpointByIP(ip);  
+            }  
+
+            Connections newConnection = new Connections(); 
+            newConnection.bytes_in = endpoint.Bytes_in; 
+            newConnection.bytes_out = endpoint.Bytes_out; 
+            newConnection.ip_address = ip; 
+            newConnection.rtt = endpoint.RTT; 
+            newConnection.timestamp = DateTime.Now.Ticks; 
+
+            // Return the Id of the new Connection and save it to Connections Table 
+            int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB); 
+            return connectionID; 
+
+        }//SaveConnectionToDatabase() 
 
     }
 

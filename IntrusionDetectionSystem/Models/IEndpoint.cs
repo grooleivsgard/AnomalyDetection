@@ -11,8 +11,8 @@ public interface IEndpoint
     long Bytes_in { get; set; }
     long RTT { get; set; }
 
-    IList<IEndpoint> EndpointToTabell();
-    IList <IEndpointItem> LoadJson(); 
+    IList<Endpoint> EndpointToTabell();
+    IList <EndpointItem> LoadJson(); 
     
     void Run();
 }

@@ -31,14 +31,14 @@ namespace IntrusionDetectionSystem
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
                             services.AddDbContext<AppDbContext>(opt => 
-                            opt.UseNpgsql(@"Server=localhost;Username=postgres;Password=87654321;Port=5432;Database=mydatabase"));
+                            opt.UseNpgsql(@"Server=localhost;Username=postgres;Password=1234;Port=5432;Database=mydatabase"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddTransient<IEndpoint,Endpoint>();  
                             services.AddScoped<IEndpointItem,EndpointItem>();  
                             services.AddHttpClient<IStartup,Startup>(); 
                             services.AddAutoMapper(typeof(Program).Assembly);
-                            services.AddScoped<IList<IEndpointItem>,List<IEndpointItem>>();
-                            services.AddScoped<IList<IEndpoint>,List<IEndpoint>>();
+                            services.AddScoped<IList<EndpointItem>,List<EndpointItem>>();
+                            services.AddScoped<IList<Endpoint>,List<Endpoint>>();
                             services.AddScoped<IList<Connection>,List<Connection>>();
                             services.AddScoped<IIntrusionRepository, IntrusionRepository>();
                             services.AddScoped<ILogger<Endpoint>, Logger<Endpoint>>();

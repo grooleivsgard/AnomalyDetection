@@ -14,10 +14,10 @@ public  class Endpoint : IEndpoint
 
 {
     private readonly ILogger<Startup> _log;
-    IList<IEndpointItem> list;
+    IList<EndpointItem> list;
 
     // Tabell av endpoints 
-    IList<IEndpoint> EndPoints = new List<IEndpoint>();
+    IList<Endpoint> EndPoints = new List<Endpoint>();
 
     public Endpoint(ILogger<Startup> log)
     {
@@ -43,12 +43,12 @@ public  class Endpoint : IEndpoint
 
     public class Data
     {   [JsonPropertyName("Data")]
-        public List <IEndpointItem> listOfIps {get; set; }
+        public List <EndpointItem> listOfIps {get; set; }
     
     }
 
     
-    public IList <IEndpointItem> LoadJson()
+    public IList <EndpointItem> LoadJson()
     {
         using (FileStream f = new FileStream("../IntrusionDetectionSystem/DAL/WhiteList.json", FileMode.Open, FileAccess.Read))
         {
@@ -72,7 +72,7 @@ public  class Endpoint : IEndpoint
                 EndpointItem item = new EndpointItem();
                 item.Id = "-1";
                 item.IP = "0.0.0.0";
-                list = new List<IEndpointItem> { item };
+                list = new List<EndpointItem> { item };
                 return list; 
             }
 
@@ -82,7 +82,7 @@ public  class Endpoint : IEndpoint
     }
 
 
-    public  IList<IEndpoint> EndpointToTabell()
+    public  IList<Endpoint> EndpointToTabell()
     {
         
         foreach (EndpointItem item in list)
