@@ -245,7 +245,7 @@ namespace IntrusionDetectionSystem
 
                             // In Memory: 
                             Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
-
+                            
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
                             if (endpointDB is null) 
@@ -264,13 +264,17 @@ namespace IntrusionDetectionSystem
                             if (endpoint is not null)
                             {
                                 bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
+                                bool anomalous = false;
                                 if (stateOk)
                                 {
                                     endpoint.Status = 2;
                                     endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                     timer.Stop();
                                     // endpoint.RTT = timer.Elapsed;
-                                    // Statisktiik 
+                                    anomalous = isAnomolous(endpoint);
+                                    {
+                                        
+                                    }
                                     // KjørStatistikk (endpoint)
                                     // Nullstill endpoint objekt  
                                     ResetEndpoint(endpoint);
@@ -341,9 +345,8 @@ namespace IntrusionDetectionSystem
             long timestampWeek = week.Ticks;
             
             bool anomalous = false;
-            
-          
-            
+
+
             // Retrieve BYTES OUT from DB
             List<long> dbBytesOutLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampHour); // returns list of bytes out for last hour
             List<long> dbBytesOutLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampDay); // returns list of bytes out for last day

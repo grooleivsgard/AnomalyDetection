@@ -13,6 +13,10 @@ namespace DTO.IntrusionDetectionSystem
         public string DestinationPort { get; set; }
         [JsonPropertyName("d_firstSeen")]
         public string FirstTimeSeenDate { get; set;}
+        [JsonPropertyName("e_srcMac")]
+        public string SourceMac { get; set;}
+        [JsonPropertyName("f_dstMac")]
+        public string DestinationMac { get; set;}
         [JsonPropertyName("instance")]
         public string Instance {get; set;}
         [JsonPropertyName("job")]
