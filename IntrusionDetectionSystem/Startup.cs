@@ -161,8 +161,6 @@ namespace IntrusionDetectionSystem
         public async Task inspectConnection()
         {
 
-            // AvgBytes("10.01.01.10"); To Gro: Commented this to avoid error 
-
             //Start the stopwatch 
             sw.Start();
             while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
@@ -184,13 +182,25 @@ namespace IntrusionDetectionSystem
                         if (found)
                         {
                             // Get the endpoint object that have the same ip address as the destination ip 
-                            
+
                             // In Memory: 
-                            Endpoint endpoint = (Endpoint) _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+                            Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);                            
-                        
+                            
+                            Connections cnxDB; 
+                            
+                            
 
+                            if (endpointDB.connections.Count() == 0 )
+                            {
+                                // If endpoint has no connections yet 
+
+                                // Create a new Connection row and add it to the list of connections that this endpoint has in database 
+                                 cnxDB = new Connections();
+                            }
+
+                            else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
 
                             if (endpoint is not null)
                             {
@@ -199,16 +209,17 @@ namespace IntrusionDetectionSystem
                                 if (stateOk)
                                 {
                                     endpoint.Status = 1;
-                                    endpoint.Bytes_out = (long) connectionPacket.Bytes_value;
-                                    //cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
-                                    endpoint.RTT = DateTime.Now.Ticks; 
+                                    //endpoint.Bytes_out = connectionPacket.Bytes_value;
+                                    cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
+                                    timer.Start();
                                     //Save bytes_out to database
+
                                 }
                                 else _log.LogWarning("State not Allowed");
                             }
 
                             else
-                            { 
+                            {
                                 _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
                             }
 
@@ -217,7 +228,7 @@ namespace IntrusionDetectionSystem
                         // if (dest is in whitelist ) 
 
                         else if (!found)
-                        {// add to db, with whitelist = false, including IP, MAC and bytes
+                        {
                             _log.LogCritical("IP not in whitelist");
                             //legg inn i unknown db
                         }
@@ -257,12 +268,12 @@ namespace IntrusionDetectionSystem
                                 {
                                     endpoint.Status = 2;
                                     endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
-                                    endpoint.RTT = DateTime.Now.Ticks - endpoint.RTT;
+                                    timer.Stop();
+                                    // endpoint.RTT = timer.Elapsed;
                                     // Statisktiik 
                                     // KjørStatistikk (endpoint)
                                     // Nullstill endpoint objekt  
                                     ResetEndpoint(endpoint);
-                                    //Lage på database 
                                 }
                                 else _log.LogWarning("State not Allowed");
                             }
@@ -275,7 +286,7 @@ namespace IntrusionDetectionSystem
                         }
 
                         else
-                        {   // add to db, with whitelist = false, including IP, MAC and bytes
+                        {
                             _log.LogWarning("Src not in whiteListe");
                             unkown++;
                             s_unknowIps.Add(1);
@@ -311,50 +322,46 @@ namespace IntrusionDetectionSystem
             return allEndpoints;
         }
         
-        //Method to request averages from DB with given time windows
-        public async Task<Array> CheckStatistics(string ip)
+        /**
+         * Method calls DB-methods from IntrusionRepository to retrieve
+         * values (standard deviation) for hour, day and week.
+         * The SD values are compared with object Endpoint values (current)
+         * in Statistics and is marked as anomalous = true or anomalous = false.
+         */
+        public async Task<bool> isAnomolous(Endpoint endpoint) //Hente inn objekt endpoint som er ferdig utfylt
         {
-            // Endpoints endpoint = await GetEndpointByIP(end.ip_address); 
+            string ip = endpoint.Ip; // get IP address of endpoint
+            long currBytesOut = endpoint.Bytes_out; // how 
+            long currBytesIn = endpoint.Bytes_in ; // how
+            long currRtt = endpoint.RTT ;  // how
+
+            bool anomalous = false;
             
-            //  double avg = _db.Connections.FromSqlRaw("SELECT AVG(bytes_out) From Connections Where Endpointsip_address = {ip}");
+            // List of standard deviation values for hour, day and week
+             List<double> SdBytesOut = await _db.GetBytesOutByIp(ip);
              
-             // DateTime.Now()
+             List<double> SdBytesIn = await _db.GetBytesInByIp(ip);
              
-             //calc hour
-             double[] hourly;
-             // Compute time windows
-             await _db.GetAverageByIP(ip, 32423, 45646);
-             
-             //calc day
-             double[] daily;
-             // compute time windows
-             await _db.GetAverageByIP(ip, 32423, 45646);
-             
-             //calc week
-             double[] weekly;
-             // compute time windows
-             await _db.GetAverageByIP(ip, 32423, 45646);
+             List<double> SdRtt = await _db.GetRttByIp(ip);
 
-
-             if (isAnomolous())
+             // Compare DB data with current values
+             if (Statistics.isDeviating(SdBytesOut, currBytesOut))
              {
-                 //add to database, anomo,ous = true
-             } else {
-                //add to db
+                 anomalous = true;   
+             }
+             if (Statistics.isDeviating(SdBytesIn, currBytesIn))
+             {
+                 anomalous = true;   
              }
 
-             return Array.Empty<double>();
+             if (Statistics.isDeviating(SdRtt, currRtt))
+             {
+                 anomalous = true;   
+             }
+
+             return anomalous;
         }
-        /**
-         * Method compares statistical values with values of Connection object
-         * If values are OK, return false
-         * else, return true, and log error for the given time window
-         */
-        bool isAnomolous()
-        {
-          // Not implemented function 
-         return false;   
-        }
+
 
         public void ResetEndpoint(Endpoint endpoint)
         {
@@ -389,8 +396,6 @@ namespace IntrusionDetectionSystem
             newConnection.timestamp = DateTime.Now.Ticks; 
 
             // Return the Id of the new Connection and save it to Connections Table 
-            if ( newConnection is null ) _log.LogInformation("At saveConnectionToDatabase endpointDB OR NEW connection is null ");
-            if ( newConnection is null ) _log.LogInformation("At saveConnectionToDatabase endpointDB OR NEW connection is null ");
             int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB); 
             return connectionID; 
 
