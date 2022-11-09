@@ -265,7 +265,7 @@ namespace IntrusionDetectionSystem
                                      ** Save it to Database  */ 
                                 
                                  // Change Mac address Afterwars 
-                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "Mock mac Address"); 
+                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "mock mac", endpoint.conn_Id); 
                                 if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
                             }
 
@@ -283,7 +283,7 @@ namespace IntrusionDetectionSystem
                                         endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                         timer.Stop();
                                         // endpoint.RTT = timer.Elapsed;
-                                        anomalous = isAnomolous(endpoint);
+                                        
                                         {
                                         
                                         }
@@ -431,7 +431,7 @@ namespace IntrusionDetectionSystem
             {
                     //Check if the ip string is stored in the whitelist 
                     bool whiteList = FindIPAddressInWhiteList(ip);
-                    await _db.CreateNewEndpointInDb(ip,whiteList,"Mock Mac_address");
+                    await _db.CreateNewEndpointInDb(ip,whiteList,"mock mac", endpoint.conn_Id);
                     /* 
                      ** Save new endpoint to Endpoints Table in Database
                      ** Retrieve it again 
