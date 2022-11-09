@@ -22,7 +22,7 @@ namespace Models
 
         public string toString()
         {
-            return "Connection going from: " + this.SourceAddress
+            return "Connection going from: " + this.SourceAddress + "src_mac: " + SourceMac + "dest_mac " + DestinationMac
             + " to: " + this.DestinationAddress + " port: "
             + this.DestinationPort + "// FirstTimeSeen at: " + FirstTimeSeenDate
             + " " + this.Instance + " job: " + this.Job + " bytes:  " +  Bytes_value
