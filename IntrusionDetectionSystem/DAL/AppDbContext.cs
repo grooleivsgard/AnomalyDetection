@@ -33,6 +33,11 @@ namespace IntrusionDetectionSystem.DAL
         public bool whitelist {get; set;}
         public string mac_address {get; set;}
         public virtual List<Connections> connections {get; set;}
+
+        public Endpoints () 
+        {
+             this.connections = new List<Connections>(); 
+        }
         
     }
 
