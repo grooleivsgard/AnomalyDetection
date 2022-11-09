@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Numerics;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 using Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,6 @@ namespace IntrusionDetectionSystem.DAL
 {
     public class IntrusionRepository : IIntrusionRepository
     {
-        
-        private readonly long _startTime = 32489; // compute
-        private readonly long _endTime = 32489;
         
         private readonly AppDbContext _db;
         private readonly ILogger<Endpoint> _log;
@@ -98,158 +96,81 @@ namespace IntrusionDetectionSystem.DAL
         }
 
         /**
-         * Method retrieves data from DB and returns a List of values (standard deviation)
-         * for hourly, daily and weekly intervals
+         * Method retrieves data from DB and returns a list of all values. 
          */
-        public async Task<List<double>> GetBytesOutByIp(string ip)
+/*
+        public async Task<List<long>> GetEndpointValues(string ip, string parameter)
         {
-            try
-            {
-                //Retrieve all values - hourly - and make into list
-                var hourlyQuery = from con in _db.Connections
-                    where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                    select con.bytes_out;
-
-                List<long> hourlyVals = hourlyQuery.ToList();
-                
-                //Retrieve all values - hourly - and make into list
-                var dailyQuery = from con in _db.Connections
-                    where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                    select con.bytes_out;
-
-                List<long> dailyVals= dailyQuery.ToList(); //Retrieve all values - hourly - and make into list
-                
-                var weeklyQuery = from con in _db.Connections
-                    where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                    select con.bytes_out;
-
-                List<long> weeklyVals= weeklyQuery.ToList();
-                
-
-                List<double> SdBytesOut = new List<double>();
-
-                SdBytesOut.Insert(0, Statistics.ComputeStandardDeviation(hourlyVals));
-                SdBytesOut.Insert(1, Statistics.ComputeStandardDeviation(dailyVals));
-                SdBytesOut.Insert(2, Statistics.ComputeStandardDeviation(weeklyVals));
-
-                return SdBytesOut;
-
-
-                /* // retrieve all values simultaneously - doesnt work to compute average
-                var hour = 
-                    from con in _db.Connections
-                    where con.ip_address == ip && con.timestamp == 1203213
-                    select new
-                    {
-                        BytesOut = con.bytes_out, 
-                        BytesIn = con.bytes_in, 
-                        Rtt = con.rtt
-                    };
-                */
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public async Task<List<double>> GetBytesInByIp(string ip)
-        {
-            try
-            {
-                
-                double AvgHourly =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.bytes_in).Average();
-
-                double AvgDaily =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.bytes_in).Average();
-
-                double AvgWeekly =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.bytes_in).Average();
-
-
-                List<double> AvgBytesIn = new List<double>();
-
-                AvgBytesIn.Insert(0, AvgHourly);
-                AvgBytesIn.Insert(1, AvgDaily);
-                AvgBytesIn.Insert(2, AvgWeekly);
-
-                return AvgBytesIn;
-            }
-            catch
-            {
-                return null;
-            }
+            List<long> totalValues = new List<long>();
             
-        }
+            //Assumes there is only 7 days of data
+            if (parameter == "bytes_out")
+            {
+                var query = from con in _db.Connections
+                    where (con.ip_address == ip && con.anomaly == false)
+                    select con.bytes_out;
+                totalValues = query.ToList();
+                    
+            } else if (parameter == "bytes_in")
+            {
+                var query = from con in _db.Connections
+                    where (con.ip_address == ip && con.anomaly == false)
+                    select con.bytes_in;
+                totalValues = query.ToList();
+                    
+            } else if (parameter == "rtt")
+            {
+                var query = from con in _db.Connections
+                    where (con.ip_address == ip && con.anomaly == false)
+                    select con.rtt;
+                totalValues = query.ToList();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid parameter");
+            }
 
-        public async Task<List<double>> GetRttByIp(string ip)
+            return totalValues;
+        }
+        }
+        */
+
+        public async Task<List<long>> GetParamValuesByTime(string ip, string parameter, long timestamp)
         {
 
-            try
+            List<long> totalValues = new List<long>();
+
+            if (parameter == "bytes_out")
             {
-                double AvgHourly =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.rtt).Average();
-
-                double AvgDaily =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.rtt).Average();
-
-                double AvgWeekly =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.rtt).Average();
-
-
-                List<double> AvgRtt = new List<double>();
-
-                AvgRtt.Insert(0, AvgHourly);
-                AvgRtt.Insert(1, AvgDaily);
-                AvgRtt.Insert(2, AvgWeekly);
-
-                return AvgRtt;
-                
-                                
-                /* Attempting to compute variance -- no success, dont have foreach loop in LINQ
-                int n =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.rtt).Count();
-                
-                double AvgHourly =
-                    (from con in _db.Connections
-                        where (con.ip_address == ip && con.timestamp > _startTime && con.timestamp < _endTime)
-                        select con.rtt).Average();
-
-                double total = 0;
-                // Compute variance
-                foreach (var con in _db.Connections)
-                {
-                    double delta = Math.Pow(Convert.ToDouble(con) - AvgHourly, 2);
-                    total += delta;
-                }
-
-                double variance = total / n;
-                
-                */
-
-            }
-            catch
+                var query = from con in _db.Connections
+                    where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
+                    select con.bytes_out;
+                    totalValues = query.ToList();
+                    
+            } else if (parameter == "bytes_in")
             {
-                return null;
+                var query = from con in _db.Connections
+                    where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
+                    select con.bytes_in;
+                    totalValues = query.ToList();
+                    
+            } else if (parameter == "rtt")
+            {
+                var query = from con in _db.Connections
+                    where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
+                    select con.rtt;
+                    totalValues = query.ToList();
             }
+            else
+            {
+                throw new ArgumentException("Invalid parameter");
+            }
+
+            return totalValues;
         }
 
-     
+
+
         /**
  * Method to query and compute average values from DB
  * Returns an array, [avgBytesOut, avgBytesIn, avgRTT] for the given timewindow

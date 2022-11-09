@@ -310,45 +310,72 @@ namespace IntrusionDetectionSystem
          */
         public async Task<bool> isAnomolous(Endpoint endpoint) //Hente inn objekt endpoint som er ferdig utfylt
         {
-            string ip = endpoint.Ip; // get IP address of endpoint
-            long currBytesOut = endpoint.Bytes_out; // how 
-            long currBytesIn = endpoint.Bytes_in ; // how
-            long currRtt = endpoint.RTT ;  // how
 
+            DateTime hour = DateTime.Now.AddHours(-1);
+            long timestampHour = hour.Ticks;
+            
+            DateTime day = DateTime.Now.AddHours(-24);
+            long timestampDay = day.Ticks;
+            
+            DateTime week = DateTime.Now.AddHours(-168);
+            long timestampWeek = week.Ticks;
+            
             bool anomalous = false;
             
-            // List of standard deviation values for hour, day and week
-             List<double> SdBytesOut = await _db.GetBytesOutByIp(ip);
-             
-             List<double> SdBytesIn = await _db.GetBytesInByIp(ip);
-             
-             List<double> SdRtt = await _db.GetRttByIp(ip);
+          
+            
+            // Retrieve BYTES OUT from DB
+            List<long> dbBytesOutLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampHour); // returns list of bytes out for last hour
+            List<long> dbBytesOutLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampDay); // returns list of bytes out for last day
+            List<long> dbBytesOutLastWeek = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampWeek); // returns list of bytes out for last week
+            
+            // Retrieve BYTES IN from DB
+            List<long> dbBytesInLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_in", timestampHour); // returns list of bytes in for last hour
+            List<long> dbBytesInLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_in", timestampDay); // returns list of bytes in for last day
+            List<long> dbBytesInLastWeek = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_in", timestampWeek); // returns list of bytes in for last week
+            
+            // Retrieve RTT from DB
+            List<long> dbRttLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "rtt", timestampHour); // returns list of rtt for last hour
+            List<long> dbRttLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "rtt", timestampDay); // returns list of rtt for last day
+            List<long> dbRttLastWeek = await _db.GetParamValuesByTime(endpoint.Ip, "rtt", timestampWeek); // returns list of rtt for last week
 
-             // Compare DB data with current values
-             if (Statistics.isDeviating(SdBytesOut, currBytesOut))
-             {
-                 anomalous = true;   
-             }
-             if (Statistics.isDeviating(SdBytesIn, currBytesIn))
-             {
-                 anomalous = true;   
-             }
+            // Calculate AVERAGE and STANDARD DEVIATION
+            List <double> statsBytesOut = Statistics.calcData(dbBytesOutLastHour, dbBytesOutLastDay, dbBytesOutLastWeek); // returns list og avg and sd for hour, day, week
+            List <double> statsBytesIn = Statistics.calcData(dbBytesInLastHour, dbBytesInLastDay, dbBytesInLastWeek);
+            List <double> statsRtt = Statistics.calcData(dbRttLastHour, dbRttLastDay, dbRttLastWeek);
+            
+            //Compare CURRENT VALUE with AVERAGE, STANDARD DEVIATION and Z-SCORE
+            bool byteOutIsOutlier = Statistics.compareValues(statsBytesOut, endpoint.Bytes_out);
+            bool byteInIsOutlier = Statistics.compareValues(statsBytesIn, endpoint.Bytes_in);
+            bool rttIsOutlier = Statistics.compareValues(statsRtt, endpoint.RTT);
+   
+            //If ANY of the values are OUTLIERS, ANOMALOUS is TRUE
+            if (byteOutIsOutlier)
+            {
+                anomalous = true;
+            }
 
-             if (Statistics.isDeviating(SdRtt, currRtt))
-             {
-                 anomalous = true;   
-             }
-
-             return anomalous;
+            if (byteInIsOutlier)
+            {
+                anomalous = true;
+            }
+            
+            if (rttIsOutlier)
+            {
+                anomalous = true;
+            }
+            
+            return anomalous;
         }
-
-
+        
+ 
         public void ResetEndpoint(Endpoint endpoint)
         {
             endpoint.Bytes_in = 0;
-            endpoint.Bytes_out = 0;
-            // endpoint.RTT = null;
+            endpoint.Bytes_out = 0; 
+            endpoint.RTT = 0;
             endpoint.Status = 0;
+            
         }
 
     }
