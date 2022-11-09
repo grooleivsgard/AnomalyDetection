@@ -32,11 +32,11 @@ public  class Endpoint : IEndpoint
     [Key]
     public int conn_Id {get; set; }
     public string Ip { get; set; }
+    
+    public string Mac { get; set; }
     public int Status { get; set; }
     public long Bytes_out { get; set; }
     public long Bytes_in { get; set; }
-    
-    // RTT : Round-trip-time
     public long RTT { get; set; }
 
 
