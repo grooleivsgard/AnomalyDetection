@@ -6,7 +6,7 @@ namespace IntrusionDetectionSystem.DAL
     {
         Task<List<Endpoints>> GetAllEndpoints();
         Task<Endpoints> GetEndpointById(int id); 
-        Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address, int conn_id); 
+        Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address); 
         Task <Endpoints> GetEndpointByIP(string ip);
         Task<List<double>> GetBytesOutByIp(string ip);
         Task<List<double>> GetBytesInByIp(string ip);

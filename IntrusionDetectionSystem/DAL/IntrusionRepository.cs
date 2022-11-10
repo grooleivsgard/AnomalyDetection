@@ -26,7 +26,7 @@ namespace IntrusionDetectionSystem.DAL
             _log = log;
         }
 
-        public async Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address, int conn_id)
+        public async Task<bool> CreateNewEndpointInDb(string ip, bool isWhitelist, string mac_address)
         {
             try
             {
