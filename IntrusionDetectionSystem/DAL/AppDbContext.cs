@@ -20,6 +20,8 @@ namespace IntrusionDetectionSystem.DAL
 
         public long timestamp {get; set;}
         
+        public bool anomaly { get; set; }
+        
         [ForeignKey("Endpoints")]
         public string ip_address {get; set;}
         

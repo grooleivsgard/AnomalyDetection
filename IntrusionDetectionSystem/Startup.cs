@@ -178,13 +178,43 @@ namespace IntrusionDetectionSystem
                     {
                         // Check if this ip that the edge is talking to is stored in the whiteList 
                         bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress);
-
+                        
                         if (found)
                         {
                             // Get the endpoint object that have the same ip address as the destination ip 
 
                             // In Memory: 
                             Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+
+                            
+
+                            if (endpoint is not null) 
+                            { 
+                                bool match = MatchIPtoMac(connectionPacket.DestinationMac, endpoint.Mac);
+                                
+                                if (match)
+                                {
+                                    bool stateOk = StatesHandler.HandleState(endpoint!.Status, 1);
+
+                                    if (stateOk)
+                                    {
+                                        endpoint.Status = 1;
+                                        //endpoint.Bytes_out = connectionPacket.Bytes_value;
+                                        //cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
+                                        timer.Start();
+                                        //Save bytes_out to database
+
+                                    }
+                                    else _log.LogWarning("State not Allowed");
+                                }
+
+                                else
+                                {
+                                    _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
+                                }
+                            }
+
+                            /*
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);                            
                             
@@ -201,28 +231,7 @@ namespace IntrusionDetectionSystem
                             }
 
                             else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
-
-                            if (endpoint is not null)
-                            {
-                                bool stateOk = StatesHandler.HandleState(endpoint!.Status, 1);
-
-                                if (stateOk)
-                                {
-                                    endpoint.Status = 1;
-                                    //endpoint.Bytes_out = connectionPacket.Bytes_value;
-                                    cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
-                                    timer.Start();
-                                    //Save bytes_out to database
-
-                                }
-                                else _log.LogWarning("State not Allowed");
-                            }
-
-                            else
-                            {
-                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
-                            }
-
+*/
                         }
 
                         // if (dest is in whitelist ) 
@@ -242,12 +251,13 @@ namespace IntrusionDetectionSystem
                         if (found)
                         {
                             // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
-
+                            
                             // In Memory: 
                             Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
-
+                            
                             // In database: 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
+                            
                             if (endpointDB is null) 
                             {
                                
@@ -255,34 +265,42 @@ namespace IntrusionDetectionSystem
                                      ** Save it to Database  */ 
                                 
                                  // Change Mac address Afterwars 
-                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "Mock mac Address"); 
+                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "mock mac", endpoint.conn_Id); 
                                 if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
                             }
 
-
-                            
                             if (endpoint is not null)
                             {
-                                bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
-                                if (stateOk)
+                                bool match = MatchIPtoMac(connectionPacket.SourceMac, endpoint.Mac);
+
+                                if (match)
                                 {
-                                    endpoint.Status = 2;
-                                    endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
-                                    timer.Stop();
-                                    // endpoint.RTT = timer.Elapsed;
-                                    // Statisktiik 
-                                    // KjørStatistikk (endpoint)
-                                    // Nullstill endpoint objekt  
-                                    ResetEndpoint(endpoint);
+                                    bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
+                                    bool anomalous = false;
+                                    if (stateOk)
+                                    {
+                                        endpoint.Status = 2;
+                                        endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
+                                        timer.Stop();
+                                        // endpoint.RTT = timer.Elapsed;
+                                        
+                                        {
+                                        
+                                        }
+                                        // KjørStatistikk (endpoint)
+                                        // Nullstill endpoint objekt  
+                                        ResetEndpoint(endpoint);
+                                    }
+                                    else _log.LogWarning("State not Allowed");
+                                    
                                 }
-                                else _log.LogWarning("State not Allowed");
+                                else
+                                {
+                                    _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
+                                }
+                                
                             }
-
-                            else
-                            {
-                                _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
-                            }
-
+                            
                         }
 
                         else
@@ -311,11 +329,18 @@ namespace IntrusionDetectionSystem
         {
             // Check if the The ipAddress we are looking for, is registred in the whiteList 
             bool IpFoundInWhiteList = _AllEndpointsFromWhiteList.Any(end => end.IP == _ipAddress);
-
+            
             return IpFoundInWhiteList;
         } // FindIPAddressInWhiteList:  checks if the whiteList contains a certain IpAddress
 
 
+        private bool MatchIPtoMac(string connectionMac, string endpointMac)
+        {
+            bool match = connectionMac == endpointMac;
+            return match;
+            
+        }
+        
         public async Task<List<Endpoints>> RetrieveAll()
         {
             List<Endpoints> allEndpoints = await _db.GetAllEndpoints();
@@ -330,45 +355,71 @@ namespace IntrusionDetectionSystem
          */
         public async Task<bool> isAnomolous(Endpoint endpoint) //Hente inn objekt endpoint som er ferdig utfylt
         {
-            string ip = endpoint.Ip; // get IP address of endpoint
-            long currBytesOut = endpoint.Bytes_out; // how 
-            long currBytesIn = endpoint.Bytes_in ; // how
-            long currRtt = endpoint.RTT ;  // how
 
-            bool anomalous = false;
+            DateTime hour = DateTime.Now.AddHours(-1);
+            long timestampHour = hour.Ticks;
             
-            // List of standard deviation values for hour, day and week
-             List<double> SdBytesOut = await _db.GetBytesOutByIp(ip);
-             
-             List<double> SdBytesIn = await _db.GetBytesInByIp(ip);
-             
-             List<double> SdRtt = await _db.GetRttByIp(ip);
+            DateTime day = DateTime.Now.AddHours(-24);
+            long timestampDay = day.Ticks;
+            
+            DateTime week = DateTime.Now.AddHours(-168);
+            long timestampWeek = week.Ticks;
+            
+            bool anomalous = false;
 
-             // Compare DB data with current values
-             if (Statistics.isDeviating(SdBytesOut, currBytesOut))
-             {
-                 anomalous = true;   
-             }
-             if (Statistics.isDeviating(SdBytesIn, currBytesIn))
-             {
-                 anomalous = true;   
-             }
 
-             if (Statistics.isDeviating(SdRtt, currRtt))
-             {
-                 anomalous = true;   
-             }
+            // Retrieve BYTES OUT from DB
+            List<long> dbBytesOutLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampHour); // returns list of bytes out for last hour
+            List<long> dbBytesOutLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampDay); // returns list of bytes out for last day
+            List<long> dbBytesOutLastWeek = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_out", timestampWeek); // returns list of bytes out for last week
+            
+            // Retrieve BYTES IN from DB
+            List<long> dbBytesInLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_in", timestampHour); // returns list of bytes in for last hour
+            List<long> dbBytesInLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_in", timestampDay); // returns list of bytes in for last day
+            List<long> dbBytesInLastWeek = await _db.GetParamValuesByTime(endpoint.Ip, "bytes_in", timestampWeek); // returns list of bytes in for last week
+            
+            // Retrieve RTT from DB
+            List<long> dbRttLastHour = await _db.GetParamValuesByTime(endpoint.Ip, "rtt", timestampHour); // returns list of rtt for last hour
+            List<long> dbRttLastDay = await _db.GetParamValuesByTime(endpoint.Ip, "rtt", timestampDay); // returns list of rtt for last day
+            List<long> dbRttLastWeek = await _db.GetParamValuesByTime(endpoint.Ip, "rtt", timestampWeek); // returns list of rtt for last week
 
-             return anomalous;
+            // Calculate AVERAGE and STANDARD DEVIATION
+            List <double> statsBytesOut = Statistics.calcData(dbBytesOutLastHour, dbBytesOutLastDay, dbBytesOutLastWeek); // returns list og avg and sd for hour, day, week
+            List <double> statsBytesIn = Statistics.calcData(dbBytesInLastHour, dbBytesInLastDay, dbBytesInLastWeek);
+            List <double> statsRtt = Statistics.calcData(dbRttLastHour, dbRttLastDay, dbRttLastWeek);
+            
+            //Compare CURRENT VALUE with AVERAGE, STANDARD DEVIATION and Z-SCORE
+            bool byteOutIsOutlier = Statistics.compareValues(statsBytesOut, endpoint.Bytes_out);
+            bool byteInIsOutlier = Statistics.compareValues(statsBytesIn, endpoint.Bytes_in);
+            bool rttIsOutlier = Statistics.compareValues(statsRtt, endpoint.RTT);
+   
+            //If ANY of the values are OUTLIERS, ANOMALOUS is TRUE
+            if (byteOutIsOutlier)
+            {
+                anomalous = true;
+            }
+
+            if (byteInIsOutlier)
+            {
+                anomalous = true;
+            }
+            
+            if (rttIsOutlier)
+            {
+                anomalous = true;
+            }
+            
+            return anomalous;
         }
-
-
+        
+ 
         public void ResetEndpoint(Endpoint endpoint)
         {
             endpoint.Bytes_in = 0;
-            endpoint.Bytes_out = 0;
-            // endpoint.RTT = null;
+            endpoint.Bytes_out = 0; 
+            endpoint.RTT = 0;
             endpoint.Status = 0;
+            
         }
 
         public async Task<int> SaveConnectionToDatabase(Endpoint endpoint) 
@@ -380,7 +431,7 @@ namespace IntrusionDetectionSystem
             {
                     //Check if the ip string is stored in the whitelist 
                     bool whiteList = FindIPAddressInWhiteList(ip);
-                    await _db.CreateNewEndpointInDb(ip,whiteList,"Mock Mac_address");
+                    await _db.CreateNewEndpointInDb(ip,whiteList,"mock mac", endpoint.conn_Id);
                     /* 
                      ** Save new endpoint to Endpoints Table in Database
                      ** Retrieve it again 
