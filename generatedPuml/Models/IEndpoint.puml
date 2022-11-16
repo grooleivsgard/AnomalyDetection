@@ -1,0 +1,13 @@
+@startuml
+interface IEndpoint {
+    Ip : string <<get>> <<set>>
+    Mac : string <<get>> <<set>>
+    Status : int <<get>> <<set>>
+    Bytes_out : long <<get>> <<set>>
+    Bytes_in : long <<get>> <<set>>
+    RTT : long <<get>> <<set>>
+    EndpointToTabell() : IList<Endpoint>
+    LoadJson() : IList <EndpointItem>
+    Run() : void
+}
+@enduml

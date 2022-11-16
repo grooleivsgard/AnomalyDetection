@@ -1,0 +1,8 @@
+@startuml
+class Statistics {
+    + {static} calcData(dbLastHour:List<long>, dbLastDay:List<long>, dbLastWeek:List<long>) : List<double>
+    + {static} computeStats(values:List<long>) : List<double>
+    + {static} compareValues(values:List<double>, currValue:long) : bool
+    + {static} computeZscore(standardDev:double, mean:double, currValue:long) : double
+}
+@enduml

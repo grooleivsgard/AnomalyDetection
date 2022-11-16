@@ -1,0 +1,28 @@
+@startuml
+class Metric {
+    + Name : string <<get>> <<set>>
+    + SourceAddress : string <<get>> <<set>>
+    + DestinationAddress : string <<get>> <<set>>
+    + DestinationPort : string <<get>> <<set>>
+    + FirstTimeSeenDate : string <<get>> <<set>>
+    + SourceMac : string <<get>> <<set>>
+    + DestinationMac : string <<get>> <<set>>
+    + Instance : string <<get>> <<set>>
+    + Job : string <<get>> <<set>>
+}
+class Result {
+}
+class Data {
+    + ResultType : string <<get>> <<set>>
+}
+class Root {
+    + Status : string <<get>> <<set>>
+    + toString() : string
+}
+class "List`1"<T> {
+}
+Result --> "Metric" Metric
+Result --> "Value<Object>" "List`1"
+Data --> "Result<Result>" "List`1"
+Root --> "Data" Data
+@enduml

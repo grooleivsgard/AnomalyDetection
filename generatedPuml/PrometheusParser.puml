@@ -1,0 +1,5 @@
+@startuml
+class PrometheusParser <<static>> {
+    + {static} Parse(payload:string) : void
+}
+@enduml

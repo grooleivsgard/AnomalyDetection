@@ -1,0 +1,39 @@
+@startuml
+class Endpoint {
+    + Endpoint(log:ILogger<Startup>)
+    + Endpoint()
+    + conn_Id : int <<get>> <<set>>
+    + Ip : string <<get>> <<set>>
+    + Mac : string <<get>> <<set>>
+    + Status : int <<get>> <<set>>
+    + Bytes_out : long <<get>> <<set>>
+    + Bytes_in : long <<get>> <<set>>
+    + RTT : long <<get>> <<set>>
+    + LoadJson() : IList <EndpointItem>
+    + EndpointToTabell() : IList<Endpoint>
+    + Run() : void
+}
+class EndpointItem {
+    + IP : string <<get>> <<set>>
+    + Id : string <<get>> <<set>>
+}
+interface IEndpointItem {
+    IP : string <<get>> <<set>>
+    Id : string <<get>> <<set>>
+}
+class "ILogger`1"<T> {
+}
+class "IList`1"<T> {
+}
+class Data {
+}
+class "List`1"<T> {
+}
+IEndpoint <|-- Endpoint
+Endpoint --> "_log<Startup>" "ILogger`1"
+Endpoint --> "list<EndpointItem>" "IList`1"
+Endpoint o-> "EndPoints<Endpoint>" "IList`1"
+IEndpointItem <|-- EndpointItem
+Endpoint +-- Data
+Data --> "listOfIps<EndpointItem>" "List`1"
+@enduml

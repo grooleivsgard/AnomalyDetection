@@ -1,0 +1,39 @@
+version: '3.2'
+
+networks:
+  dev:
+    driver: bridge 
+# ${REGISTRY:-service-one}/customer-service.api:${PLATFORM:-linux}-${TAG:-latest}
+services:
+  ids-service:
+    image: bilalsahli/test:latest
+    depends_on:
+      - "ids_db"
+    container_name: testcontainer
+    ports:
+      - "9184:9184"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - ConnectionString=Server=postgres-container;port=5432;database=mydatabase;username=postgres;password=1234;
+    networks:
+      - dev
+
+  ids_db:
+    image: postgres:latest
+    container_name: postgres-container
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=mydatabase
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - customer_data:/var/lib/postgresql/data/ 
+    networks:
+      - dev
+
+volumes:
+  customer_data:
