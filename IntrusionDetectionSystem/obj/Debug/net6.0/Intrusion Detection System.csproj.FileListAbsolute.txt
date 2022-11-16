@@ -108,6 +108,7 @@ C:/Users/bilal/Desktop/bachelor oppgave/Source code/RaaLabs/AnomalyDetection/Int
 C:/Users/bilal/Desktop/bachelor oppgave/Source code/RaaLabs/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Castle.Core.dll
 C:/Users/bilal/Desktop/bachelor oppgave/Source code/RaaLabs/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Microsoft.EntityFrameworkCore.Proxies.dll
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/appsettings.json
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System.deps.json
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System.runtimeconfig.json
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System.dll

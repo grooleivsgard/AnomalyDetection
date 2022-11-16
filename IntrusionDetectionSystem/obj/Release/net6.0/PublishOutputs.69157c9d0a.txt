@@ -1,0 +1,57 @@
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Intrusion Detection System
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Intrusion Detection System.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Intrusion Detection System.runtimeconfig.json
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Intrusion Detection System.pdb
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/AutoMapper.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Castle.Core.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.EntityFrameworkCore.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.EntityFrameworkCore.InMemory.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.EntityFrameworkCore.Proxies.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Caching.Memory.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.Binder.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.CommandLine.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.FileExtensions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.Json.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Configuration.UserSecrets.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.DependencyInjection.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.DependencyModel.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.FileProviders.Physical.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.FileSystemGlobbing.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Hosting.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.Configuration.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.Console.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.Debug.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.EventLog.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Logging.EventSource.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Options.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Microsoft.Extensions.Primitives.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Npgsql.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/OpenTelemetry.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/OpenTelemetry.Api.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/OpenTelemetry.Exporter.Prometheus.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Serilog.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Serilog.Extensions.Hosting.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Serilog.Extensions.Logging.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Serilog.Settings.Configuration.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Serilog.Sinks.Console.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/System.Diagnostics.EventLog.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/System.Text.Encodings.Web.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/System.Text.Json.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.Messages.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/runtimes/browser/lib/net6.0/System.Text.Encodings.Web.dll
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/release/net6.0/publish/Intrusion Detection System.deps.json
