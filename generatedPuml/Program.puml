@@ -1,0 +1,6 @@
+@startuml
+class Program {
+    <<async>> {static} Main(args:string[]) : Task
+    {static} BuildConfig(builder:IConfigurationBuilder) : void
+}
+@enduml

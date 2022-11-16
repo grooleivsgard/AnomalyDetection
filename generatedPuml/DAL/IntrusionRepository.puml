@@ -1,0 +1,17 @@
+@startuml
+class IntrusionRepository {
+    + IntrusionRepository(db:AppDbContext, log:ILogger<Endpoint>)
+    + <<async>> CreateNewEndpointInDb(ip:string, isWhitelist:bool, mac_address:string) : Task<bool>
+    + <<async>> GetAllEndpoints() : Task<List<Endpoints>>
+    + <<async>> GetEndpointById(id:int) : Task<Endpoints>
+    + <<async>> GetEndpointByIP(ip:string) : Task<Endpoints>
+    + <<async>> GetConnection_ByEndpointIP(ip:string) : Task<Endpoints>
+    + <<async>> AddNewConnectionToEndpoint(con:Connections, end:Endpoints) : Task<int>
+    + <<async>> GetParamValuesByTime(ip:string, parameter:string, timestamp:long) : Task<List<long>>
+}
+class "ILogger`1"<T> {
+}
+IIntrusionRepository <|-- IntrusionRepository
+IntrusionRepository --> "_db" AppDbContext
+IntrusionRepository --> "_log<Endpoint>" "ILogger`1"
+@enduml

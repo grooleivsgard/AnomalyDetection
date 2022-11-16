@@ -1,0 +1,9 @@
+@startuml
+class StartupPrometheusTest {
+    + <<async>> ProcessRepositories() : Task
+}
+class "Counter`1"<T> {
+}
+StartupPrometheusTest o-> "s_meter" Meter
+StartupPrometheusTest o-> "s_unknowIps<int>" "Counter`1"
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class UnknownIp {
+    + Id : int <<get>> <<set>>
+    + Ip : string <<get>> <<set>>
+    + Bytes : float <<get>> <<set>>
+    + timestamp : string <<get>> <<set>>
+}
+@enduml

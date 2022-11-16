@@ -1,0 +1,5 @@
+@startuml
+class StatesHandler {
+    + {static} HandleState(from_state:int, to_state:int) : bool
+}
+@enduml

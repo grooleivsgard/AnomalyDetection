@@ -163,7 +163,7 @@ namespace IntrusionDetectionSystem
 
             //Start the stopwatch 
             sw.Start();
-            while (true && sw.ElapsedMilliseconds < 1200000) // run in 20 minutes 
+            while (true ) 
             {
                 string edgeIp = _configuration.GetValue<String>("edgePrivateInternalIp")!;
 
@@ -205,7 +205,9 @@ namespace IntrusionDetectionSystem
                                         //Save bytes_out to database
 
                                     }
-                                    else _log.LogWarning("State not Allowed");
+                                    else {
+                                        if (sw.ElapsedMilliseconds > 60000) _log.LogWarning("State not Allowed");
+                                    }
                                 }
 
                                 else

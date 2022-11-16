@@ -1,0 +1,41 @@
+@startuml
+class Startup {
+    - unkown : int = 0
+    + Startup(client:HttpClient, log:ILogger<Startup>, configuration:IConfiguration, mapper:IMapper, connectionDataStrructure:IList<Connection>, whiteListe:IEnumerable<IPAddress>, AllEndpointsFromWhiteList:IList<EndpointItem>, EndpointToTabell:IList<Endpoint>, db:IIntrusionRepository)
+    + <<async>> ProcessRepositories() : Task
+    + <<async>> inspectConnection() : Task
+    - FindIPAddressInWhiteList(_ipAddress:string) : bool
+    - MatchIPtoMac(connectionMac:string, endpointMac:string) : bool
+    + <<async>> RetrieveAll() : Task<List<Endpoints>>
+    + <<async>> isAnomolous(endpoint:Endpoint) : Task<bool>
+    + ResetEndpoint(endpoint:Endpoint) : void
+    + <<async>> SaveConnectionToDatabase(endpoint:Endpoint) : Task<int>
+}
+class "ILogger`1"<T> {
+}
+class "IList`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "IDictionary`2"<T1,T2> {
+}
+class "Counter`1"<T> {
+}
+IStartup <|-- Startup
+Startup --> "_client" HttpClient
+Startup --> "_configuration" IConfiguration
+Startup --> "_log<Startup>" "ILogger`1"
+Startup --> "_mapper" IMapper
+Startup --> "_meterProvider" MeterProvider
+Startup --> "_db" IIntrusionRepository
+Startup --> "_connectionDataStrructure<Connection>" "IList`1"
+Startup --> "_whiteListe<IPAddress>" "IEnumerable`1"
+Startup o-> "uknownConnectionsOverTime<int,DateTimeOffset>" "IDictionary`2"
+Startup o-> "s_meter" Meter
+Startup o-> "s_unknowIps<int>" "Counter`1"
+Startup o-> "sw" Stopwatch
+Startup o-> "timer" Stopwatch
+Startup o-> "endpoint" Endpoint
+Startup --> "_AllEndpointsFromWhiteList<EndpointItem>" "IList`1"
+Startup --> "_EndpointToTabell<Endpoint>" "IList`1"
+@enduml

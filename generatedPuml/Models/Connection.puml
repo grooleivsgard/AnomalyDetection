@@ -1,0 +1,16 @@
+@startuml
+class Connection {
+    + Id : int <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + SourceAddress : string <<get>> <<set>>
+    + DestinationAddress : string <<get>> <<set>>
+    + SourceMac : string <<get>> <<set>>
+    + DestinationMac : string <<get>> <<set>>
+    + DestinationPort : string <<get>> <<set>>
+    + FirstTimeSeenDate : string <<get>> <<set>>
+    + Instance : string <<get>> <<set>>
+    + Job : string <<get>> <<set>>
+    + Bytes_value : float <<get>> <<set>>
+    + toString() : string
+}
+@enduml

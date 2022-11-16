@@ -1,0 +1,29 @@
+@startuml
+class Connections {
+    + conn_id : int <<get>> <<set>>
+    + bytes_in : long <<get>> <<set>>
+    + bytes_out : long <<get>> <<set>>
+    + rtt : long <<get>> <<set>>
+    + timestamp : long <<get>> <<set>>
+    + anomaly : bool <<get>> <<set>>
+    + ip_address : string <<get>> <<set>>
+}
+class Endpoints {
+    + ip_address : string <<get>> <<set>>
+    + whitelist : bool <<get>> <<set>>
+    + mac_address : string <<get>> <<set>>
+    + Endpoints()
+}
+class AppDbContext {
+    + AppDbContext(options:DbContextOptions<AppDbContext>)
+    # <<override>> OnConfiguring(optionsBuilder:DbContextOptionsBuilder) : void
+}
+class "List`1"<T> {
+}
+class "DbSet`1"<T> {
+}
+Endpoints --> "connections<Connections>" "List`1"
+DbContext <|-- AppDbContext
+AppDbContext --> "Endpoints<Endpoints>" "DbSet`1"
+AppDbContext --> "Connections<Connections>" "DbSet`1"
+@enduml

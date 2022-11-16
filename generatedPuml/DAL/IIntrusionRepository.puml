@@ -1,0 +1,10 @@
+@startuml
+interface IIntrusionRepository {
+    GetAllEndpoints() : Task<List<Endpoints>>
+    GetEndpointById(id:int) : Task<Endpoints>
+    CreateNewEndpointInDb(ip:string, isWhitelist:bool, mac_address:string) : Task<bool>
+    GetEndpointByIP(ip:string) : Task <Endpoints>
+    GetParamValuesByTime(ip:string, parameter:string, timestamp:long) : Task<List<long>>
+    AddNewConnectionToEndpoint(con:Connections, end:Endpoints) : Task <int>
+}
+@enduml

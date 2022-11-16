@@ -1,0 +1,11 @@
+@startuml
+class GreetingService {
+    + GreetingService(log:ILogger<GreetingService>, config:IConfiguration)
+    + Run() : void
+}
+class "ILogger`1"<T> {
+}
+IGreetingService <|-- GreetingService
+GreetingService --> "_log<GreetingService>" "ILogger`1"
+GreetingService --> "_config" IConfiguration
+@enduml
