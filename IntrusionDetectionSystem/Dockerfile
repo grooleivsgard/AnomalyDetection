@@ -15,4 +15,4 @@ COPY --from=build-env /app/out .
 COPY ./appsettings* /app/
 
 EXPOSE 9184
-ENTRYPOINT [ "dotnet", "Intrusion Detection System.dll"]
+ENTRYPOINT [ "dotnet", "IntrusionDetectionSystem.dll"]

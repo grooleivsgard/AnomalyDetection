@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     environment:
-      - ConnectionString=Server=postgres-container;port=5432;database=mydatabase;username=postgres;password=1234;
+      - ConnectionString=Server=postgres-container;port=5452;database=mydatabase;username=postgres;password=1234;
     networks:
       - dev
 
@@ -28,7 +28,7 @@ services:
       - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=mydatabase
     ports:
-      - "5432:5432"
+      - "5452:5432"
     restart: always
     volumes:
       - customer_data:/var/lib/postgresql/data/ 
