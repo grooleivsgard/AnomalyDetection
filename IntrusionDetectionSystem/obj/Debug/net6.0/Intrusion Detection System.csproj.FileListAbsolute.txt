@@ -36,6 +36,7 @@ C:/Users/bilal/Desktop/bachelor oppgave/Source code/RaaLabs/IntrusionDetectionSy
 C:/Users/bilal/Desktop/bachelor oppgave/Source code/RaaLabs/IntrusionDetectionSystem/bin/Debug/net6.0/Microsoft.Extensions.Primitives.dll
 C:/Users/bilal/Desktop/bachelor oppgave/Source code/RaaLabs/IntrusionDetectionSystem/obj/Debug/net6.0/Intrusion Detection System.csproj.CopyComplete
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/appsettings.json
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System.deps.json
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System.runtimeconfig.json
 /Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/bin/Debug/net6.0/Intrusion Detection System.dll
