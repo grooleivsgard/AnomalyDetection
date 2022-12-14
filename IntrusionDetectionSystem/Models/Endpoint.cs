@@ -50,7 +50,8 @@ public  class Endpoint : IEndpoint
     
     public IList <EndpointItem> LoadJson()
     {
-        using (FileStream f = new FileStream("../IntrusionDetectionSystem/DAL/WhiteList.json", FileMode.Open, FileAccess.Read))
+        string path = "DAL/whitelist.json";
+        using (FileStream f = new FileStream(path, FileMode.Open, FileAccess.Read))
         {
             try
             {

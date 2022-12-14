@@ -1,0 +1,5 @@
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/obj/Release/net6.0/IntrusionDetectionSystem.csproj.AssemblyReference.cache
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/obj/Release/net6.0/IntrusionDetectionSystem.GeneratedMSBuildEditorConfig.editorconfig
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/obj/Release/net6.0/IntrusionDetectionSystem.AssemblyInfoInputs.cache
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/obj/Release/net6.0/IntrusionDetectionSystem.AssemblyInfo.cs
+/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/obj/Release/net6.0/IntrusionDetectionSystem.csproj.CoreCompileInputs.cache

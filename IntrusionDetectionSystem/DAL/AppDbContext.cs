@@ -6,44 +6,35 @@ using Models;
 
 namespace IntrusionDetectionSystem.DAL
 {
-
-    public class Connections 
+    public class Connections
     {
-        [Key]
-        public int conn_id {get; set;}
-        public long bytes_in {get; set;}
+        [Key] public int conn_id { get; set; }
+        public long bytes_in { get; set; }
 
-        public long bytes_out {get; set;}
+        public long bytes_out { get; set; }
 
         // rtt => Round trip time 
-        public long rtt {get; set; }
+        public long rtt { get; set; }
 
-        public long timestamp {get; set;}
-        
+        public long timestamp { get; set; }
+
         public bool anomaly { get; set; }
-        
-        [ForeignKey("Endpoints")]
-        public string ip_address {get; set;}
-        
-       
+
+        [ForeignKey("Endpoints")] public string ip_address { get; set; }
     }
 
-    public class Endpoints 
+    public class Endpoints
     {
-        [Key]
-        public string ip_address {get; set;}
-        public bool whitelist {get; set;}
-        public string mac_address {get; set;}
-        public virtual List<Connections> connections {get; set;}
+        [Key] public string ip_address { get; set; }
+        public bool whitelist { get; set; }
+        public string mac_address { get; set; }
+        public virtual List<Connections> connections { get; set; }
 
-        public Endpoints () 
+        public Endpoints()
         {
-             this.connections = new List<Connections>(); 
+            this.connections = new List<Connections>();
         }
-        
     }
-
-     
 
 
     public class AppDbContext : DbContext
@@ -51,17 +42,17 @@ namespace IntrusionDetectionSystem.DAL
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 
         {
-            Database.EnsureDeleted(); 
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies(); 
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         public DbSet<Endpoints> Endpoints { get; set; }
-        public DbSet<Connections> Connections {get; set;}
+        public DbSet<Connections> Connections { get; set; }
     }
 }

@@ -17,6 +17,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       - ConnectionString=Server=postgres-container;Username=postgres;Password=1234;Port=5452;Database=mydatabase;
+      #- ConnectionString=Server=postgres-container;port=5452;database=mydatabase;username=postgres;password=1234;
     networks:
       - dev
 
@@ -33,6 +34,7 @@ services:
       - "5452" # Publishes 5452 to other containers but NOT to host machine
     ports:
       - "5452:5452"
+     # - "5452:5432"
     restart: always
 
     networks:

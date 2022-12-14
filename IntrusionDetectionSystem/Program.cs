@@ -26,14 +26,14 @@ namespace IntrusionDetectionSystem
             .WriteTo.Console()
             .CreateLogger(); 
 
-            Log.Logger.Information("Application Starting"); 
-
+            Log.Logger.Information("Application Starting");
             var host = Host.CreateDefaultBuilder()
                         .ConfigureServices((context, services) =>{
                             services.AddDbContext<AppDbContext>(opt => 
                             //Server=localhost when runnig locally 
                             // otherwise for docker: Server=postgres-container
                             // CHANGE TO 5452 FOR DOCCKER AND 5432 LOCALLY 
+                            // Server=postgres-container when runnig for docker 
                             opt.UseNpgsql(@"Server=localhost;Username=postgres;Password=1234;Port=5432;Database=mydatabase"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddTransient<IEndpoint,Endpoint>();  

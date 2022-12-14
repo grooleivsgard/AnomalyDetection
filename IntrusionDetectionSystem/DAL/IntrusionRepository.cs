@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -13,7 +12,6 @@ namespace IntrusionDetectionSystem.DAL
 {
     public class IntrusionRepository : IIntrusionRepository
     {
-        
         private readonly AppDbContext _db;
         private readonly ILogger<Endpoint> _log;
 
@@ -42,8 +40,6 @@ namespace IntrusionDetectionSystem.DAL
                 //Log error here!
                 return false;
             }
-
-
         }
 
         public async Task<List<Endpoints>> GetAllEndpoints()
@@ -66,6 +62,7 @@ namespace IntrusionDetectionSystem.DAL
             {
                 return null!;
             }
+
             return endpoint;
         }
 
@@ -79,13 +76,13 @@ namespace IntrusionDetectionSystem.DAL
                 {
                     return null!;
                 }
+
                 return endpoint;
             }
             catch
             {
                 return null;
             }
-
         }
 
         public async Task<Endpoints> GetConnection_ByEndpointIP(string ip)
@@ -143,10 +140,8 @@ namespace IntrusionDetectionSystem.DAL
         }
         }
         */
-
         public async Task<List<long>> GetParamValuesByTime(string ip, string parameter, long timestamp)
         {
-
             List<long> totalValues = new List<long>();
 
             if (parameter == "bytes_out")
@@ -154,21 +149,21 @@ namespace IntrusionDetectionSystem.DAL
                 var query = from con in _db.Connections
                     where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
                     select con.bytes_out;
-                    totalValues = query.ToList();
-                    
-            } else if (parameter == "bytes_in")
+                totalValues = query.ToList();
+            }
+            else if (parameter == "bytes_in")
             {
                 var query = from con in _db.Connections
                     where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
                     select con.bytes_in;
-                    totalValues = query.ToList();
-                    
-            } else if (parameter == "rtt")
+                totalValues = query.ToList();
+            }
+            else if (parameter == "rtt")
             {
                 var query = from con in _db.Connections
                     where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
                     select con.rtt;
-                    totalValues = query.ToList();
+                totalValues = query.ToList();
             }
             else
             {
@@ -177,7 +172,6 @@ namespace IntrusionDetectionSystem.DAL
 
             return totalValues;
         }
-
 
 
         /**
@@ -237,5 +231,4 @@ namespace IntrusionDetectionSystem.DAL
                 };
             */
     }
-    }
-
+}

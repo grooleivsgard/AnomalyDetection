@@ -89,6 +89,15 @@ namespace IntrusionDetectionSystem
                    opt.HttpListenerPrefixes = new string[] { $"http://*:9184/" };
                })
                .Build();
+            
+      /*     
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
+
+            var content = await client.GetStringAsync("http://127.0.0.1:8888/metrics");
+
+            Console.WriteLine(content);
+*/
 
             //Local config: Set a http listener and expose the metrics at port 9184 at localhost
             using MeterProvider meterProvider_1 = Sdk.CreateMeterProviderBuilder()
@@ -109,7 +118,7 @@ namespace IntrusionDetectionSystem
             string url = _configuration.GetValue<String>("url") + promQuery;
 
 
-            var response = await _client.GetAsync(url);
+            var response = await _client.GetAsync("http://127.0.0.1:8888/metrics");
             if (response.IsSuccessStatusCode)
             {
                 Stream streamTask = await response.Content.ReadAsStreamAsync();
@@ -287,12 +296,13 @@ namespace IntrusionDetectionSystem
                                         endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                         timer.Stop();
                                         // endpoint.RTT = timer.Elapsed;
-                                        
+                                        if (await isAnomolous(endpoint))
+                                        {
+                                            // log anomolous packet
+                                        }
                                         {
                                         
                                         }
-                                        // KjørStatistikk (endpoint)
-                                        // Nullstill endpoint objekt  
                                         ResetEndpoint(endpoint);
                                     }
                                     else _log.LogWarning("State not Allowed");
