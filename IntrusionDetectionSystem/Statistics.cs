@@ -49,10 +49,7 @@ public class Statistics
 
         return statistics;
     }
-
-
-
-
+    
     public static bool compareValues(List<double> values, long currValue)
     {
         string description = "";

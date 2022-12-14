@@ -1,4 +1,3 @@
-namespace IntrusionDetectionSystem.Data 
+namespace IntrusionDetectionSystem.Data
 {
-    
 }
