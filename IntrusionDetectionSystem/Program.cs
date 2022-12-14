@@ -32,7 +32,9 @@ namespace IntrusionDetectionSystem
                         .ConfigureServices((context, services) =>{
                             services.AddDbContext<AppDbContext>(opt => 
                             //Server=localhost when runnig locally 
-                            opt.UseNpgsql(@"Server=postgres-container;Username=postgres;Password=1234;Port=5432;Database=mydatabase"));
+                            // otherwise for docker: Server=postgres-container
+                            // CHANGE TO 5452 FOR DOCCKER AND 5432 LOCALLY 
+                            opt.UseNpgsql(@"Server=localhost;Username=postgres;Password=1234;Port=5432;Database=mydatabase"));
                             services.AddTransient<IStartup,Startup>();
                             services.AddTransient<IEndpoint,Endpoint>();  
                             services.AddScoped<IEndpointItem,EndpointItem>();  

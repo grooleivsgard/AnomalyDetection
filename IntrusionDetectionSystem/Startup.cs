@@ -105,7 +105,7 @@ namespace IntrusionDetectionSystem
             // Get the metrics data from the prometheus server api 
 
             _client.DefaultRequestHeaders.Accept.Clear();
-            string promQuery = "hosts_src_dst";
+            string promQuery = "    ";
             string url = _configuration.GetValue<String>("url") + promQuery;
 
 
@@ -120,6 +120,7 @@ namespace IntrusionDetectionSystem
                 if (myDeserializedClass is not null)
                 {
                     List<Result> resultCollection = myDeserializedClass.Data.Result;
+                    //Console.WriteLine("At line 123: " + resultCollection.Count()); 
                     foreach (Result result in resultCollection)
                     {
                         // The connection (Our Model) will get all its properties from the result object (Data Transfer Object) EXEPT the bytes_value
@@ -133,11 +134,13 @@ namespace IntrusionDetectionSystem
                             _c.Bytes_value = float.Parse(str);
                             //Add the new connection instance to the collection of connections
                             _connectionDataStrructure.Add(_c);
+                           // Console.WriteLine("At line 136: " +_c.toString()); 
                         }
                         else
                         {
                             _c.Bytes_value = -1;
                             _log.LogError("ProcessRepositories(): result.Value[0] is null");
+                            Console.WriteLine("At line 142: " + "ProcessRepositories(): result.Value[0] is null" ); 
                         }
                     }
                 }
