@@ -105,7 +105,7 @@ namespace IntrusionDetectionSystem
             // Get the metrics data from the prometheus server api 
 
             _client.DefaultRequestHeaders.Accept.Clear();
-            string promQuery = "    ";
+            string promQuery = "hosts_src_dst";
             string url = _configuration.GetValue<String>("url") + promQuery;
 
 
@@ -202,8 +202,7 @@ namespace IntrusionDetectionSystem
                                     if (stateOk)
                                     {
                                         endpoint.Status = 1;
-                                        //endpoint.Bytes_out = connectionPacket.Bytes_value;
-                                        //cnxDB.bytes_out = (long) connectionPacket.Bytes_value;
+                                        endpoint.Bytes_out = (long) connectionPacket.Bytes_value;
                                         timer.Start();
                                         //Save bytes_out to database
 
