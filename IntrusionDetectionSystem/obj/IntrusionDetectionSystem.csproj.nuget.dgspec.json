@@ -1,27 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/IntrusionDetectionSystem.csproj": {}
+    "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\IntrusionDetectionSystem.csproj": {}
   },
   "projects": {
-    "/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/IntrusionDetectionSystem.csproj": {
+    "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\IntrusionDetectionSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/IntrusionDetectionSystem.csproj",
+        "projectUniqueName": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\IntrusionDetectionSystem.csproj",
         "projectName": "IntrusionDetectionSystem",
-        "projectPath": "/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/IntrusionDetectionSystem.csproj",
-        "packagesPath": "/Users/groelisabeth/.nuget/packages/",
-        "outputPath": "/Users/groelisabeth/RiderProjects/AnomalyDetection/IntrusionDetectionSystem/obj/",
+        "projectPath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\IntrusionDetectionSystem.csproj",
+        "packagesPath": "C:\\Users\\bilal\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/groelisabeth/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\bilal\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.org": {}
         },
         "frameworks": {
           "net6.0": {
@@ -114,8 +115,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -124,7 +124,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

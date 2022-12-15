@@ -55,7 +55,11 @@ public  class Endpoint : IEndpoint
         {
             try
             {
-                Data data = JsonSerializer.Deserialize<Data>(f)!;
+                var options = new JsonSerializerOptions()
+                {
+                    AllowTrailingCommas = true //Allow trailing commas 
+                }; 
+                Data data = JsonSerializer.Deserialize<Data>(f,options)!;
                 //if (data is null ) _log.LogWarning("Error inside LoadJson Function: data is null");      
                 if (data is null ) Console.WriteLine("Error inside LoadJson Function: data is null");      
                 if (data!.listOfIps is null) _log.LogWarning("Error inside LoadJson Function: data.listOfIps is null"); 

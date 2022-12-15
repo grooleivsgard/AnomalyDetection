@@ -118,7 +118,7 @@ namespace IntrusionDetectionSystem
             string url = _configuration.GetValue<String>("url") + promQuery;
 
 
-            var response = await _client.GetAsync("http://127.0.0.1:8888/metrics");
+            var response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 Stream streamTask = await response.Content.ReadAsStreamAsync();
@@ -180,7 +180,7 @@ namespace IntrusionDetectionSystem
                 string edgeIp = _configuration.GetValue<String>("edgePrivateInternalIp")!;
 
                 //For debugging: 
-                Console.WriteLine("At line: " + _connectionDataStrructure.Count());
+                Console.WriteLine("At line 183 : " + _connectionDataStrructure.Count());
 
                 foreach (Connection connectionPacket in _connectionDataStrructure)
                 {
@@ -245,9 +245,9 @@ namespace IntrusionDetectionSystem
 
                             else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
 */
-                        }
+                        }// if (dest is in whitelist ) 
 
-                        // if (dest is in whitelist ) 
+                        
 
                         else if (!found)
                         {
@@ -297,6 +297,7 @@ namespace IntrusionDetectionSystem
                                         timer.Stop();
                                         // endpoint.RTT = timer.Elapsed;
                                         if (await isAnomolous(endpoint))
+                                        
                                         {
                                             // log anomolous packet
                                         }

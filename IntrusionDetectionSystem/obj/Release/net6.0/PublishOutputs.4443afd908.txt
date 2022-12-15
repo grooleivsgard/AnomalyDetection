@@ -1,13 +1,17 @@
-C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Intrusion Detection System.exe
-C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Intrusion Detection System.dll
-C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Intrusion Detection System.deps.json
-C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Intrusion Detection System.runtimeconfig.json
-C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Intrusion Detection System.pdb
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\DAL\whitelist.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\appsettings.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\IntrusionDetectionSystem.exe
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\IntrusionDetectionSystem.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\IntrusionDetectionSystem.runtimeconfig.json
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\IntrusionDetectionSystem.pdb
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\AutoMapper.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Castle.Core.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.EntityFrameworkCore.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.EntityFrameworkCore.Proxies.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.Extensions.Configuration.dll
@@ -36,6 +40,8 @@ C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\Int
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.Extensions.Options.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Microsoft.Extensions.Primitives.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Npgsql.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\OpenTelemetry.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\OpenTelemetry.Api.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\OpenTelemetry.Exporter.Prometheus.dll
@@ -50,3 +56,4 @@ C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\Int
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Release\net6.0\publish\IntrusionDetectionSystem.deps.json
