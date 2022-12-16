@@ -31,7 +31,7 @@ namespace IntrusionDetectionSystem.DAL
         public virtual List<Connections> connections { get; set; }
 
         public Endpoints()
-        0
+        {
             this.connections = new List<Connections>();
         }
     }
