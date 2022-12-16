@@ -277,9 +277,10 @@ namespace IntrusionDetectionSystem
                                   /* ** Ip address is in memory whiteList but not saved to Database yet 
                                      ** Save it to Database  */ 
                                 
-                                 // Change Mac address Afterwars 
+                                 // Change Mac address Afterwards 
                                 bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "mock mac"); 
                                 if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
+                                _log.LogInformation("AT line 283 endpoint is created"); // just for debugging 
                             }
 
                             if (endpoint is not null)
@@ -299,7 +300,8 @@ namespace IntrusionDetectionSystem
                                         if (await isAnomolous(endpoint))
                                         
                                         {
-                                            // log anomolous packet
+                                            // log anomolous packet(
+                                            _log.LogInformation("endpoint is anomolous"); 
                                         }
                                         {
                                         
@@ -311,7 +313,7 @@ namespace IntrusionDetectionSystem
                                 }
                                 else
                                 {
-                                    _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
+                                    _log.LogWarning("Error: Ip does not match with mac address");
                                 }
                                 
                             }
