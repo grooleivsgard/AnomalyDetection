@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/IntrusionDetectionSystem/Intrusion Detection System.csproj",
+                "${workspaceFolder}/IntrusionDetectionSystem/IntrusionDetectionSystem.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
