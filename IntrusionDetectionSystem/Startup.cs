@@ -307,6 +307,7 @@ namespace IntrusionDetectionSystem
                                     _log.LogWarning("Error: Ip does not match with mac address");
                                 }
 
+                                newConnection.ip_address = endpoint.Ip; 
                                 newConnection.bytes_out = endpoint.Bytes_out; 
                                 endpoint.Bytes_in = endpoint.Bytes_in;
                                 newConnection.anomaly = endpoint.isAnomolous;

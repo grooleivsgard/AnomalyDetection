@@ -83,7 +83,7 @@ namespace IntrusionDetectionSystem.DAL
             }
             catch (Exception e)
             {
-                _log.LogError("Error while trying to retrieve endpoint from databse. Full error message: "+ e.Message); 
+                _log.LogError("Error while trying to retrieve endpoint from database. Full error message: "+ e.Message); 
                 return null!;
             }
         }
