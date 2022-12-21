@@ -7,7 +7,7 @@ public interface IEndpoint
 {
     string Ip { get; set; }
     string Mac { get; set; }
-    int Status { get; set; }
+    int State { get; set; }
     long Bytes_out { get; set; }
     long Bytes_in { get; set; }
     long RTT { get; set; }

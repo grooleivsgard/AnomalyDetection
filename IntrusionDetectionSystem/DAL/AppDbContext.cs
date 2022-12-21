@@ -9,7 +9,7 @@ namespace IntrusionDetectionSystem.DAL
     public class Connections
     {
         [Key] public int conn_id { get; set; }
-        public long bytes_in { get; set; }
+        public long bytes_in { get; set; } 
 
         public long bytes_out { get; set; }
 
@@ -19,6 +19,10 @@ namespace IntrusionDetectionSystem.DAL
         public long timestamp { get; set; }
 
         public bool anomaly { get; set; }
+        //Set default value to false 
+        public bool isFulfilled { get; set;} 
+
+        public string anomalityReport {get; set;} = "Healthy"; 
 
         [ForeignKey("Endpoints")] public string ip_address { get; set; }
     }

@@ -194,20 +194,22 @@ namespace IntrusionDetectionSystem
                                 
                                 if (match)
                                 {
-                                    bool stateOk = StatesHandler.HandleState(endpoint!.Status, 1);
-
+                                    bool stateOk = StatesHandler.HandleState(endpoint!.State, 1);
+                                    endpoint.Bytes_out = (long) connectionPacket.Bytes_value;
                                     if (stateOk)
                                     {
-                                        endpoint.Status = 1;
-                                        endpoint.Bytes_out = (long) connectionPacket.Bytes_value;
+                                        endpoint.State = 1;
                                         timer.Start();
                                     }
                                     else {
-                                        if (sw.ElapsedMilliseconds > 60000) _log.LogWarning("State not Allowed catched for ip: " + endpoint.Ip);
-                                        endpoint.isAnomolous = true; 
+                                        if (sw.ElapsedMilliseconds > 60000) 
+                                        {
+                                            _log.LogWarning("State not Allowed catched for ip: " + endpoint.Ip + ". This ip was trying to go from state " + endpoint!.State + " to state 1");
+                                            endpoint.isAnomolous = true; 
+                                            endpoint.anomalityReport += " Deviation: Possibly something wrong is going on. Catched Unallowed state. State not Allowed catched for ip: " + endpoint.Ip + ". This ip was trying to go from state " + endpoint!.State + " to state 1.";
+                                        }
                                     }
                                 }
-
                                 else
                                 {
                                     _log.LogWarning("The ip " + connectionPacket.DestinationAddress + " doesen't match with the corresponding mac address");
@@ -223,7 +225,7 @@ namespace IntrusionDetectionSystem
                         else if (!found)
                         {
                             _log.LogCritical("The edge is talking to an unkown ip " + connectionPacket.DestinationAddress);
-                            //legg inn i unknown db
+                            
                         }
                     }
 
@@ -245,11 +247,8 @@ namespace IntrusionDetectionSystem
                             
                             if (endpointDB is null) 
                             {
-                               
                                   /* ** Ip address is in memory whiteList but not saved to Database yet 
                                      ** Save it to Database  */ 
-                                
-                                 // Change Mac address Afterwards 
                                 bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, endpoint!.Mac); 
                                 if (created)
                                 {
@@ -264,15 +263,19 @@ namespace IntrusionDetectionSystem
 
                             if (endpoint is not null)
                             {
+                                // This connection object will be saved to the corresponding endpoint list of connections.
+                                Connections newConnection = new Connections();
+            
                                 bool match = MatchIPtoMac(connectionPacket.SourceMac!, endpoint.Mac);
+
+                                
 
                                 if (match)
                                 {
-                                    bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
+                                    bool stateOk = StatesHandler.HandleState(endpoint!.State, 2);
                                     if (stateOk)
                                     {
-                                        endpoint.Status = 2;
-                                        endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
+                                        endpoint.State = 2;
                                         timer.Stop();
                                         // endpoint.RTT = timer.Elapsed;
 
@@ -282,21 +285,38 @@ namespace IntrusionDetectionSystem
                                         {
                                             // log anomolous packet
                                             endpoint.isAnomolous = true; 
-                                            _log.LogInformation("endpoint is anomolous"); 
-                                            endpoint.anomalityReport = "Endpoint with ip: " + endpoint.Ip + " is suspected to be suspecious"; 
+                                            _log.LogInformation("endpoint is statsitically anomolous"); 
+                                            endpoint.anomalityReport += " Endpoint with ip: " + endpoint.Ip + " is suspected to be statistically suspecious"; 
                                         }
                                         
                                         ResetEndpoint(endpoint);
                                     }
-                                    else _log.LogWarning("State not Allowed");
+                                    else
+                                    {
+                                        _log.LogWarning("State not Allowed");
+                                        endpoint.isAnomolous = true; 
+                                        endpoint.anomalityReport += " IP " + endpoint.Ip + " is trying to illegally from state " + endpoint.State + " to state 2";
+                                    } 
                                     
                                 }
                                 else
                                 {
+                                    endpoint.isAnomolous = true; 
+                                    endpoint.anomalityReport += " Ip " + endpoint.Ip + " does not match with this mac address " + endpoint.Mac;  
+                                    
                                     _log.LogWarning("Error: Ip does not match with mac address");
                                 }
-                                
+
+                                newConnection.bytes_out = endpoint.Bytes_out; 
+                                endpoint.Bytes_in = endpoint.Bytes_in;
+                                newConnection.anomaly = endpoint.isAnomolous;
+                                newConnection.anomalityReport = endpoint.anomalityReport;
+
+                                int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB!); 
+        
                             }
+                                
+
                             
                         }
 
@@ -416,8 +436,9 @@ namespace IntrusionDetectionSystem
             endpoint.Bytes_in = 0;
             endpoint.Bytes_out = 0; 
             endpoint.RTT = 0;
-            endpoint.Status = 0;
+            endpoint.State = 0;
             endpoint.isAnomolous = false; 
+            endpoint.anomalityReport = ""; 
             
         }
 
@@ -435,9 +456,9 @@ namespace IntrusionDetectionSystem
                      ** Save new endpoint to Endpoints Table in Database
                      ** Retrieve it again 
                     */
-                    endpointDB = await _db.GetEndpointByIP(ip);  
+                   
             }  
-
+            endpointDB = await _db.GetEndpointByIP(ip);  
             Connections newConnection = new Connections(); 
             newConnection.bytes_in = endpoint.Bytes_in; 
             newConnection.bytes_out = endpoint.Bytes_out; 

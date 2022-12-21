@@ -149,7 +149,7 @@ namespace IntrusionDetectionSystem.DAL
 
             if (parameter == "bytes_out")
             {
-                var query = from con in _db.Connections
+                var query =  from con in _db.Connections
                     where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
                     select con.bytes_out;
                 totalValues =  query.ToList();

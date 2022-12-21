@@ -24,23 +24,22 @@ public  class Endpoint : IEndpoint
     
     public Endpoint( )
     {
-        
+        isFulfilled = (Bytes_out != -1 && Bytes_in != -1); 
     }
 
     [Key]
     public int conn_Id {get; set; }
     public string Ip { get; set; }
-    
     public string Mac { get; set; }
-    public int Status { get; set; }
-    public long Bytes_out { get; set; }
-    public long Bytes_in { get; set; }
+    public int State { get; set; }
+    //Set the default value to -1, means this value was never modified 
+    public long Bytes_out { get; set; } = -1; 
+    public long Bytes_in { get; set; }= -1; 
     public long RTT { get; set; }
-
-    public bool isAnomolous {get; set;}
-
+    //Set the default value to false
+    public bool isAnomolous {get; set;} = false; 
     public string anomalityReport {get; set;}
-
+    public bool isFulfilled {get; set;}
 
     public class Data
     {   [JsonPropertyName("Data")]
