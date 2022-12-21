@@ -39,6 +39,8 @@ public  class Endpoint : IEndpoint
 
     public bool isAnomolous {get; set;}
 
+    public string anomalityReport {get; set;}
+
 
     public class Data
     {   [JsonPropertyName("Data")]

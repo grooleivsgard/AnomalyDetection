@@ -72,7 +72,8 @@ namespace IntrusionDetectionSystem.DAL
         {
             try
             {
-                Endpoints endpoint = await _db.Endpoints.FirstOrDefaultAsync(endp => endp.ip_address == ip);
+                Endpoints endpoint = await _db.Endpoints.FirstOrDefaultAsync(endp => endp.ip_address == ip) ?? 
+                throw new ArgumentNullException("Endpoint with corresponding ip address could not be found in endpoints Table");
                 if (endpoint is null)
                 {
                     return null!;
@@ -80,9 +81,10 @@ namespace IntrusionDetectionSystem.DAL
 
                 return endpoint;
             }
-            catch
+            catch (Exception e)
             {
-                return null;
+                _log.LogError("Error while trying to retrieve endpoint from databse. Full error message: "+ e.Message); 
+                return null!;
             }
         }
 

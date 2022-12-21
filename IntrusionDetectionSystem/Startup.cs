@@ -214,24 +214,8 @@ namespace IntrusionDetectionSystem
                                 }
                             }
 
-                            /*
-                            // In database: 
-                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.DestinationAddress);                            
-                            
-                            Connections cnxDB; 
-                            
-                            
+                       
 
-                            if (endpointDB.connections.Count() == 0 )
-                            {
-                                // If endpoint has no connections yet 
-
-                                // Create a new Connection row and add it to the list of connections that this endpoint has in database 
-                                 cnxDB = new Connections();
-                            }
-
-                            else cnxDB = endpointDB.connections.FirstOrDefault(conn => conn.conn_id == endpointDB.latest_conn_id); 
-*/
                         }// if (dest is in whitelist ) 
 
                         
@@ -243,7 +227,7 @@ namespace IntrusionDetectionSystem
                         }
                     }
 
-                    // src_ip != edge_ip {In this case it is not the edge that is talking but another ip }
+                    // src_ip != edge_ip {In this case it is not the edge that is talking but another ip is talking to the edge }
                     else 
                     {
                         // Check if that ip is stored in the whitelist 
@@ -267,33 +251,41 @@ namespace IntrusionDetectionSystem
                                 
                                  // Change Mac address Afterwards 
                                 bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, endpoint!.Mac); 
-                                if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
-                                _log.LogInformation("AT line 283 endpoint is created"); // just for debugging 
+                                if (created)
+                                {
+                                   endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
+                                   _log.LogInformation("New endpoint is created at database"); // just for debugging  
+                                } 
+                                else if (!created) 
+                                {
+                                    _log.LogDebug("Error while trying to save new endpoint to db");
+                                }
                             }
 
                             if (endpoint is not null)
                             {
-                                bool match = MatchIPtoMac(connectionPacket.SourceMac, endpoint.Mac);
+                                bool match = MatchIPtoMac(connectionPacket.SourceMac!, endpoint.Mac);
 
                                 if (match)
                                 {
                                     bool stateOk = StatesHandler.HandleState(endpoint!.Status, 2);
-                                    bool anomalous = false;
                                     if (stateOk)
                                     {
                                         endpoint.Status = 2;
                                         endpoint.Bytes_in = (long)connectionPacket.Bytes_value;
                                         timer.Stop();
                                         // endpoint.RTT = timer.Elapsed;
+
+                                        // CHECK IF THE STATICTICS REVEALS SOME ANOMALITY 
                                         if (await isAnomolous(endpoint))
                                         
                                         {
-                                            // log anomolous packet(
+                                            // log anomolous packet
+                                            endpoint.isAnomolous = true; 
                                             _log.LogInformation("endpoint is anomolous"); 
+                                            endpoint.anomalityReport = "Endpoint with ip: " + endpoint.Ip + " is suspected to be suspecious"; 
                                         }
-                                        {
                                         
-                                        }
                                         ResetEndpoint(endpoint);
                                     }
                                     else _log.LogWarning("State not Allowed");
@@ -425,6 +417,7 @@ namespace IntrusionDetectionSystem
             endpoint.Bytes_out = 0; 
             endpoint.RTT = 0;
             endpoint.Status = 0;
+            endpoint.isAnomolous = false; 
             
         }
 
