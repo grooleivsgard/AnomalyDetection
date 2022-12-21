@@ -243,20 +243,21 @@ namespace IntrusionDetectionSystem
                         }
                     }
 
-                    else // src_ip != edge_ip {In this case it is not the edge that is talking but another ip }
+                    // src_ip != edge_ip {In this case it is not the edge that is talking but another ip }
+                    else 
                     {
-                        // Check if that ip is stored in the white list 
-                        bool found = FindIPAddressInWhiteList(connectionPacket.SourceAddress);
+                        // Check if that ip is stored in the whitelist 
+                        bool found = FindIPAddressInWhiteList(connectionPacket.SourceAddress!);
 
                         if (found)
                         {
                             // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
                             
                             // In Memory: 
-                            Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.SourceAddress);
+                            Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket!.SourceAddress!) ?? throw new ArgumentNullException("Cannot find the endpoint object that have the same ip address as the destination ip");
                             
                             // In database: 
-                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
+                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
                             
                             if (endpointDB is null) 
                             {
@@ -266,7 +267,7 @@ namespace IntrusionDetectionSystem
                                 
                                  // Change Mac address Afterwards 
                                 bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, endpoint!.Mac); 
-                                if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
+                                if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
                                 _log.LogInformation("AT line 283 endpoint is created"); // just for debugging 
                             }
 

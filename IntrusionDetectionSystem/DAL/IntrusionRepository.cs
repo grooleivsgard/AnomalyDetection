@@ -28,9 +28,9 @@ namespace IntrusionDetectionSystem.DAL
             {
                 Endpoints new_endpoint_toDb = new Endpoints();
                 new_endpoint_toDb.ip_address = ip;
-                new_endpoint_toDb.mac_address = mac_address;
                 new_endpoint_toDb.whitelist = isWhitelist;
-
+                new_endpoint_toDb.mac_address = mac_address;
+               
                 _db.Endpoints.Add(new_endpoint_toDb);
                 await _db.SaveChangesAsync();
                 return true;
@@ -38,6 +38,7 @@ namespace IntrusionDetectionSystem.DAL
             catch (Exception e)
             {
                 //Log error here!
+                _log.LogInformation("error Saving endpoint to DB. Full error message: " + e.Message); 
                 return false;
             }
         }
