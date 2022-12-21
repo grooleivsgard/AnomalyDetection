@@ -80,7 +80,7 @@ namespace IntrusionDetectionSystem
 
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
 
-            //Docker config: Set a http listener and expose the metrics at port 9184 
+            //For Docker config: Set a http listener and expose the metrics at port 9184 
             using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
                .AddMeter("Raalabs.UnknowIps")
                .AddPrometheusExporter(opt =>
@@ -115,6 +115,7 @@ namespace IntrusionDetectionSystem
 
             _client.DefaultRequestHeaders.Accept.Clear();
             string promQuery = "hosts_src_dst";
+            // "http://10.9.10.14:9090/api/v1/query?query=host_src_dst
             string url = _configuration.GetValue<String>("url") + promQuery;
 
 
@@ -180,29 +181,28 @@ namespace IntrusionDetectionSystem
                 string edgeIp = _configuration.GetValue<String>("edgePrivateInternalIp")!;
 
                 //For debugging: 
-                Console.WriteLine("At line 183 : " + _connectionDataStrructure.Count());
+                Console.WriteLine("At line 184 in code we have  : " + _connectionDataStrructure.Count() + " Connection strings");
 
                 foreach (Connection connectionPacket in _connectionDataStrructure)
                 {
-                    //_log.LogInformation(connectionPacket.toString());
 
-                    if (connectionPacket.SourceAddress == edgeIp) // if  src_ip == edge_ip { the edge is talking to another ip (destination ip) }
+                    if (connectionPacket.SourceAddress == edgeIp) // if  src_ip == edge_ip {IF the edge is talking to another ip (destination ip) }
                     {
                         // Check if this ip that the edge is talking to is stored in the whiteList 
-                        bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress);
+                        bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress!);
                         
                         if (found)
                         {
                             // Get the endpoint object that have the same ip address as the destination ip 
 
                             // In Memory: 
-                            Endpoint endpoint = (Endpoint)_EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress);
+                            Endpoint endpoint =  _EndpointToTabell!.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress) ?? throw new ArgumentNullException("Cannot find the endpoint object that have the same ip address as the destination ip");
 
                             
 
                             if (endpoint is not null) 
                             { 
-                                bool match = MatchIPtoMac(connectionPacket.DestinationMac, endpoint.Mac);
+                                bool match = MatchIPtoMac(connectionPacket.DestinationMac ?? throw new ArgumentNullException ("ConnectionPacket its DestinationMac is null"), endpoint.Mac);
                                 
                                 if (match)
                                 {
@@ -223,7 +223,7 @@ namespace IntrusionDetectionSystem
 
                                 else
                                 {
-                                    _log.LogWarning("Internal error: Ip is found in whitelist but not declared as an object");
+                                    _log.LogWarning("The ip " + connectionPacket.DestinationAddress + " doesen't match with the corresponding mac address");
                                 }
                             }
 
@@ -251,7 +251,7 @@ namespace IntrusionDetectionSystem
 
                         else if (!found)
                         {
-                            _log.LogCritical("IP not in whitelist");
+                            _log.LogCritical("The edge is talking to an unkown ip " + connectionPacket.DestinationAddress);
                             //legg inn i unknown db
                         }
                     }
@@ -278,7 +278,7 @@ namespace IntrusionDetectionSystem
                                      ** Save it to Database  */ 
                                 
                                  // Change Mac address Afterwards 
-                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, "mock mac"); 
+                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, endpoint!.Mac); 
                                 if (created) endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress);
                                 _log.LogInformation("AT line 283 endpoint is created"); // just for debugging 
                             }
@@ -322,7 +322,8 @@ namespace IntrusionDetectionSystem
 
                         else
                         {
-                            _log.LogWarning("Src not in whiteListe");
+                            
+                            _log.LogWarning("Unknown Ip " + connectionPacket.SourceAddress + " is trying to talk to edge");
                             unkown++;
                             s_unknowIps.Add(1);
                             //legg inn i unknown db

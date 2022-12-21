@@ -4,19 +4,21 @@ namespace Models
 {
     public class Connection
     {
+    
+       
         [Key]
         public int Id {get; set;}
-        public string Name { get; set; }
-        public string SourceAddress { get; set; }
-        public string DestinationAddress { get; set; }
+        public string? Name { get; set; }
+        public string? SourceAddress { get; set; }
+        public string? DestinationAddress { get; set; }
         
-        public string SourceMac { get; set; }
-        
-        public string DestinationMac { get; set; }
-        public string DestinationPort { get; set; }
-        public string FirstTimeSeenDate { get; set; }
-        public string Instance {get; set;}
-        public string Job {get; set;}
+        public string? SourceMac { get; set; }
+     
+        public string? DestinationMac { get; set; }
+        public string? DestinationPort { get; set; }
+        public string? FirstTimeSeenDate { get; set; }
+        public string? Instance {get; set;}
+        public string? Job {get; set;}
         
         public float Bytes_value {get; set;}
 

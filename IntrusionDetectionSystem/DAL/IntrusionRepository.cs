@@ -149,13 +149,13 @@ namespace IntrusionDetectionSystem.DAL
                 var query = from con in _db.Connections
                     where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
                     select con.bytes_out;
-                totalValues = query.ToList();
+                totalValues =  query.ToList();
             }
             else if (parameter == "bytes_in")
             {
                 var query = from con in _db.Connections
                     where (con.ip_address == ip && con.timestamp >= timestamp && con.anomaly == false)
-                    select con.bytes_in;
+                     select con.bytes_in;
                 totalValues = query.ToList();
             }
             else if (parameter == "rtt")
@@ -170,7 +170,7 @@ namespace IntrusionDetectionSystem.DAL
                 throw new ArgumentException("Invalid parameter");
             }
 
-            return totalValues;
+             return totalValues;
         }
 
 

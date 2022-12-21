@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AutoMapper;
 using IntrusionDetectionSystem;
 using Microsoft.Extensions.Logging;
 
@@ -13,8 +11,8 @@ namespace Models;
 public  class Endpoint : IEndpoint
 
 {
-    private readonly ILogger<Startup> _log;
-    IList<EndpointItem> list;
+    private readonly ILogger<Startup>? _log;
+    IList<EndpointItem>? list;
 
     // Tabell av endpoints 
     IList<Endpoint> EndPoints = new List<Endpoint>();
@@ -30,14 +28,14 @@ public  class Endpoint : IEndpoint
     }
 
     [Key]
-    public int conn_Id {get; set; }
-    public string Ip { get; set; }
+    public int? conn_Id {get; set; }
+    public string? Ip { get; set; }
     
-    public string Mac { get; set; }
-    public int Status { get; set; }
-    public long Bytes_out { get; set; }
-    public long Bytes_in { get; set; }
-    public long RTT { get; set; }
+    public string? Mac { get; set; }
+    public int? Status { get; set; }
+    public long? Bytes_out { get; set; }
+    public long? Bytes_in { get; set; }
+    public long? RTT { get; set; }
 
 
 
