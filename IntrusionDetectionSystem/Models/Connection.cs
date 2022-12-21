@@ -11,17 +11,13 @@ namespace Models
         public string? Name { get; set; }
         public string? SourceAddress { get; set; }
         public string? DestinationAddress { get; set; }
-        
-        public string? SourceMac { get; set; }
-     
-        public string? DestinationMac { get; set; }
-        public string? DestinationPort { get; set; }
+         public string? DestinationPort { get; set; }
         public string? FirstTimeSeenDate { get; set; }
+        public string? SourceMac { get; set; }
+        public string? DestinationMac { get; set; }
         public string? Instance {get; set;}
         public string? Job {get; set;}
-        
         public float Bytes_value {get; set;}
-
         public string toString()
         {
             return "Connection going from: " + this.SourceAddress + "src_mac: " + SourceMac + "dest_mac " + DestinationMac

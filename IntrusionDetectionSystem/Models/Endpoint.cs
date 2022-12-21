@@ -28,15 +28,16 @@ public  class Endpoint : IEndpoint
     }
 
     [Key]
-    public int? conn_Id {get; set; }
-    public string? Ip { get; set; }
+    public int conn_Id {get; set; }
+    public string Ip { get; set; }
     
-    public string? Mac { get; set; }
-    public int? Status { get; set; }
-    public long? Bytes_out { get; set; }
-    public long? Bytes_in { get; set; }
-    public long? RTT { get; set; }
+    public string Mac { get; set; }
+    public int Status { get; set; }
+    public long Bytes_out { get; set; }
+    public long Bytes_in { get; set; }
+    public long RTT { get; set; }
 
+    public bool isAnomolous {get; set;}
 
 
     public class Data
@@ -60,10 +61,10 @@ public  class Endpoint : IEndpoint
                 Data data = JsonSerializer.Deserialize<Data>(f,options)!;
                 //if (data is null ) _log.LogWarning("Error inside LoadJson Function: data is null");      
                 if (data is null ) Console.WriteLine("Error inside LoadJson Function: data is null");      
-                if (data!.listOfIps is null) _log.LogWarning("Error inside LoadJson Function: data.listOfIps is null"); 
+                if (data!.listOfIps is null) _log!.LogWarning("Error inside LoadJson Function: data.listOfIps is null"); 
                 if (data!.listOfIps is null) Console.WriteLine("Error inside LoadJson Function: data.listOfIps is null"); 
                 else this.list = data.listOfIps; 
-                return list; 
+                return list!; 
 
             }
 
@@ -88,12 +89,13 @@ public  class Endpoint : IEndpoint
     public  IList<Endpoint> EndpointToTabell()
     {
         
-        foreach (EndpointItem item in list)
+        foreach (EndpointItem item in list!)
         {
             Endpoint e = new Endpoint();
             e.Ip = item.IP;
+            e.Mac =  item.MAC; 
             EndPoints.Add(e);
-            Console.WriteLine(e.Ip);
+            Console.WriteLine(e.Ip +  " & Mac adrress: " + e.Mac);
         }
         Console.WriteLine("After all we have a table with " + EndPoints.Count() + " Endpoints");
         return  EndPoints;
@@ -114,12 +116,14 @@ public class EndpointItem: IEndpointItem
     {
         public string IP { get; set; }
         public string Id { get; set; }
+        public string MAC {get; set; }
     }
 
     public interface IEndpointItem 
     {
         string IP { get; set; }
         string Id { get; set; }
+        string MAC {get; set; }
     }
 
 

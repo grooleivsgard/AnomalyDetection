@@ -74,9 +74,6 @@ namespace IntrusionDetectionSystem
         {
             // Call prometheusexporter function to expose uknown_ips Metric
             s_unknowIps.Add(1);
-            // await _db.CreateNewEndpoint("10.10.1.0", false, "mac Address 1", 9999);
-
-
 
             _log.LogInformation("2 -> Prometheus_Opentelemery exoprter starting");
 
@@ -90,14 +87,7 @@ namespace IntrusionDetectionSystem
                })
                .Build();
             
-      /*     
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "C# console program");
 
-            var content = await client.GetStringAsync("http://127.0.0.1:8888/metrics");
-
-            Console.WriteLine(content);
-*/
 
             //Local config: Set a http listener and expose the metrics at port 9184 at localhost
             using MeterProvider meterProvider_1 = Sdk.CreateMeterProviderBuilder()
@@ -115,7 +105,6 @@ namespace IntrusionDetectionSystem
 
             _client.DefaultRequestHeaders.Accept.Clear();
             string promQuery = "hosts_src_dst";
-            // "http://10.9.10.14:9090/api/v1/query?query=host_src_dst
             string url = _configuration.GetValue<String>("url") + promQuery;
 
 
@@ -129,16 +118,15 @@ namespace IntrusionDetectionSystem
 
                 if (myDeserializedClass is not null)
                 {
-                    List<Result> resultCollection = myDeserializedClass.Data.Result;
-                    //Console.WriteLine("At line 123: " + resultCollection.Count()); 
-                    foreach (Result result in resultCollection)
+                    List<Result> resultCollection = myDeserializedClass.Data!.Result!;
+                    foreach (Result result in resultCollection!)
                     {
                         // The connection (Our Model) will get all its properties from the result object (Data Transfer Object) EXEPT the bytes_value
 
                         Connection _c = _mapper.Map<Connection>(result.Metric);
 
                         // The connection gets its btyes size  from the result its list of value
-                        if (result.Value[0] is not null)
+                        if (result.Value![0] is not null)
                         {
                             string str = result.Value[0].ToString()!;
                             _c.Bytes_value = float.Parse(str);
@@ -150,7 +138,7 @@ namespace IntrusionDetectionSystem
                         {
                             _c.Bytes_value = -1;
                             _log.LogError("ProcessRepositories(): result.Value[0] is null");
-                            Console.WriteLine("At line 142: " + "ProcessRepositories(): result.Value[0] is null" ); 
+                            Console.WriteLine("At line 141: " + "ProcessRepositories(): result.Value[0] is null" ); 
                         }
                     }
                 }
@@ -213,11 +201,10 @@ namespace IntrusionDetectionSystem
                                         endpoint.Status = 1;
                                         endpoint.Bytes_out = (long) connectionPacket.Bytes_value;
                                         timer.Start();
-                                        //Save bytes_out to database
-
                                     }
                                     else {
-                                        if (sw.ElapsedMilliseconds > 60000) _log.LogWarning("State not Allowed");
+                                        if (sw.ElapsedMilliseconds > 60000) _log.LogWarning("State not Allowed catched for ip: " + endpoint.Ip);
+                                        endpoint.isAnomolous = true; 
                                     }
                                 }
 
