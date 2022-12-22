@@ -295,7 +295,8 @@ namespace IntrusionDetectionSystem
                                     {
                                         _log.LogWarning("State not Allowed");
                                         endpoint.isAnomolous = true; 
-                                        endpoint.anomalityReport += " IP " + endpoint.Ip + " is trying to illegally from state " + endpoint.State + " to state 2";
+                                        endpoint.anomalityReport += " IP " + endpoint.Ip + " is trying to illegally go from state " + endpoint.State + " to state 2";
+                                        ResetEndpoint(endpoint);
                                     } 
                                     
                                 }
@@ -303,8 +304,8 @@ namespace IntrusionDetectionSystem
                                 {
                                     endpoint.isAnomolous = true; 
                                     endpoint.anomalityReport += " Ip " + endpoint.Ip + " does not match with this mac address " + endpoint.Mac;  
-                                    
                                     _log.LogWarning("Error: Ip does not match with mac address");
+                                    ResetEndpoint(endpoint);
                                 }
 
                                 newConnection.ip_address = endpoint.Ip; 
