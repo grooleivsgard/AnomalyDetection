@@ -140,6 +140,7 @@ namespace IntrusionDetectionSystem
                             _log.LogError("ProcessRepositories(): result.Value[0] is null");
                             Console.WriteLine("At line 141: " + "ProcessRepositories(): result.Value[0] is null" ); 
                         }
+                        
                     }
                 }
 
