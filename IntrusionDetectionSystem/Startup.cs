@@ -124,15 +124,20 @@ namespace IntrusionDetectionSystem
                         // The connection (Our Model) will get all its properties from the result object (Data Transfer Object) EXEPT the bytes_value
 
                         Connection _c = _mapper.Map<Connection>(result.Metric);
-
-                        // The connection gets its btyes size  from the result its list of value
-                        if (result.Value![0] is not null)
+                        if (result.Value != null && result.Value.Count > 0)
                         {
-                            string str = result.Value[0].ToString() ?? "-1";
-                            _c.Bytes_value = (long) Double.Parse(str); 
-                            //Add the new connection instance to the collection of connections
-                            _connectionDataStrructure.Add(_c);
-                           // Console.WriteLine("At line 136: " +_c.toString()); 
+                            try
+                            {
+                                string str = result.Value[0].ToString() ?? "-1";
+                                _c.Bytes_value = (long)Double.Parse(str);
+                                //Add the new connection instance to the collection of connections
+                                _connectionDataStrructure.Add(_c);
+                                // Console.WriteLine("At line 136: " +_c.toString()); 
+                            }
+                            catch (FormatException ex)
+                            {
+                                throw new Exception("parsing not valid. The error message was: " + ex.Message);
+                            }
                         }
                         else
                         {
