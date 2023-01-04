@@ -4,9 +4,10 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Models;
 using Microsoft.EntityFrameworkCore;
-using static Models.Endpoint;
 using Microsoft.Extensions.Logging;
 using IntrusionDetectionSystem.DAL;
+using Serilog.Formatting.Json;
+using Serilog.Events;
 
 
 //Di, serilog, Settings 
@@ -24,6 +25,12 @@ namespace IntrusionDetectionSystem
             .ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
             .WriteTo.Console()
+            .WriteTo.File(new JsonFormatter(),
+                                          "important.json",
+                                          restrictedToMinimumLevel: LogEventLevel.Warning)
+                            // add a rolling file for all logs
+                            .WriteTo.File("all-.logs",
+                                          rollingInterval: RollingInterval.Day)
             .CreateLogger(); 
 
             Log.Logger.Information("Application Starting");

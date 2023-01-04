@@ -17,7 +17,7 @@ namespace Models
         public string? DestinationMac { get; set; }
         public string? Instance {get; set;}
         public string? Job {get; set;}
-        public float Bytes_value {get; set;}
+        public long Bytes_value {get; set;}
         public string toString()
         {
             return "Connection going from: " + this.SourceAddress + "src_mac: " + SourceMac + "dest_mac " + DestinationMac

@@ -128,8 +128,8 @@ namespace IntrusionDetectionSystem
                         // The connection gets its btyes size  from the result its list of value
                         if (result.Value![0] is not null)
                         {
-                            string str = result.Value[0].ToString()!;
-                            _c.Bytes_value = float.Parse(str);
+                            string str = result.Value[0].ToString() ?? "-1";
+                            _c.Bytes_value = (long) Double.Parse(str); 
                             //Add the new connection instance to the collection of connections
                             _connectionDataStrructure.Add(_c);
                            // Console.WriteLine("At line 136: " +_c.toString()); 
@@ -195,7 +195,7 @@ namespace IntrusionDetectionSystem
                                 if (match)
                                 {
                                     bool stateOk = StatesHandler.HandleState(endpoint!.State, 1);
-                                    endpoint.Bytes_out = (long) connectionPacket.Bytes_value;
+                                    endpoint.Bytes_out =  connectionPacket.Bytes_value;
                                     if (stateOk)
                                     {
                                         endpoint.State = 1;
@@ -287,6 +287,7 @@ namespace IntrusionDetectionSystem
                                             endpoint.isAnomolous = true; 
                                             _log.LogInformation("endpoint is statsitically anomolous"); 
                                             endpoint.anomalityReport += " Endpoint with ip: " + endpoint.Ip + " is suspected to be statistically suspecious"; 
+                                             await SaveConnectionToDatabase(connectionPacket, endpoint); 
                                         }
                                         
                                         ResetEndpoint(endpoint);
@@ -296,6 +297,7 @@ namespace IntrusionDetectionSystem
                                         _log.LogWarning("State not Allowed");
                                         endpoint.isAnomolous = true; 
                                         endpoint.anomalityReport += " IP " + endpoint.Ip + " is trying to illegally go from state " + endpoint.State + " to state 2";
+                                         await SaveConnectionToDatabase(connectionPacket, endpoint); 
                                         ResetEndpoint(endpoint);
                                     } 
                                     
@@ -305,16 +307,17 @@ namespace IntrusionDetectionSystem
                                     endpoint.isAnomolous = true; 
                                     endpoint.anomalityReport += " Ip " + endpoint.Ip + " does not match with this mac address " + endpoint.Mac;  
                                     _log.LogWarning("Error: Ip does not match with mac address");
+                                    await SaveConnectionToDatabase(connectionPacket, endpoint); 
                                     ResetEndpoint(endpoint);
                                 }
 
-                                newConnection.ip_address = endpoint.Ip; 
+                              /* newConnection.ip_address = endpoint.Ip; 
                                 newConnection.bytes_out = endpoint.Bytes_out; 
-                                endpoint.Bytes_in = endpoint.Bytes_in;
+                                newConnection.bytes_in = endpoint.Bytes_in;
                                 newConnection.anomaly = endpoint.isAnomolous;
                                 newConnection.anomalityReport = endpoint.anomalityReport;
 
-                                int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB!); 
+                                int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB!); */
         
                             }
                                 
@@ -343,6 +346,37 @@ namespace IntrusionDetectionSystem
                 }
                 Thread.Sleep(1000);
             }
+        }
+
+        public async Task<int> SaveConnectionToDatabase1 (Connection connectionPacket, Endpoint endpoint )
+        {
+            // In database: 
+                            Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
+                            
+                            if (endpointDB is null) 
+                            {
+                                  /* ** Ip address is in memory whiteList but not saved to Database yet 
+                                     ** Save it to Database  */ 
+                                bool created = await _db.CreateNewEndpointInDb(endpoint!.Ip, true, endpoint!.Mac); 
+                                if (created)
+                                {
+                                   endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
+                                   _log.LogInformation("New endpoint is created at database"); // just for debugging  
+                                } 
+                                else if (!created) 
+                                {
+                                    _log.LogDebug("Error while trying to save new endpoint to db");
+                                }
+                            }
+            Connections newConnection = new Connections();
+            newConnection.ip_address = endpoint.Ip; 
+                                newConnection.bytes_out = endpoint.Bytes_out; 
+                                newConnection.bytes_in = endpoint.Bytes_in;
+                                newConnection.anomaly = endpoint.isAnomolous;
+                                newConnection.anomalityReport = endpoint.anomalityReport;
+
+                                int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB!);
+            return connectionID; 
         }
 
         private bool FindIPAddressInWhiteList(string _ipAddress)
@@ -444,7 +478,7 @@ namespace IntrusionDetectionSystem
             
         }
 
-        public async Task<int> SaveConnectionToDatabase(Endpoint endpoint) 
+        public async Task<int> SaveConnectionToDatabase(Connection connectionPacket, Endpoint endpoint) 
         {
             string ip = endpoint.Ip; 
             Endpoints endpointDB = await _db.GetEndpointByIP(ip);     
@@ -471,6 +505,9 @@ namespace IntrusionDetectionSystem
             // Return the Id of the new Connection and save it to Connections Table 
             int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB); 
             return connectionID; 
+
+
+            
 
         }//SaveConnectionToDatabase() 
 

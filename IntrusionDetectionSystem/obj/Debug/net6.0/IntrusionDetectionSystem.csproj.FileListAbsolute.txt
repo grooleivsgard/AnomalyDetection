@@ -146,3 +146,4 @@ C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\Int
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\obj\Debug\net6.0\IntrusionDetectionSystem.pdb
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\obj\Debug\net6.0\IntrusionDetectionSystem.genruntimeconfig.cache
 C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\obj\Debug\net6.0\ref\IntrusionDetectionSystem.dll
+C:\Users\bilal\Desktop\bachelor oppgave\Source code\RaaLabs\AnomalyDetection\IntrusionDetectionSystem\bin\Debug\net6.0\Serilog.Sinks.File.dll

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6qG9awHcFGJnl5JbiYPMbc3s0B+Yrgohr452jYgbcw8tMIGSECHscdHCly7qaoa51gvKW66ZdlBMs1lMpk/VLA==",
+  "dgSpecHash": "FE7uM+pShOR5TA3uGOIXUWOWwobEHmhyGH9VCSYt7uCMiRIy038VJIXgtN+3C+fHpQYc8jREWv9LvHZHLig1VQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\bilal\\Desktop\\bachelor oppgave\\Source code\\RaaLabs\\AnomalyDetection\\IntrusionDetectionSystem\\IntrusionDetectionSystem.csproj",
   "expectedPackageFiles": [
@@ -57,6 +57,7 @@
     "C:\\Users\\bilal\\.nuget\\packages\\serilog.extensions.logging\\3.1.0\\serilog.extensions.logging.3.1.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\serilog.settings.configuration\\3.5.0-dev-00355\\serilog.settings.configuration.3.5.0-dev-00355.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\serilog.sinks.console\\4.1.1-dev-00896\\serilog.sinks.console.4.1.1-dev-00896.nupkg.sha512",
+    "C:\\Users\\bilal\\.nuget\\packages\\serilog.sinks.file\\5.0.1-dev-00947\\serilog.sinks.file.5.0.1-dev-00947.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\system.collections.immutable\\1.4.0\\system.collections.immutable.1.4.0.nupkg.sha512",
     "C:\\Users\\bilal\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0-rc.1.21451.13\\system.diagnostics.diagnosticsource.6.0.0-rc.1.21451.13.nupkg.sha512",
