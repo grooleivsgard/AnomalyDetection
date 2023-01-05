@@ -140,7 +140,7 @@ namespace IntrusionDetectionSystem
                             _log.LogError("ProcessRepositories(): result.Value[0] is null");
                             Console.WriteLine("At line 141: " + "ProcessRepositories(): result.Value[0] is null" ); 
                         }
-                        
+
                     }
                 }
 
@@ -179,24 +179,24 @@ namespace IntrusionDetectionSystem
                     {
                         // Check if this ip that the edge is talking to is stored in the whiteList 
                         bool found = FindIPAddressInWhiteList(connectionPacket.DestinationAddress!);
+
+                       
                         
                         if (found)
-                        {
-                            // Get the endpoint object that have the same ip address as the destination ip 
-
-                            // In Memory: 
-                            Endpoint endpoint =  _EndpointToTabell!.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress) ?? throw new ArgumentNullException("Cannot find the endpoint object that have the same ip address as the destination ip");
-
-                            
-
+                        {    
+                            Endpoint endpoint =  _EndpointToTabell!.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket.DestinationAddress) ?? throw new ArgumentNullException("Cannot find the endpoint object that have the same ip address" + connectionPacket.DestinationAddress +" as the destination ip");
+                            endpoint.Bytes_in = connectionPacket.Bytes_value; 
+                            endpoint!.Mac = connectionPacket.DestinationMac; 
+                            endpoint.anomalityReport = "";
+                            endpoint.isStempled = true;        
                             if (endpoint is not null) 
                             { 
-                                bool match = MatchIPtoMac(connectionPacket.DestinationMac ?? throw new ArgumentNullException ("ConnectionPacket its DestinationMac is null"), endpoint.Mac);
+                                bool match = MatchIPtoMac(connectionPacket.DestinationMac ?? throw new ArgumentNullException ($"ConnectionPacket its DestinationMac is null"), endpoint.Mac);
                                 
                                 if (match)
                                 {
                                     bool stateOk = StatesHandler.HandleState(endpoint!.State, 1);
-                                    endpoint.Bytes_out =  connectionPacket.Bytes_value;
+                                    
                                     if (stateOk)
                                     {
                                         endpoint.State = 1;
@@ -214,6 +214,15 @@ namespace IntrusionDetectionSystem
                                 else
                                 {
                                     _log.LogWarning("The ip " + connectionPacket.DestinationAddress + " doesen't match with the corresponding mac address");
+
+                                    
+                                    endpoint.anomalityReport += " The ip " + connectionPacket.DestinationAddress + " doesen't match with the corresponding mac address "; 
+                                    endpoint.Ip = connectionPacket.DestinationAddress!;
+                                    endpoint.Mac = connectionPacket.DestinationAddress!; 
+                                    endpoint.isAnomolous = true; 
+                                    await SaveConnectionToDatabase(connectionPacket,endpoint); 
+                                    endpoint.isStempled = true; 
+                                    ResetEndpoint(endpoint); 
                                 }
                             }
 
@@ -225,27 +234,55 @@ namespace IntrusionDetectionSystem
 
                         else if (!found)
                         {
-                            _log.LogCritical("The edge is talking to an unkown ip " + connectionPacket.DestinationAddress);
-                            
+                            Endpoint endpoint =  new Endpoint();
+                            endpoint.isStempled = true; 
+                            endpoint.Bytes_in = connectionPacket.Bytes_value; 
+                            endpoint.isAnomolous = true; 
+                            endpoint.anomalityReport += " The edge is talking to an unkown ip " + connectionPacket.DestinationAddress;
+                            _log.LogWarning("The edge is talking to an unkown ip " + connectionPacket.DestinationAddress);
+                            endpoint.anomalityReport += " The edge is talking to an unkown ip  + connectionPacket.DestinationAddress "; 
+                            endpoint.Ip = connectionPacket.DestinationAddress!;
+                            endpoint.Mac = connectionPacket.DestinationMac!; 
+                            await SaveConnectionToDatabase(connectionPacket,endpoint); 
+                            ResetEndpoint(endpoint); 
+                            unkown++;
+                            s_unknowIps.Add(1);
+                        
+ 
                         }
                     }
 
-                    // src_ip != edge_ip {In this case it is not the edge that is talking but another ip is talking to the edge }
+                    // src_ip != edge_ip {In this case it is not the edge that is talking, but another ip is talking to the edge }
                     else 
                     {
                         // Check if that ip is stored in the whitelist 
                         bool found = FindIPAddressInWhiteList(connectionPacket.SourceAddress!);
-
+                        
+                        
+                        
+                        
+                        
                         if (found)
                         {
                             // Call endpoint and get the endpoint object that have the same ip address as the destination ip 
                             
-                            // In Memory: 
-                            Endpoint endpoint = _EndpointToTabell.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket!.SourceAddress!) ?? throw new ArgumentNullException("Cannot find the endpoint object that have the same ip address as the destination ip");
+                            /**                         // In Memory:                 **/ 
+
+                            Endpoint endpoint = _EndpointToTabell!.ToList().FirstOrDefault(endpoint => endpoint.Ip == connectionPacket!.SourceAddress!) ?? throw new ArgumentNullException("Cannot find the endpoint object that have the same ip address as the destination ip");                            endpoint.Ip = connectionPacket.SourceAddress!;
+                            endpoint!.Bytes_out = connectionPacket.Bytes_value; 
+                            endpoint!.anomalityReport = "";
+                            endpoint!.Mac = connectionPacket.SourceMac!; 
+                            endpoint.isStempled = true; 
+
+                            /*                             ////////////               **/ 
+ 
+
                             
-                            // In database: 
+                            /**                        * In database: *                       \**/ 
                             Endpoints endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
-                            
+                            /**                         ******************                     **/ 
+                           
+                           
                             if (endpointDB is null) 
                             {
                                   /* ** Ip address is in memory whiteList but not saved to Database yet 
@@ -254,7 +291,7 @@ namespace IntrusionDetectionSystem
                                 if (created)
                                 {
                                    endpointDB = await _db.GetEndpointByIP(connectionPacket.SourceAddress!);
-                                   _log.LogInformation("New endpoint is created at database"); // just for debugging  
+                                   _log.LogDebug("New endpoint is created at database"); // just for debugging  
                                 } 
                                 else if (!created) 
                                 {
@@ -312,13 +349,7 @@ namespace IntrusionDetectionSystem
                                     ResetEndpoint(endpoint);
                                 }
 
-                              /* newConnection.ip_address = endpoint.Ip; 
-                                newConnection.bytes_out = endpoint.Bytes_out; 
-                                newConnection.bytes_in = endpoint.Bytes_in;
-                                newConnection.anomaly = endpoint.isAnomolous;
-                                newConnection.anomalityReport = endpoint.anomalityReport;
-
-                                int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB!); */
+                       
         
                             }
                                 
@@ -328,18 +359,19 @@ namespace IntrusionDetectionSystem
 
                         else
                         {
-                            
+
+                            Endpoint endpoint =  new Endpoint();
+                            endpoint.isStempled = true; 
+                            endpoint.Bytes_out = connectionPacket.Bytes_value; 
+                            endpoint.isAnomolous = true;
+                            endpoint.Ip = connectionPacket.SourceAddress;
+                            endpoint.Mac = connectionPacket.DestinationMac!;  
+                            endpoint.anomalityReport += "Unknown Ip " + connectionPacket.SourceAddress + " is trying to talk to edge"; 
                             _log.LogWarning("Unknown Ip " + connectionPacket.SourceAddress + " is trying to talk to edge");
                             unkown++;
                             s_unknowIps.Add(1);
-                            //legg inn i unknown db
-                          /*  Endpoint MalisciousEndpoint = new Endpoint(); 
-                            MalisciousEndpoint.Ip = connectionPacket.SourceAddress; 
-                            MalisciousEndpoint.Bytes_in = (long) connectionPacket.Bytes_value; 
-
-                            //Add more Values etterhvert 
-                            await SaveConnectionToDatabase(MalisciousEndpoint); */
-
+                            await SaveConnectionToDatabase(connectionPacket, endpoint); 
+                            ResetEndpoint(endpoint);
                         }
 
 
@@ -481,7 +513,7 @@ namespace IntrusionDetectionSystem
 
         public async Task<int> SaveConnectionToDatabase(Connection connectionPacket, Endpoint endpoint) 
         {
-            string ip = endpoint.Ip; 
+            string ip = endpoint.Ip!; 
             Endpoints endpointDB = await _db.GetEndpointByIP(ip);     
 
             if (endpointDB is null )   //If endpointDB was not stored to the database before        
@@ -502,6 +534,8 @@ namespace IntrusionDetectionSystem
             newConnection.ip_address = ip; 
             newConnection.rtt = endpoint.RTT; 
             newConnection.timestamp = DateTime.Now.Ticks; 
+            newConnection.anomalityReport = endpoint.anomalityReport; 
+            newConnection.anomaly = endpoint.isAnomolous; 
 
             // Return the Id of the new Connection and save it to Connections Table 
             int connectionID = await _db.AddNewConnectionToEndpoint(newConnection, endpointDB); 
