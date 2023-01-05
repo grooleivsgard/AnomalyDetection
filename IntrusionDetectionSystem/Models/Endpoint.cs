@@ -24,13 +24,13 @@ public  class Endpoint : IEndpoint
     
     public Endpoint( )
     {
-        isFulfilled = (Bytes_out != -1 && Bytes_in != -1); 
+        isStempled = (Bytes_out != -1 && Bytes_in != -1); 
     }
 
     [Key]
     public int conn_Id {get; set; }
-    public string Ip { get; set; }
-    public string Mac { get; set; }
+    public string? Ip { get; set; }
+    public string? Mac { get; set; }
     public int State { get; set; }
     //Set the default value to -1, means this value was never modified 
     public long Bytes_out { get; set; } = -1; 
@@ -38,8 +38,8 @@ public  class Endpoint : IEndpoint
     public long RTT { get; set; }
     //Set the default value to false
     public bool isAnomolous {get; set;} = false; 
-    public string anomalityReport {get; set;}
-    public bool isFulfilled {get; set;}
+    public string? anomalityReport {get; set;}
+    public bool isStempled {get; set;}
 
     public class Data
     {   [JsonPropertyName("Data")]
@@ -50,7 +50,7 @@ public  class Endpoint : IEndpoint
     
     public IList <EndpointItem> LoadJson()
     {
-        string path = "DAL/whitelist.json";
+        string? path = "DAL/whitelist.json";
         using (FileStream f = new FileStream(path, FileMode.Open, FileAccess.Read))
         {
             try

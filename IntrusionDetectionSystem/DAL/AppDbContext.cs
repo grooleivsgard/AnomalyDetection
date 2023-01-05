@@ -22,17 +22,17 @@ namespace IntrusionDetectionSystem.DAL
         //Set default value to false 
         public bool isFulfilled { get; set;} 
 
-        public string anomalityReport {get; set;} = "Healthy"; 
+        public string? anomalityReport {get; set;} 
 
-        [ForeignKey("Endpoints")] public string ip_address { get; set; }
+        [ForeignKey("Endpoints")] public string? ip_address { get; set; }
     }
 
     public class Endpoints
     {
-        [Key] public string ip_address { get; set; }
+        [Key] public string? ip_address { get; set; }
         public bool whitelist { get; set; }
-        public string mac_address { get; set; }
-        public virtual List<Connections> connections { get; set; }
+        public string? mac_address { get; set; }
+        public virtual List<Connections>? connections { get; set; }
 
         public Endpoints()
         {
